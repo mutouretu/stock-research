@@ -1,0 +1,2 @@
+"""Type-N pattern miners."""
+

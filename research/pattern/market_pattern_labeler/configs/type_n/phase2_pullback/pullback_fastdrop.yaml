@@ -1,0 +1,16 @@
+label_source: pullback_fastdrop
+
+pullback:
+  lookback_days: 90
+  min_rise_into_high_pct: 0.15
+  min_drawdown_pct: 0.06
+  max_drawdown_pct: 0.22
+  min_pullback_speed_pct_per_day: 0.008
+  min_days_since_high: 1
+  max_days_since_high: 10
+  positive_label_subtype: fastdrop_pullback
+
+diagnostics:
+  compute_future_returns: true
+  future_windows: [5, 10, 20]
+  prefix: diagnostic_

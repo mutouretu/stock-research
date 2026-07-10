@@ -1,0 +1,42 @@
+miner: w_bottom
+
+label:
+  label: 1
+  label_source: rule_w_bottom
+  confidence: 0.6
+
+windows:
+  - name: short
+    lookback: 120
+  - name: medium
+    lookback: 252
+  - name: long
+    lookback: 504
+
+rules:
+  min_prior_drawdown_pct: 0.20
+  min_middle_rebound_pct: 0.08
+  max_bottom_price_diff_pct: 0.12
+  max_right_bottom_break_pct: 0.10
+  min_bottom_separation_days: 20
+  max_bottom_separation_days: 300
+  min_days_after_right_bottom: 5
+  forming_neckline_distance_pct: 0.08
+  breakout_neckline_buffer_pct: 0.00
+  extrema_order: 5
+
+volume:
+  enable: true
+  ma_window: 20
+  breakout_volume_ratio: 1.20
+
+scoring:
+  weight_prior_drawdown: 0.20
+  weight_bottom_similarity: 0.25
+  weight_middle_rebound: 0.20
+  weight_neckline_distance: 0.25
+  weight_volume: 0.10
+
+output:
+  max_candidates_per_symbol: 20
+

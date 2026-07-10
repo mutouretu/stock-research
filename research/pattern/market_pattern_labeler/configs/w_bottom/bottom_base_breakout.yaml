@@ -1,0 +1,55 @@
+miner: bottom_base_breakout
+
+label:
+  label: 1
+  label_source: rule_bottom_base_breakout
+  confidence: 0.65
+
+scan:
+  mode: historical
+  asof_stride: 20
+  min_asof_date: "2004-01-01"
+  max_asof_date: null
+  max_candidates_per_symbol: 50
+  min_days_between_candidates: 20
+
+windows:
+  - name: short
+    lookback: 120
+  - name: medium
+    lookback: 252
+  - name: long
+    lookback: 504
+  - name: extra_long
+    lookback: 756
+
+rules:
+  min_prior_drawdown_pct: 0.18
+  min_base_duration_bars: 40
+  max_base_range_pct: 0.50
+  max_base_close_std_pct: 0.22
+  min_neckline_rebound_from_base_low_pct: 0.08
+  min_touches_in_base_zone: 2
+  base_zone_pct: 0.12
+  min_breakout_distance_pct: 0.00
+  max_breakout_distance_pct: 0.08
+  max_breakout_recency_bars: 15
+  min_right_recovery_pct: 0.10
+  min_close_vs_base_low_pct: 0.12
+
+volume:
+  enable: true
+  ma_window: 20
+  breakout_volume_ratio: 1.10
+  volume_as_bonus_only: true
+
+scoring:
+  weight_prior_drawdown: 0.15
+  weight_base_stability: 0.25
+  weight_neckline_rebound: 0.15
+  weight_breakout_freshness: 0.20
+  weight_breakout_distance: 0.15
+  weight_volume: 0.10
+
+output:
+  max_candidates_per_symbol: 50

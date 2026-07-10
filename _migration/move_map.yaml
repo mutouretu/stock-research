@@ -20,8 +20,8 @@ moves:
   - from: ../market_pattern_labeler
     to: research/pattern/market_pattern_labeler
     action: move
-    status: pending
-    notes: "Move from the parent directory. Preserve the existing directory and Python package naming."
+    status: migrated
+    notes: "Imported from https://github.com/mutouretu/market_pattern_labeler at main commit 3815e42. Preserved the market_pattern_labeler package, mplabeler CLI, and business logic. Compile and 68 tests passed; check-data-dir read 5 shared-data parquet files and an AAPL-only Type-N miner smoke generated 10 candidates in /tmp."
 
   - from: ../alpha_agent_system
     to: automation/alpha_agent_system

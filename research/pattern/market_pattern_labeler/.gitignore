@@ -1,0 +1,14 @@
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.pytest_cache/
+.uv-cache/
+.venv/
+*.egg-info/
+uv.lock
+.DS_Store
+
+# Keep output directory structure only
+outputs/*
+!outputs/.gitkeep

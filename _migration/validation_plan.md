@@ -63,6 +63,11 @@ bash _migration/scripts/check_old_paths.sh
 
 从 `../stock-pattern-search` 和 `../market_pattern_labeler` 迁移到 `research/pattern/`，只更新必要的文件系统路径，不改业务逻辑和 package 名。
 
+Phase 5a 结论（2026-07-10）：`market_pattern_labeler` 已从 GitHub `main@3815e42` 导入
+`research/pattern/market_pattern_labeler/`，编译、68 项测试、两个 CLI help、5 文件数据目录检查
+和 AAPL 单股票 miner smoke 均通过。可以进入 Phase 5b 迁移 `stock-pattern-search`；默认
+`../shared_data` 路径的统一收口仍留给独立任务。
+
 输出：`_migration/logs/005_move_pattern_projects.md`。
 
 ## Phase 6：迁移 alpha_agent_system

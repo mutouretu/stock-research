@@ -1,0 +1,66 @@
+miner: long_base_breakout
+
+label:
+  label: 1
+  label_source: rule_long_base_breakout
+  confidence: 0.70
+
+scan:
+  mode: historical
+  asof_stride: 10
+  min_asof_date: "2004-01-01"
+  max_asof_date: null
+  max_candidates_per_symbol: 80
+  min_days_between_candidates: 60
+
+windows:
+  - name: one_year
+    lookback: 252
+  - name: two_year
+    lookback: 504
+  - name: three_year
+    lookback: 756
+  - name: four_year
+    lookback: 1008
+
+rules:
+  min_prior_drawdown_pct: 0.20
+  min_base_duration_bars: 252
+  support_zone_tolerance_pct: 0.15
+  min_support_touches: 2
+  min_support_touch_separation_bars: 40
+  max_support_zone_std_pct: 0.12
+  min_neckline_rebound_from_support_pct: 0.15
+  max_neckline_to_prior_high_ratio: 0.90
+  min_breakout_distance_pct: 0.00
+  max_breakout_distance_pct: 0.10
+  max_breakout_recency_bars: 20
+  min_right_side_duration_bars: 40
+
+volume:
+  enable: true
+  ma_window: 20
+  breakout_volume_ratio: 1.10
+  volume_as_bonus_only: true
+
+monthly_trend:
+  enable: true
+  min_months: 36
+  ma_window_months: 12
+  slope_months: 6
+  lookback_months: 24
+  min_ma_slope_pct: 0.02
+  min_lookback_return_pct: 0.00
+  min_close_vs_ma_pct: -0.05
+
+scoring:
+  weight_prior_drawdown: 0.15
+  weight_support_stability: 0.25
+  weight_neckline_quality: 0.15
+  weight_breakout_freshness: 0.15
+  weight_breakout_distance: 0.10
+  weight_base_duration: 0.15
+  weight_volume: 0.05
+
+output:
+  max_candidates_per_symbol: 80
