@@ -177,7 +177,7 @@ refactor: adopt research data core in stock pattern search
 - [x] Phase R1：metrics compatibility wrapper
 - [ ] Phase R2：schema/normalization
 - [x] Phase R3：features（以 R3a basic indicators 为安全边界完成）
-- [ ] Phase R4：data core
+- [x] Phase R4：data core（以路径解析和 point-in-time 窗口为安全接入边界）
 - [ ] Phase R5：models/trainer
 - [ ] Phase R6：策略回归
 - [ ] Phase R7：删除重复实现
@@ -233,3 +233,31 @@ R3 边界结论：
 - `build_window_by_asof_date` 属于 point-in-time 数据窗口能力，留到 R4 与 data-core 的时间语义一起评估。
 - 因此 R3 不以“删除 features 目录”为目标；已接入的 returns/rolling primitives 是本阶段明确且
   可验证的通用边界。
+
+### R4 结果（2026-07-11）
+
+data-core stabilization：
+
+- [x] 固定 `columns=canonical→source`、`required_columns=raw source` 语义
+- [x] `available_time_col` 可标准化为 `available_time`
+- [x] parquet-by-entity 默认禁止无界读取，必须给 `max_files` 或显式 `allow_full_scan=True`
+- [x] column mapping 检测重复 target 和覆盖冲突
+- [x] entity-aware as-of 默认保持 left 原始行顺序
+- [x] 新增通用、无未来数据的 `build_history_window`
+- [ ] 单个超大 parquet/CSV 的真正 pushdown/分批读取留给有真实 consumer 的后续优化
+- [ ] shared-data-relative DatasetConfig path、列裁剪和 check_shared_data size UX 暂不影响本 consumer
+
+stock-pattern-search adoption：
+
+- [x] 6 项 window characterization/既有测试通过后，以 wrapper 接入 `build_history_window`
+- [x] Type-N task、cached-range 和 scan wrapper 默认路径改用 data-core shared-data resolver
+- [x] W-bottom 训练/推理默认 US daily 路径改用 data-core resolver
+- [x] 支持 `STOCK_RESEARCH_SHARED_DATA_DIR` 环境变量覆盖
+- [x] 保留 `DailyDataLoader` 和 `normalize_daily`，因为其文件命名和单位转换属于应用契约
+- [x] 不接入 DatasetCatalog/Loader：现有 strategy configs 尚未转换为 DatasetConfig，强切会扩大范围
+
+验证：research-data-core `11 passed`；window/路径及相关 pipeline targeted tests 通过；
+stock-pattern-search 完整测试 `73 passed, 7 warnings`；Type-N、cached-range、scan CLI help 均通过。
+
+R4 以已验证的路径和时间窗口边界完成。未完成的 data-core backlog 项继续作为后续按真实 consumer
+需求处理的性能/API 工作，不阻塞进入 R5。
