@@ -3,7 +3,7 @@ moves:
     to: platform/data/market-data-hub
     action: move
     status: migrated
-    notes: "Imported from https://github.com/mutouretu/market-data-hub at main commit e8ea24b. Kept the market_data_hub package name, CLI contract, and business logic unchanged."
+    notes: "Imported from https://github.com/mutouretu/market-data-hub and synchronized after cn-tushare-cache-merge landed on main, at merge commit b2c19a0. Kept the market_data_hub package name, CLI contract, and upstream business logic unchanged."
 
   - from: ../shared_data
     to: storage/shared_data

@@ -95,7 +95,7 @@
 
 ## 遗留问题
 
-1. Phase 2 按 GitHub 默认 `main` 的 `e8ea24b` 导入；旧本地仓库另有 `cn-tushare-cache-merge` 分支。若该分支包含尚未合入 `main` 的生产能力，应单独评审后通过正常合并流程引入，不能在本次迁移中混入。
+1. 初次 Phase 2 按 GitHub 默认 `main` 的 `e8ea24b` 导入；随后 `cn-tushare-cache-merge` 已合并到上游 `main`，并在补充同步中更新到 merge commit `b2c19a0`。详见 `002a_sync_market_data_hub_main.md`。
 2. README 和当前实现仍保留 `../shared_data` 路径兼容行为；在 Phase 3 迁移共享数据时统一切换到 `storage/shared_data`。
 3. 当前本地验证使用 Python 3.12 和即时解析的最新兼容依赖；仓库尚无锁文件，后续可单独制定可复现环境策略。
 4. 测试套件依赖从项目根目录启动；若未来需要从 monorepo 根目录统一运行测试，应在单独任务中明确测试工作目录或调整测试资源定位。

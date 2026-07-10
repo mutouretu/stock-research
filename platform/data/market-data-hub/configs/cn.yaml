@@ -12,3 +12,20 @@ download:
   start_date: "2020-01-01"
   end_date: null
   interval: "1d"
+
+cn_daily:
+  token_env: TUSHARE_TOKEN
+  sleep_seconds: 0.15
+
+  filters:
+    min_listing_days: 60
+    min_total_mv: 200000
+    max_total_mv: 5000000
+
+  retry:
+    times: 3
+    backoff_seconds: 1.5
+
+  outputs:
+    increment_path: data/processed/cn/increments/daily_increment.parquet
+    failed_dates_path: data/processed/cn/failed_dates/failed_trade_dates.json

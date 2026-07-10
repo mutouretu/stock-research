@@ -9,6 +9,11 @@ from market_data_hub.exceptions import MarketDataHubError
 from market_data_hub.jobs.daily_update import run_us_daily_update
 from market_data_hub.jobs.full_refresh import run_us_full_refresh
 from market_data_hub.logging import configure_logging
+from market_data_hub.markets.cn.pipelines import (
+    download_prices as download_cn_prices,
+    export_daily_by_symbol as export_cn_daily_by_symbol,
+    merge_daily_increment as merge_cn_daily_increment,
+)
 from market_data_hub.markets.us.pipelines import (
     download_corporate_actions,
     download_instruments,
@@ -46,6 +51,35 @@ def build_parser() -> argparse.ArgumentParser:
     export.add_argument("--output", default=str(export_daily_by_symbol.DEFAULT_OUTPUT_DIR))
     export.add_argument("--min-rows", type=int, default=export_daily_by_symbol.DEFAULT_MIN_ROWS)
 
+    cn_download = subparsers.add_parser("download-cn-prices")
+    cn_download.add_argument("--config", default="configs/cn.yaml")
+    cn_download.add_argument("--start-date")
+    cn_download.add_argument("--end-date")
+    cn_download.add_argument("--output")
+    cn_download.add_argument("--failed-dates-output")
+    cn_download.add_argument("--retry-from-failed-dates")
+
+    cn_export = subparsers.add_parser("export-cn-daily-by-symbol")
+    cn_export.add_argument("--input", default=str(export_cn_daily_by_symbol.DEFAULT_INPUT_PATH))
+    cn_export.add_argument("--output", default=str(export_cn_daily_by_symbol.DEFAULT_OUTPUT_DIR))
+    cn_export.add_argument("--overwrite", action="store_true")
+
+    cn_merge = subparsers.add_parser("merge-cn-daily-increment")
+    cn_merge.add_argument("--base-dir", required=True)
+    cn_merge.add_argument("--increment", required=True)
+    cn_merge.add_argument("--output-dir", required=True)
+    cn_merge.add_argument("--overwrite", action="store_true")
+
+    cn_daily = subparsers.add_parser("cn-daily-update")
+    cn_daily.add_argument("--config", default="configs/cn.yaml")
+    cn_daily.add_argument("--start-date", required=True)
+    cn_daily.add_argument("--end-date")
+    cn_daily.add_argument("--base-dir", required=True)
+    cn_daily.add_argument("--output-dir", required=True)
+    cn_daily.add_argument("--increment-output")
+    cn_daily.add_argument("--failed-dates-output")
+    cn_daily.add_argument("--overwrite", action="store_true")
+
     return parser
 
 
@@ -74,6 +108,47 @@ def main(argv: list[str] | None = None) -> None:
                 args.input,
                 args.output,
                 args.min_rows,
+            )
+            print(summary.summary_text())
+        elif args.command == "download-cn-prices":
+            result = download_cn_prices.run(
+                args.config,
+                start_date=args.start_date,
+                end_date=args.end_date,
+                output_path=args.output,
+                failed_dates_output=args.failed_dates_output,
+                retry_from_failed_dates=args.retry_from_failed_dates,
+            )
+            print(result.summary_text())
+        elif args.command == "export-cn-daily-by-symbol":
+            summary = export_cn_daily_by_symbol.run(
+                input_path=args.input,
+                output_dir=args.output,
+                overwrite=args.overwrite,
+            )
+            print(summary.summary_text())
+        elif args.command == "merge-cn-daily-increment":
+            summary = merge_cn_daily_increment.merge_cn_daily_increment(
+                base_dir=args.base_dir,
+                increment_path=args.increment,
+                output_dir=args.output_dir,
+                overwrite=args.overwrite,
+            )
+            print(summary.summary_text())
+        elif args.command == "cn-daily-update":
+            download_result = download_cn_prices.run(
+                args.config,
+                start_date=args.start_date,
+                end_date=args.end_date,
+                output_path=args.increment_output,
+                failed_dates_output=args.failed_dates_output,
+            )
+            print(download_result.summary_text())
+            summary = merge_cn_daily_increment.merge_cn_daily_increment(
+                base_dir=args.base_dir,
+                increment_path=download_result.output_path,
+                output_dir=args.output_dir,
+                overwrite=args.overwrite,
             )
             print(summary.summary_text())
         else:

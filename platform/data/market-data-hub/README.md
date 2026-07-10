@@ -9,10 +9,12 @@ machine learning training, stock scoring, watchlist generation, or backtesting.
 
 ## Current Scope
 
-Phase one focuses on US equities:
+Phase one focuses on US equities and now includes the CN A-share Tushare daily cache
+pipeline:
 
 - configuration-driven symbol universe
 - Yahoo Chart daily OHLCV download
+- Tushare CN daily increment download
 - adjusted close preservation
 - minimal instrument master data
 - corporate action export for dividends and splits
@@ -81,6 +83,9 @@ python -m market_data_hub.cli us-full-refresh --config configs/us.yaml
 python -m market_data_hub.cli us-daily-update --config configs/us.yaml
 python -m market_data_hub.cli validate-us-prices
 python -m market_data_hub.cli export-us-daily-by-symbol
+python -m market_data_hub.cli download-cn-prices --config configs/cn.yaml
+python -m market_data_hub.cli merge-cn-daily-increment --help
+python -m market_data_hub.cli cn-daily-update --help
 ```
 
 Use `configs/us_russell1000.yaml` to download a Russell 1000-style universe:
@@ -118,8 +123,8 @@ python -m market_data_hub.cli export-us-daily-by-symbol \
   --min-rows 500
 ```
 
-The `../shared_data` paths below are retained for compatibility during the staged migration. In
-the new `stock-research` workspace, shared data will ultimately live at
+The `../shared_data` paths in this document are retained for compatibility during the staged
+migration. In the new `stock-research` workspace, shared data will ultimately live at
 `storage/shared_data`; the code and command-path switch is deferred to the shared-data migration
 phase.
 
@@ -168,11 +173,59 @@ ranking, watchlist generation, or backtesting.
 projects consume its standardized datasets for feature engineering, model training, scoring,
 watchlists, and backtesting.
 
+## CN A-share Daily Cache
+
+CN data uses Tushare. Tokens are not stored in the repository; set the environment variable
+configured in `configs/cn.yaml`:
+
+```bash
+export TUSHARE_TOKEN=...
+```
+
+Download a flat daily increment:
+
+```bash
+python -m market_data_hub.cli download-cn-prices \
+  --config configs/cn.yaml \
+  --start-date 20260708 \
+  --end-date 20260708 \
+  --output data/processed/cn/increments/daily_increment_20260708.parquet \
+  --failed-dates-output data/processed/cn/failed_dates/failed_trade_dates_20260708.json
+```
+
+Merge the increment into the shared per-symbol snapshot used by downstream projects:
+
+```bash
+python -m market_data_hub.cli merge-cn-daily-increment \
+  --base-dir ../shared_data/raw/daily/parquet_daily_cache_20241001_20260707 \
+  --increment data/processed/cn/increments/daily_increment_20260708.parquet \
+  --output-dir ../shared_data/raw/daily/parquet_daily_cache_20241001_20260708
+```
+
+Or run download and merge as one daily update:
+
+```bash
+python -m market_data_hub.cli cn-daily-update \
+  --config configs/cn.yaml \
+  --start-date 20260708 \
+  --end-date 20260708 \
+  --base-dir ../shared_data/raw/daily/parquet_daily_cache_20241001_20260707 \
+  --output-dir ../shared_data/raw/daily/parquet_daily_cache_20241001_20260708
+```
+
+Long-lived CN data assets belong under `../shared_data/raw/daily/`. The flat increment files under
+`data/processed/cn/increments/` are temporary daily process data and can be removed after a
+successful merge. Historical large flat caches can be archived under:
+
+```text
+../shared_data/raw/daily/flat_cache_archive/
+```
+
 ## Roadmap
 
 - complete full US ticker master data from an exchange or paid source
 - add Polygon and Tiingo production adapters
-- add CN and HK pipelines
+- continue expanding CN and HK pipelines
 - partition Parquet outputs by date for large datasets
 - add data quality checks and repair reports
 - add trading calendar providers
