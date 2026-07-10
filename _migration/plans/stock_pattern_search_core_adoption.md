@@ -176,7 +176,7 @@ refactor: adopt research data core in stock pattern search
 - [x] Phase R0：metrics 等价性测试（5 项 characterization tests）
 - [x] Phase R1：metrics compatibility wrapper
 - [ ] Phase R2：schema/normalization
-- [ ] Phase R3：features
+- [ ] Phase R3：features（R3a basic indicators 已完成）
 - [ ] Phase R4：data core
 - [ ] Phase R5：models/trainer
 - [ ] Phase R6：策略回归
@@ -212,3 +212,15 @@ refactor: adopt research data core in stock pattern search
 
 验证：schema/validator targeted `7 passed`；stock-pattern-search 完整测试 `64 passed, 7 warnings`；
 research-data-core `8 passed`；Type-N CLI help 通过。
+
+### R3a 进度（2026-07-11）
+
+- [x] ml-core returns 增加可配置 missing-value fill，兼容 pandas 2.x/3.x
+- [x] ml-core rolling features 增加通用 `min_periods` 参数
+- [x] 添加 3 项 basic-indicator old-vs-core characterization tests
+- [x] `add_basic_indicators` 通过兼容映射生成原 `ret_1d/ma_5/ma_20` 列
+- [x] 保留日期清洗、排序、输入不变性、缺列错误和 warm-up 行为
+- [ ] `build_tabular_features` 仍包含应用特征组合，后续逐项判断，不整体搬入 core
+
+验证：feature/dataset targeted `5 passed`；stock-pattern-search 完整测试 `67 passed, 7 warnings`；
+research-ml-core `6 passed`；Type-N CLI help 通过。
