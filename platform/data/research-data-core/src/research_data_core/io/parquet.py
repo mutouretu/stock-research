@@ -14,10 +14,14 @@ def read_parquet_by_entity_dir(
     path: str | Path,
     max_files: int | None = None,
     columns: Iterable[str] | None = None,
+    *,
+    allow_full_scan: bool = False,
 ) -> pd.DataFrame:
     directory = Path(path)
     if not directory.is_dir():
         raise FileNotFoundError(f"Parquet-by-entity directory does not exist: {directory}")
+    if max_files is None and not allow_full_scan:
+        raise ValueError("max_files is required unless allow_full_scan=True")
     files = sorted(directory.glob("*.parquet"))
     if max_files is not None:
         if max_files < 0:

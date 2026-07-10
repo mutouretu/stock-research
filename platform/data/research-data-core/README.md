@@ -34,8 +34,12 @@ and time fields, optional availability time, source-field mapping, and required 
 Python reads these values from `DatasetConfig`; it does not assume market-specific field names.
 
 `columns` maps canonical names to source names. For example, `volume: source_volume` makes the
-loader rename `source_volume` to `volume`. When requested, configured entity and time columns are
-additionally normalized to `entity_id` and `time`.
+loader rename `source_volume` to `volume`. `required_columns` always names raw source columns and is
+checked before mapping. When requested, configured entity, time, and availability-time columns are
+normalized to `entity_id`, `time`, and `available_time`.
+
+Parquet-by-entity reads require `max_files` unless the caller explicitly sets `allow_full_scan=True`.
+Entity-aware as-of alignment preserves the original left-row order by default.
 
 See [`configs/datasets/examples/`](configs/datasets/examples/) and use:
 

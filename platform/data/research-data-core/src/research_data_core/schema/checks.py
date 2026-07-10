@@ -26,4 +26,15 @@ def normalize_columns(frame: pd.DataFrame, columns_mapping: Mapping[str, str]) -
     missing = [column for column in columns_mapping if column not in frame.columns]
     if missing:
         raise ValueError(f"Cannot normalize missing source columns: {missing}")
+    targets = list(columns_mapping.values())
+    duplicate_targets = sorted({target for target in targets if targets.count(target) > 1})
+    if duplicate_targets:
+        raise ValueError(f"Column mapping has duplicate targets: {duplicate_targets}")
+    collisions = sorted(
+        target
+        for source, target in columns_mapping.items()
+        if source != target and target in frame.columns and target not in columns_mapping
+    )
+    if collisions:
+        raise ValueError(f"Column mapping would overwrite existing columns: {collisions}")
     return frame.rename(columns=dict(columns_mapping))
