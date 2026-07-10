@@ -46,6 +46,11 @@ bash _migration/scripts/check_old_paths.sh
 
 从 `../shared_data` 迁移到 `storage/shared_data`。迁移前后核对容量、文件数量、消费者路径和 Git ignore 状态，不复制大型数据进入 Git 历史。
 
+迁移结论（2026-07-10）：已使用同文件系统 `mv` 完成，迁移前后均为 25,164,336 KiB、
+159,262 个文件和 41 个目录。旧路径通过
+`../shared_data -> migration/storage/shared_data` 软链接保持兼容；Git 跟踪的数据文件为 0，
+5 个 parquet 抽样均可读取。可以进入 Phase 5，Phase 4 的归档/删除阻塞保持不变。
+
 输出：`_migration/logs/003_move_shared_data.md`。
 
 ## Phase 4：处置 build-daily-cache

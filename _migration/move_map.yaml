@@ -8,8 +8,8 @@ moves:
   - from: ../shared_data
     to: storage/shared_data
     action: move
-    status: pending
-    notes: "Large local data store. Do not add its data files to Git; verify size, capacity, consumers, and rollback before moving."
+    status: migrated
+    notes: "Moved locally with mv (not cp) into storage/shared_data; no data files were added to Git. Created compatibility symlink ../shared_data -> migration/storage/shared_data for legacy projects while the local repository directory retains its temporary migration name."
 
   - from: ../stock-pattern-search
     to: research/pattern/stock-pattern-search

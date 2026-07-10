@@ -11,6 +11,9 @@ shared_data/
 *.feather
 *.duckdb
 *.sqlite
+*.csv
+*.pkl
+*.pickle
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
