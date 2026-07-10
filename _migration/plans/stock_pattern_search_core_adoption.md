@@ -176,7 +176,7 @@ refactor: adopt research data core in stock pattern search
 - [x] Phase R0：metrics 等价性测试（5 项 characterization tests）
 - [x] Phase R1：metrics compatibility wrapper
 - [ ] Phase R2：schema/normalization
-- [ ] Phase R3：features（R3a basic indicators 已完成）
+- [x] Phase R3：features（以 R3a basic indicators 为安全边界完成）
 - [ ] Phase R4：data core
 - [ ] Phase R5：models/trainer
 - [ ] Phase R6：策略回归
@@ -224,3 +224,12 @@ research-data-core `8 passed`；Type-N CLI help 通过。
 
 验证：feature/dataset targeted `5 passed`；stock-pattern-search 完整测试 `67 passed, 7 warnings`；
 research-ml-core `6 passed`；Type-N CLI help 通过。
+
+R3 边界结论：
+
+- `build_tabular_features` 输出 breakout distance、volume spike、above-MA ratio 等应用特征向量，
+  继续保留在 stock-pattern-search。
+- Type-N/reviewer 内的 returns、scoring 和 penalty 具有策略参数与业务语义，不迁入 ml-core。
+- `build_window_by_asof_date` 属于 point-in-time 数据窗口能力，留到 R4 与 data-core 的时间语义一起评估。
+- 因此 R3 不以“删除 features 目录”为目标；已接入的 returns/rolling primitives 是本阶段明确且
+  可验证的通用边界。
