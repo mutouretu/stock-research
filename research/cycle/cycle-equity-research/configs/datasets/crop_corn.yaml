@@ -1,0 +1,11 @@
+dataset_id: crop.corn
+storage: parquet
+path: storage/shared_data/agriculture/corn.parquet
+entity_col: commodity
+time_col: date
+available_time_col: null
+columns:
+  price: price
+required_columns:
+  - date
+  - price

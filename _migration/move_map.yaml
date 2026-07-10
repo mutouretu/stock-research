@@ -51,5 +51,5 @@ new_projects:
   - path: research/cycle/cycle-equity-research
     package: cycle_equity_research
     action: create
-    status: pending
-    notes: "Future cycle-equity research application; initial target is CF."
+    status: created
+    notes: "Created the independently installable CF-first cycle-equity research skeleton with instrument and research-data-core compatible dataset contracts, placeholder feature boundaries, planning-only pipelines, four read-only CLI entry points, and tests. No physical data, model, training, report, or business integration was added."

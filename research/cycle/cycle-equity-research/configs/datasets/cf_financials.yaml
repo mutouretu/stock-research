@@ -1,0 +1,15 @@
+dataset_id: cycle.cf.financials
+storage: parquet
+path: storage/shared_data/fundamentals/us/CF/financials.parquet
+entity_col: ticker
+time_col: period_end
+available_time_col: filing_date
+columns:
+  revenue: revenue
+  ebitda: ebitda
+  gross_margin: gross_margin
+required_columns:
+  - period_end
+  - filing_date
+  - revenue
+  - ebitda

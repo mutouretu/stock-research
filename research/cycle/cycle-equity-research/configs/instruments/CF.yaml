@@ -1,0 +1,44 @@
+instrument: CF
+name: CF Industries
+domain: nitrogen_fertilizer
+
+entity:
+  type: equity
+  id: CF
+  market: US
+
+drivers:
+  commodity:
+    - urea
+    - ammonia
+    - uan
+  cost:
+    - henry_hub_gas
+  demand:
+    - corn
+    - soybean
+    - planted_acres
+  financial:
+    - revenue
+    - ebitda
+    - gross_margin
+    - sales_volume
+    - inventory
+  valuation:
+    - ev_ebitda
+    - fcf_yield
+    - dividend_yield
+
+features:
+  spreads:
+    - urea_gas_spread
+    - ammonia_gas_spread
+  momentum:
+    windows: [20, 60, 120]
+  seasonality:
+    enabled: true
+
+targets:
+  - forward_3m_return
+  - forward_6m_return
+  - next_quarter_ebitda
