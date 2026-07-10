@@ -89,6 +89,14 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
+在统一 `stock-research` 仓库中开发时，安装本项目及其本地公共 ML core：
+
+```bash
+pip install -r requirements-monorepo.txt
+```
+
+当前仅通用 binary metrics 已切换到 `research-ml-core`；其他模块仍按原实现运行。
+
 ## Type-N 主链路
 
 Type-N 当前推荐使用拆分任务执行，便于缓存 Phase 1，并在不同日期复用同一段入池结果。

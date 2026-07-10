@@ -170,7 +170,7 @@ refactor: adopt research data core in stock pattern search
 - [x] 创建独立重构分支
 - [x] 记录渐进方案和边界
 - [x] Phase R0：metrics 等价性测试（5 项 characterization tests）
-- [ ] Phase R1：metrics compatibility wrapper
+- [x] Phase R1：metrics compatibility wrapper
 - [ ] Phase R2：schema/normalization
 - [ ] Phase R3：features
 - [ ] Phase R4：data core
@@ -188,3 +188,12 @@ refactor: adopt research data core in stock pattern search
 曾从 monorepo 根目录误运行一次 core venv 的 pytest，因跨项目未安装依赖和同名测试模块产生收集
 错误；回到 `platform/ml/research-ml-core/` 后 core 自身 `5 passed`。该错误不属于产品回归，也未导致
 代码修改。
+
+### R1 验证记录（2026-07-11）
+
+- `requirements-monorepo.txt` 可从 stock-pattern-search 目录安装本地 ml-core
+- `compute_binary_metrics` 已成为保留旧函数名、参数和返回 key 的 thin wrapper
+- metrics characterization：`5 passed`
+- stock-pattern-search 完整测试：`61 passed, 7 warnings`
+- Type-N CLI help：通过
+- research-ml-core 测试：`5 passed`
