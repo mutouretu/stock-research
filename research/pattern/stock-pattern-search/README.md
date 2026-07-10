@@ -95,7 +95,8 @@ pip install -r requirements.txt
 pip install -r requirements-monorepo.txt
 ```
 
-当前仅通用 binary metrics 已切换到 `research-ml-core`；其他模块仍按原实现运行。
+当前通用 binary metrics 已切换到 `research-ml-core`；daily/labels validator 的必需字段存在性检查
+已通过兼容 wrapper 使用 `research-data-core`。交易单位和 OHLCV 等应用数据规范仍保留在本项目。
 
 ## Type-N 主链路
 

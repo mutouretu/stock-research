@@ -1,2 +1,3 @@
 -r requirements.txt
+-e ../../../platform/data/research-data-core
 -e ../../../platform/ml/research-ml-core

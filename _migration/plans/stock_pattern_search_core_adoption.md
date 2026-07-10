@@ -201,3 +201,14 @@ refactor: adopt research data core in stock pattern search
 - stock-pattern-search 完整测试：`61 passed, 7 warnings`
 - Type-N CLI help：通过
 - research-ml-core 测试：`5 passed`
+
+### R2a 进度（2026-07-11）
+
+- [x] 为 daily/labels required-column behavior 添加 3 项 compatibility tests
+- [x] validator 通过 thin compatibility helper 调用 research-data-core `require_columns`
+- [x] 保留原缺字段顺序、错误消息和 `raise_on_error=False` 返回行为
+- [x] `requirements-monorepo.txt` 增加本地 research-data-core 安装
+- [ ] normalization 和 quality checks 继续留在应用层，待后续逐项判断是否存在真正通用边界
+
+验证：schema/validator targeted `7 passed`；stock-pattern-search 完整测试 `64 passed, 7 warnings`；
+research-data-core `8 passed`；Type-N CLI help 通过。

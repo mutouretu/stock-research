@@ -4,8 +4,18 @@ from pathlib import Path
 from typing import Any
 
 import pandas as pd
+from research_data_core.schema import require_columns
 
 from src.data.loader import DailyDataLoader
+
+
+def _missing_required_columns(frame: pd.DataFrame, required: list[str]) -> list[str]:
+    """Use data-core presence checks while preserving application error contracts."""
+    try:
+        require_columns(frame, required)
+    except ValueError:
+        return [column for column in required if column not in frame.columns]
+    return []
 
 
 def _raise_or_return(errors: list[str], raise_on_error: bool = True) -> list[str]:
@@ -32,7 +42,7 @@ def validate_labels_df(
         required = ["sample_id", *required]
 
     errors: list[str] = []
-    missing = [c for c in required if c not in labels_df.columns]
+    missing = _missing_required_columns(labels_df, required)
     if missing:
         errors.append(f"labels missing required columns: {missing}")
         _raise_or_return(errors, raise_on_error)
@@ -68,7 +78,7 @@ def validate_daily_df(daily_df: pd.DataFrame, *, raise_on_error: bool = True) ->
     required = ["trade_date", "open", "high", "low", "close", "vol"]
     errors: list[str] = []
 
-    missing = [c for c in required if c not in daily_df.columns]
+    missing = _missing_required_columns(daily_df, required)
     if missing:
         errors.append(f"daily missing required columns: {missing}")
         _raise_or_return(errors, raise_on_error)
