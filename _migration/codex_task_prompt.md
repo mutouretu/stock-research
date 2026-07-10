@@ -1,6 +1,6 @@
 # Codex 任务说明：stock-research 目录分层迁移
 
-> Phase 1 scope override: only create migration documentation/scripts, the empty staging skeleton under `migration/`, and `logs/000_inventory.md`. Do not create the skeleton at repository root, move or delete existing projects, or create the three new project code skeletons in this phase.
+> Phase 1b scope override: the current Git repository root is the future `stock-research` root, even if its temporary local folder name is `migration`. Keep the empty target skeleton at this repository root and keep migration materials under `_migration/`. Do not move, copy, delete, or modify projects in the parent directory during this phase.
 
 You are working in the `stock-research` repository.
 
@@ -43,7 +43,7 @@ stock-research/
     storage/
         shared_data/
 
-    migration/
+    _migration/
     ops/
     docs/
 ```
@@ -58,16 +58,16 @@ Important rules:
 6. Treat `shared_data` as local data storage; move it carefully and do not commit data files.
 7. `build-daily-cache` has been integrated into `market-data-hub`. Remove it only after confirming no references remain.
 8. After each move, update path references and run validation.
-9. Write migration notes into `migration/logs/`.
+9. Write migration notes into `_migration/logs/`.
 10. Keep the migration incremental and easy to review.
 
 Required outputs:
 
-1. `migration/README.md`
-2. `migration/move_map.yaml`
-3. `migration/validation_plan.md`
-4. `migration/scripts/check_old_paths.sh`
-5. `migration/scripts/check_layout.sh`
+1. `_migration/README.md`
+2. `_migration/move_map.yaml`
+3. `_migration/validation_plan.md`
+4. `_migration/scripts/check_old_paths.sh`
+5. `_migration/scripts/check_layout.sh`
 6. Updated repository layout
 7. New placeholder projects:
    - `platform/data/research-data-core`
@@ -81,12 +81,12 @@ Validation:
 - Run `rg` to find stale old paths.
 - Run `python -m compileall .` inside each Python project.
 - Run `pytest -q` when tests exist.
-- Record failures honestly in `migration/logs/`.
+- Record failures honestly in `_migration/logs/`.
 - Do not hide failing tests.
 
 Suggested implementation order:
 
-1. Inventory current repo and write `migration/logs/000_inventory.md`.
+1. Inventory the legacy workspace and write `_migration/logs/000_inventory.md`.
 2. Create target directory skeleton.
 3. Move `market-data-hub` to `platform/data/market-data-hub`.
 4. Move `shared_data` to `storage/shared_data` if safe.

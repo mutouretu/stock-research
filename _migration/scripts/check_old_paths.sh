@@ -15,7 +15,7 @@ rg --line-number --hidden \
   --glob '!**/.venv/**' \
   --glob '!**/__pycache__/**' \
   --glob '!shared_data/**' \
-  --glob '!migration/logs/000_inventory.md' \
+  --glob '!_migration/logs/000_inventory.md' \
   "$pattern" . || true
 
 printf 'Legacy reference inventory completed.\n'

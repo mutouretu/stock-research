@@ -1,0 +1,16 @@
+**/__pycache__/
+*.py[cod]
+.venv/
+venv/
+.env
+.env.*
+.DS_Store
+storage/shared_data/
+shared_data/
+*.parquet
+*.feather
+*.duckdb
+*.sqlite
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/

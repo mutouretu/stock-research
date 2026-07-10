@@ -1,5 +1,7 @@
 # Phase 1 仓库盘点报告
 
+> Phase 1b 定位修正：本报告中的本地 `migration/` 实际是新 `stock-research` Git 仓库的临时目录名，不是未来仓库的子目录。迁移资料现已收纳到 `_migration/`，真正的目标骨架位于新仓库根目录。以下旧工作区盘点事实仍然有效。
+
 盘点日期：2026-07-10
 盘点范围：工作区根目录 `/Users/dengerqiang/Documents/code/Trade/stock-research`；忽略 `.git`、`.venv`、缓存目录内容及 `shared_data` 数据内容进行文本搜索。
 
@@ -11,10 +13,10 @@ stock-research/
 ├── build-daily-cache/
 ├── market_pattern_labeler/
 ├── market-data-hub/
-├── migration/
+├── migration/              # 新 stock-research Git 仓库的临时本地目录名
 ├── shared_data/
 ├── stock-pattern-search/
-└── migration/
+└── migration/              # 其内部结构已在 Phase 1b 修正为新仓库根结构
     ├── platform/           # Phase 1 暂存空骨架
     │   ├── data/
     │   └── ml/
@@ -29,7 +31,7 @@ stock-research/
     └── docs/
 ```
 
-所有原项目均仍在原路径；本阶段没有移动或删除业务目录。暂存空目录全部位于 `migration/` 下，并使用 `.gitkeep` 保留；仓库根目录没有创建这些目标骨架。
+所有原项目均仍在旧工作区原路径；本阶段没有移动或删除业务目录。Phase 1b 已确认临时名为 `migration/` 的目录本身就是新仓库，因此目标空骨架位于该 Git 仓库根目录，迁移资料位于其 `_migration/` 下。
 
 ## 2. 根目录项目用途初判
 
@@ -101,7 +103,7 @@ stock-research/
 
 ## 9. 旧路径/名称引用盘点
 
-使用 `migration/scripts/check_old_paths.sh` 所列 11 个关键词搜索；排除了 `.git`、`.venv`、`__pycache__`、`shared_data` 数据内容和本报告自身。首次盘点匹配数如下（数量是匹配 token 数，不是唯一文件数）：
+使用现已移动到 `_migration/scripts/check_old_paths.sh` 的脚本所列 11 个关键词搜索；排除了 `.git`、`.venv`、`__pycache__`、`shared_data` 数据内容和本报告自身。首次盘点匹配数如下（数量是匹配 token 数，不是唯一文件数）：
 
 | 关键词 | 匹配数 |
 |---|---:|
@@ -133,6 +135,5 @@ Phase 1 中这些引用和原目录仍存在是预期行为。命中既包含真
 
 - 根目录 `git status --short`：失败，原因是根目录不是 Git 仓库；已改为逐仓库检查并记录上述未提交改动。
 - `find . -maxdepth 3 -type d | sort`：完成，用于生成结构盘点。
-- `bash migration/scripts/check_layout.sh`：通过，15 个 Phase 1 必需目录全部存在。
-- `bash migration/scripts/check_old_paths.sh`：退出码 0，共输出 644 行（含标题和完成提示）；命中结果按设计只做盘点，没有导致失败。
+- Phase 1 当时的 layout/old-path 检查结果已被 Phase 1b 的 `_migration/scripts/` 检查和 `_migration/logs/001_fix_repo_root_layout.md` 取代。
 - `python -m compileall .`：基于上述安全和范围判断未执行；不是代码验证失败。
