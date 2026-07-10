@@ -178,7 +178,7 @@ refactor: adopt research data core in stock pattern search
 - [ ] Phase R2：schema/normalization
 - [x] Phase R3：features（以 R3a basic indicators 为安全边界完成）
 - [x] Phase R4：data core（以路径解析和 point-in-time 窗口为安全接入边界）
-- [ ] Phase R5：models/trainer
+- [x] Phase R5：models/trainer（保留应用 artifact orchestration）
 - [ ] Phase R6：策略回归
 - [ ] Phase R7：删除重复实现
 
@@ -261,3 +261,32 @@ stock-pattern-search 完整测试 `73 passed, 7 warnings`；Type-N、cached-rang
 
 R4 以已验证的路径和时间窗口边界完成。未完成的 data-core backlog 项继续作为后续按真实 consumer
 需求处理的性能/API 工作，不阻塞进入 R5。
+
+### R5 结果（2026-07-11）
+
+ml-core stabilization：
+
+- [x] `SklearnAdapter` 作为已有 estimator 的统一 fit/predict/proba 边界
+- [x] LightGBM/XGBoost adapters 保持 optional dependency 延迟导入
+- [x] 增加 raw estimator pickle save/load，格式与旧 `model.pkl` 兼容
+- [x] core Trainer score 支持 `predict_proba` 和 predict-only fallback
+- [x] research-ml-core 测试扩展到 `8 passed`
+
+stock-pattern-search adoption：
+
+- [x] logistic wrapper 继承 `SklearnAdapter`
+- [x] LightGBM/XGBoost wrappers 分别继承对应 core adapter
+- [x] 三类 wrapper 继续保留 `model_name`、factory、旧 save/load API
+- [x] 三类模型均完成小样本 factory → fit → pickle → load → predict_proba 往返
+- [x] application Trainer 的 fit/score 通过 core Trainer，metrics/artifact 文件仍由应用层组织
+- [x] Predictor 继续读取原 `model.pkl/model_meta.json/normalizer.pkl` 契约
+
+验证：model/predictor/W-bottom targeted `12 passed`；三类 registered-model roundtrip `6 passed`；
+stock-pattern-search 完整测试 `79 passed, 10 warnings`；research-ml-core `8 passed`；Type-N CLI help
+通过。warnings 为既有 LightGBM feature-name 提示和本机物理核心探测提示。
+
+限制：迁移时按规则未复制旧 outputs/models，因此无法对真实历史模型文件做全量加载回归。本阶段已
+证明 pickle 格式双向兼容和三类新建模型往返；真实历史 artifact smoke 留到 R6 在明确模型来源后执行。
+
+R5 不迁移 W-bottom 的 joblib ensemble artifact 编排，也不把 metrics JSON、predictions CSV、
+normalizer 或 model metadata 写入 core；这些是应用 pipeline 的复现契约。

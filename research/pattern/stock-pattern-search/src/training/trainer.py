@@ -7,6 +7,7 @@ from typing import Any, Dict, Optional
 
 import numpy as np
 import pandas as pd
+from research_ml_core.training import Trainer as CoreTrainer
 
 
 class Trainer:
@@ -31,9 +32,9 @@ class Trainer:
         y_train_arr = np.asarray(y_train)
         y_valid_arr = np.asarray(y_valid)
 
-        self.model.fit(X_train, y_train_arr)
-
-        y_score = self._predict_score(X_valid)
+        core_trainer = CoreTrainer(self.model).fit(X_train, y_train_arr)
+        self.model = core_trainer.model
+        y_score = core_trainer.predict_score(X_valid)
         y_pred = (y_score >= 0.5).astype(int)
 
         metrics = self._evaluate(y_valid_arr, y_score, y_pred)
@@ -66,13 +67,7 @@ class Trainer:
         return {k: float(v) for k, v in metrics.items()}
 
     def _predict_score(self, X_valid: Any) -> np.ndarray:
-        try:
-            proba = np.asarray(self.model.predict_proba(X_valid))
-            score = proba[:, 1] if proba.ndim == 2 and proba.shape[1] >= 2 else proba.squeeze()
-        except (AttributeError, NotImplementedError):
-            score = np.asarray(self.model.predict(X_valid)).squeeze()
-
-        return np.asarray(score, dtype=float).reshape(-1)
+        return CoreTrainer(self.model).predict_score(X_valid)
 
     def _evaluate(
         self,

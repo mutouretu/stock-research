@@ -98,7 +98,9 @@ pip install -r requirements-monorepo.txt
 当前通用 binary metrics 已切换到 `research-ml-core`；daily/labels validator 的必需字段存在性检查
 已通过兼容 wrapper 使用 `research-data-core`；`add_basic_indicators` 的 returns 和 rolling mean
 已通过列名兼容层使用 `research-ml-core`。历史窗口和共享数据默认路径已使用
-`research-data-core`；交易单位、OHLCV、单股票 loader 和策略特征仍保留在本项目。
+`research-data-core`；logistic/LightGBM/XGBoost wrappers 和 Trainer 的 fit/score 已使用
+`research-ml-core`。交易单位、OHLCV、单股票 loader、artifact orchestration 和策略特征仍保留
+在本项目。
 
 ## Type-N 主链路
 
