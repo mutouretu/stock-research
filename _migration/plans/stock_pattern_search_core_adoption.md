@@ -179,7 +179,7 @@ refactor: adopt research data core in stock pattern search
 - [x] Phase R3：features（以 R3a basic indicators 为安全边界完成）
 - [x] Phase R4：data core（以路径解析和 point-in-time 窗口为安全接入边界）
 - [x] Phase R5：models/trainer（保留应用 artifact orchestration）
-- [ ] Phase R6：策略回归
+- [x] Phase R6：策略回归
 - [ ] Phase R7：删除重复实现
 
 ### R0 验证记录（2026-07-11）
@@ -290,3 +290,67 @@ stock-pattern-search 完整测试 `79 passed, 10 warnings`；research-ml-core `8
 
 R5 不迁移 W-bottom 的 joblib ensemble artifact 编排，也不把 metrics JSON、predictions CSV、
 normalizer 或 model metadata 写入 core；这些是应用 pipeline 的复现契约。
+
+### R6 结果（2026-07-11）
+
+历史模型来源：
+
+- 旧独立项目：`../stock-pattern-search`，HEAD `806078b`
+- 旧项目当前仍有既有未提交修改：`scripts/run_type_n_cached_range.py`，本轮未改动
+- Phase1 历史模型：
+  - `outputs/models/type_n/phase1_breakout/lgbm_v5_no_runupscore7_w150`
+  - `outputs/models/type_n/phase1_breakout/xgb_v5_no_runupscore7_w150`
+- Phase2 历史模型：
+  - `outputs/models/type_n/phase2_pullback/lgbm_fastdrop_15k_w150`
+  - `outputs/models/type_n/phase2_pullback/xgb_fastdrop_15k_w150`
+
+受控 smoke 设置：
+
+- raw daily cache：`storage/shared_data/raw/daily/parquet_daily_cache_20241001_20260604`
+- symbols：`4,949` 个 parquet 文件
+- target date：`2026-06-01`
+- anchor start date：`2026-05-29`
+- `phase1_top_n=5`，`window_size=150`，`min_history=1`
+- 所有输出写入 `/tmp/stock-pattern-r6-*`
+- 曾尝试 `target_date=2026-06-01` 且无更早 anchor 的同日设置，旧/新均失败：
+  `No anchor dates available before target_date=2026-06-01`。这是无效测试输入，不是回归。
+
+旧工程 vs 新工程输出对比：
+
+- Phase1 no-reviewer CSV hash 均为
+  `25f32e77463938010792191311431b92c30e459edf91961bf47846185f16f6c1`
+- Phase1 pool CSV hash 均为
+  `68da520e2adcd33f5bceb143e862bfdb2fa2ed67cb358c415402771d1530aa4e`
+- Phase2 CSV hash 均为
+  `ecc877040c101f24ebb7eebe246c994cddc965fd6186fc92c83fd813d0c8beb6`
+- final candidates CSV hash 均为
+  `162ccec873d2115b6c40c52b4c12519be09e3636eaa73a83e1beaf0076f2e66f`
+- Phase1 reviewer CSV hash 均为
+  `e42bfb9df6820ec768127a529ca72f1b4084319b61f58f5204c677a723f411b8`
+- candidate set、排序和主要评分列最大绝对差异均为 `0`
+
+R6 发现并修复了一个迁移路径兼容问题：
+
+- 旧 reviewer config `phase1_short_burst_strength_2026-03-02.yaml` 中仍使用
+  `../shared_data/raw/daily/parquet_daily_cache_20250701_20260528`
+- 旧工程 cwd 下该路径可通过 `../shared_data` 兼容软链命中；新 monorepo cwd 下会解析到
+  `research/pattern/shared_data`，导致 overhang 数据未读到，因子退化为 `1.0`
+- 修复：reviewer post-penalty 的私有路径解析保持已有 project-root 相对路径优先；当相对路径不存在且
+  包含 `shared_data` 时，回退到 `research-data-core` 的 canonical shared-data resolver
+- 新增测试：`tests/test_reviewer_shared_data_paths.py`
+
+验证：
+
+- reviewer shared-data path regression：`1 passed`
+- reviewer/build-candidates targeted：`12 passed`
+- new-high/W-bottom targeted：`11 passed, 7 warnings`
+- stock-pattern-search 完整测试：`80 passed, 10 warnings`
+- research-data-core：`11 passed`
+- research-ml-core：`8 passed`
+- Type-N CLI help：通过
+
+残留风险：
+
+- 新代码加载旧 XGBoost pickle 时会出现 XGBoost 官方版本兼容 warning；本次真实 Phase1/Phase2 smoke
+  均已成功加载并字节级对齐，但后续应考虑用旧版本导出 `Booster.save_model` 格式再归档。
+- Arrow CPU cache 探测和 joblib 物理核心探测 warning 来自本机沙箱/运行环境，不影响本次回归结论。

@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import Any, Dict, List
 
 import pandas as pd
+from research_data_core.paths import get_shared_data_dir
 
 from src.reviewers.common.overhang import (
     build_volume_weighted_price_histogram,
@@ -18,8 +19,21 @@ KEY_COLUMNS = ["sample_id", "ts_code", "asof_date"]
 
 
 def _resolve_path(project_root: Path, path: str | Path) -> Path:
-    p = Path(path)
-    return p if p.is_absolute() else project_root / p
+    p = Path(path).expanduser()
+    if p.is_absolute():
+        return p
+
+    candidate = project_root / p
+    if candidate.exists():
+        return candidate
+
+    parts = p.parts
+    if "shared_data" in parts:
+        shared_data_index = parts.index("shared_data")
+        suffix = Path(*parts[shared_data_index + 1 :]) if shared_data_index + 1 < len(parts) else Path()
+        return get_shared_data_dir() / suffix
+
+    return candidate
 
 
 def _apply_factor_weight(factor: pd.Series, weight: float) -> pd.Series:
