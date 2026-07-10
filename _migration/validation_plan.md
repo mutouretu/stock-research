@@ -33,6 +33,15 @@ bash _migration/scripts/check_old_paths.sh
 
 输出：`_migration/logs/002_move_market_data_hub.md`。
 
+## Phase 2.5 验收结论
+
+`market-data-hub` 基础编译、16 项测试、US AAPL/MSFT 真实短窗口下载/验证/按股票导出，
+以及 CN 合成增量合并/直接导出均已通过。详细证据见
+`_migration/logs/002_5_validate_market_data_hub_functionality.md`。
+
+- 允许进入 Phase 3，但迁移时必须完成 `../shared_data` 到 `storage/shared_data` 的路径切换、完整性校验和消费者回归。
+- 暂不执行 Phase 4 归档/删除；真实 CN 单日下载已通过，但 XLSX 标签转换、labels/schema、pickle 兼容、凭据和历史资产仍待处理。
+
 ## Phase 3：迁移 shared_data
 
 从 `../shared_data` 迁移到 `storage/shared_data`。迁移前后核对容量、文件数量、消费者路径和 Git ignore 状态，不复制大型数据进入 Git 历史。

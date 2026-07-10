@@ -3,7 +3,7 @@ moves:
     to: platform/data/market-data-hub
     action: move
     status: migrated
-    notes: "Imported from https://github.com/mutouretu/market-data-hub and synchronized after cn-tushare-cache-merge landed on main, at merge commit b2c19a0. Kept the market_data_hub package name, CLI contract, and upstream business logic unchanged."
+    notes: "Imported from https://github.com/mutouretu/market-data-hub and synchronized after cn-tushare-cache-merge landed on main, at merge commit b2c19a0. Kept the market_data_hub package name, CLI contract, and upstream business logic unchanged. Functionality validation completed in Phase 2.5: US live smoke, real CN single-day download, and CN synthetic merge/export passed."
 
   - from: ../shared_data
     to: storage/shared_data
@@ -33,7 +33,7 @@ moves:
     to: null
     action: delete_or_archive
     status: blocked_pending_verification
-    notes: "Do not delete during Phase 1b. First confirm all functionality is merged into market-data-hub, preserve unique tools/data, and switch every required consumer."
+    notes: "Phase 2.5 confirms core CN download/retry/increment/merge coverage, including a real single-day CN download. Deletion remains blocked: XLSX label conversion, labels/schema generation, pickle compatibility, local credentials, and about 299 MiB of historical assets still require disposition."
 
 new_projects:
   - path: platform/data/research-data-core
