@@ -13,9 +13,18 @@ def add_return_features(
     *,
     column: str = "close",
     periods: Iterable[int] = (1,),
+    fill_method: str | None = None,
 ) -> pd.DataFrame:
     out = frame.copy()
     values = pd.to_numeric(out[column], errors="coerce")
+    if fill_method in ("pad", "ffill"):
+        values = values.ffill()
+    elif fill_method in ("backfill", "bfill"):
+        values = values.bfill()
+    elif fill_method is not None:
+        raise ValueError(
+            "fill_method must be one of None, 'pad', 'ffill', 'backfill', or 'bfill'"
+        )
     for period in periods:
         out[f"{column}_return_{period}"] = values.pct_change(int(period), fill_method=None)
     return out
@@ -40,11 +49,13 @@ def add_rolling_features(
     *,
     column: str = "close",
     windows: Iterable[int] = (5, 20),
+    min_periods: int | None = None,
 ) -> pd.DataFrame:
     out = frame.copy()
     values = pd.to_numeric(out[column], errors="coerce")
     for window in windows:
-        rolling = values.rolling(int(window), min_periods=int(window))
+        required = int(window) if min_periods is None else int(min_periods)
+        rolling = values.rolling(int(window), min_periods=required)
         out[f"{column}_rolling_mean_{window}"] = rolling.mean()
         out[f"{column}_rolling_std_{window}"] = rolling.std(ddof=0)
     return out
