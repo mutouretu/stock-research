@@ -1,5 +1,7 @@
 # stock-research 迁移专案
 
+> 当前执行范围：**Phase 1（迁移准备）**。本阶段仅在 `migration/` 下创建暂存目录骨架、迁移文档、检查脚本和盘点报告；现有项目仍保留在根目录，不执行移动或删除。
+
 ## 目标
 
 将当前 `stock-research` 根目录下平铺的多个项目，迁移为按功能分层的结构。
@@ -62,7 +64,7 @@ stock-research/
 3. 不在本次任务中抽取 `stock-pattern-search` 的机器学习代码。
 4. 保持现有 Python package import 名称不变，例如 `alpha_agent_system`、`market_pattern_labeler`。
 5. `shared_data` 视为本地数据仓库，移动时要避免把大型数据文件提交到 git。
-6. `build-daily-cache` 已整合进 `market-data-hub`，确认无引用后删除。
+6. `build-daily-cache` 看起来已有主要能力整合进 `market-data-hub`；仍须核对独立工具和数据，确认功能完整合并且无必要引用后才能删除。
 7. 每完成一个阶段，都要运行验证命令，并把结果写入 `migration/logs/`。
 8. 如果验证失败，不要掩盖，直接记录失败原因和后续修复建议。
 
@@ -83,7 +85,7 @@ stock-research/
 
 ## 建议迁移阶段
 
-### Phase 0：盘点现状
+### Phase 1：盘点现状并创建目标骨架
 
 只盘点，不修改代码。
 
@@ -105,21 +107,18 @@ shared_data 是否被 git 管理
 build-daily-cache 是否还有引用
 ```
 
-### Phase 1：创建目标骨架
-
-创建：
+同一阶段在 `migration/` 下创建暂存骨架：
 
 ```text
-platform/
-research/
-automation/
-storage/
-ops/
-docs/
-migration/
+migration/platform/
+migration/research/
+migration/automation/
+migration/storage/
+migration/ops/
+migration/docs/
 ```
 
-但不移动现有项目。
+这些只是迁移准备期的空目录，不代表项目已迁移。正式迁移时仍以本文开头的仓库根目录目标结构为准。后续阶段顺序以 `validation_plan.md` 为准。
 
 ### Phase 2：迁移数据层
 

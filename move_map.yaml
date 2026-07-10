@@ -1,0 +1,55 @@
+moves:
+  - from: market-data-hub
+    to: platform/data/market-data-hub
+    status: pending
+    action: move
+    notes: "Data ingestion hub. Includes Tushare A-share daily sync."
+
+  - from: shared_data
+    to: storage/shared_data
+    status: pending
+    action: move
+    notes: "Shared data lake. May contain large untracked files; use mv instead of git mv if not tracked."
+
+  - from: stock-pattern-search
+    to: research/pattern/stock-pattern-search
+    status: pending
+    action: move
+    notes: "Keep business logic unchanged. Update only paths and references."
+
+  - from: market_pattern_labeler
+    to: research/pattern/market_pattern_labeler
+    status: pending
+    action: move
+    notes: "Keep current folder/package naming to reduce migration risk."
+
+  - from: alpha_agent_system
+    to: automation/alpha_agent_system
+    status: pending
+    action: move
+    notes: "Move only. Do not refactor agent logic."
+
+  - from: build-daily-cache
+    to: null
+    status: pending
+    action: delete
+    notes: "Conditional deletion only: first confirm all functionality is merged into market-data-hub, preserve any unique tools/data, and confirm no required references remain. Never delete during Phase 1."
+
+new_projects:
+  - path: platform/data/research-data-core
+    action: create
+    package: research_data_core
+    status: pending
+    notes: "Unified data loading, schema, trade calendar, resampling, as-of merge, point-in-time handling."
+
+  - path: platform/ml/research-ml-core
+    action: create
+    package: research_ml_core
+    status: pending
+    notes: "Reusable ML framework: features, labels, splitters, training, evaluation, backtest."
+
+  - path: research/cycle/cycle-equity-research
+    action: create
+    package: cycle_equity_research
+    status: pending
+    notes: "Cycle equity research application. First target: CF."
