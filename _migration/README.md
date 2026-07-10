@@ -55,13 +55,11 @@ stock-research/
 6. 不覆盖父目录各旧仓库中的未提交修改。
 7. 每阶段验证失败必须如实写入 `_migration/logs/`。
 
-## 当前阶段：Phase 1b
+## 当前进度
 
-本阶段只修正新仓库根目录定位：
+Phase 1b 已完成新仓库根目录定位修正。Phase 2 将 `market-data-hub` 从其独立 GitHub
+仓库导入到根目录的 `platform/data/market-data-hub/`，保持 package、CLI 和业务逻辑不变。
 
-- 在当前仓库根目录创建目标空骨架。
-- 将迁移资料收纳到 `_migration/`。
-- 修正检查脚本、路径映射和验证计划。
-- 不迁移、复制、删除或修改父目录中的旧项目。
+本阶段未处理 `shared_data`、pattern 项目、自动化项目、`build-daily-cache` 或三个新项目骨架。
 
 后续阶段和验证命令见 [`validation_plan.md`](validation_plan.md)。

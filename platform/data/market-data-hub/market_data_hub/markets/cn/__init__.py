@@ -1,0 +1,1 @@
+"""CN market extension point."""

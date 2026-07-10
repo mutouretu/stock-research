@@ -2,8 +2,8 @@ moves:
   - from: ../market-data-hub
     to: platform/data/market-data-hub
     action: move
-    status: pending
-    notes: "Move from the legacy workspace parent directory. Keep the market_data_hub package name and business logic unchanged."
+    status: migrated
+    notes: "Imported from https://github.com/mutouretu/market-data-hub at main commit e8ea24b. Kept the market_data_hub package name, CLI contract, and business logic unchanged."
 
   - from: ../shared_data
     to: storage/shared_data

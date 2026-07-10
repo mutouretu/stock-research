@@ -1,0 +1,36 @@
+market: US
+default_source: yahoo_chart
+
+storage:
+  backend: parquet
+  root_dir: data
+
+universe:
+  symbols:
+    - AAPL
+    - MSFT
+    - NVDA
+    - AMZN
+    - META
+    - GOOGL
+    - TSLA
+
+download:
+  start_date: "2015-01-01"
+  end_date: null
+  interval: "1d"
+
+downstream_requirements:
+  consumers:
+    - market_pattern_labeler
+    - type_n_search
+  preferred_start_date: "2015-01-01"
+  min_history_days: 2520
+  use_cases:
+    - w_bottom_labeling
+    - long_term_pattern_mining
+    - trend_recovery_scan
+  w_bottom_windows:
+    short: 120
+    medium: 252
+    long: 504

@@ -1,0 +1,1 @@
+"""HK market extension point."""

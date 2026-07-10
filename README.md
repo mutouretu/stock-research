@@ -23,7 +23,8 @@ stock-research/
 └── _migration/
 ```
 
-当前阶段只建立仓库骨架，旧项目仍保留在父目录中，尚未迁移或复制。
+当前已完成仓库骨架，并在 Phase 2 将 `market-data-hub` 导入到
+`platform/data/market-data-hub/`。其他旧项目仍保留在父目录中，尚未迁移或复制。
 
 ## 迁移资料
 

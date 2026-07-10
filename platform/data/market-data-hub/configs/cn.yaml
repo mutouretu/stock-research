@@ -1,0 +1,14 @@
+market: CN
+default_source: tushare
+
+storage:
+  backend: parquet
+  root_dir: data
+
+universe:
+  symbols: []
+
+download:
+  start_date: "2020-01-01"
+  end_date: null
+  interval: "1d"
