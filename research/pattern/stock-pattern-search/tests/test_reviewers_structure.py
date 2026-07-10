@@ -1,5 +1,3 @@
-from src.review.penalties import apply_post_penalties as legacy_apply_post_penalties
-from src.review.scoring import sigmoid_decay_factor as legacy_sigmoid_decay_factor
 from src.reviewers.common.scoring import sigmoid_decay_factor
 from src.reviewers.type_n.phase1_breakout.penalties import apply_post_penalties
 from src.reviewers.type_n.phase2_pullback import (
@@ -10,9 +8,9 @@ from src.reviewers.type_n.phase2_pullback import (
 )
 
 
-def test_legacy_review_imports_still_point_to_new_structure() -> None:
-    assert legacy_apply_post_penalties is apply_post_penalties
-    assert legacy_sigmoid_decay_factor is sigmoid_decay_factor
+def test_active_reviewer_imports_are_registered() -> None:
+    assert callable(apply_post_penalties)
+    assert callable(sigmoid_decay_factor)
 
 
 def test_phase2_distribution_reviewer_metric_specs_are_registered() -> None:

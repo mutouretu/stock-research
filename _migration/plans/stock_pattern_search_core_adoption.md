@@ -180,7 +180,7 @@ refactor: adopt research data core in stock pattern search
 - [x] Phase R4：data core（以路径解析和 point-in-time 窗口为安全接入边界）
 - [x] Phase R5：models/trainer（保留应用 artifact orchestration）
 - [x] Phase R6：策略回归
-- [ ] Phase R7：删除重复实现
+- [x] Phase R7：删除重复实现
 
 ### R0 验证记录（2026-07-11）
 
@@ -354,3 +354,47 @@ R6 发现并修复了一个迁移路径兼容问题：
 - 新代码加载旧 XGBoost pickle 时会出现 XGBoost 官方版本兼容 warning；本次真实 Phase1/Phase2 smoke
   均已成功加载并字节级对齐，但后续应考虑用旧版本导出 `Booster.save_model` 格式再归档。
 - Arrow CPU cache 探测和 joblib 物理核心探测 warning 来自本机沙箱/运行环境，不影响本次回归结论。
+
+### R7 结果（2026-07-11）
+
+删除范围：
+
+- 删除旧 `src.review.*` 兼容包：
+  - `src/review/__init__.py`
+  - `src/review/penalties.py`
+  - `src/review/scoring.py`
+  - `src/review/overhang.py`
+- 删除 inactive reviewer recycle shim：
+  - `src/reviewers/_recycle/`
+- 删除无内部引用的 pipeline 兼容 wrapper：
+  - `src/pipelines/type_n_tasks.py`
+  - `src/pipelines/run_phase_tracking.py`
+  - `src/pipelines/train_long_base_breakout_baseline.py`
+  - `src/pipelines/run_long_base_latest_ensemble.py`
+- `build_review_candidates` 已切到 active import：
+  `src.reviewers.type_n.phase1_breakout.penalties`
+- reviewer 相关测试已改为直接验证 active reviewer namespace。
+
+保留范围：
+
+- `src/training/metrics.py` 继续保留。它仍被 `Evaluator` 生产路径使用，是旧训练 API 到
+  `research-ml-core` 的兼容边界。
+- `src/features/window_builder.py` 继续保留。它是应用层 point-in-time window API，内部委托
+  `research-data-core`，并承接 stock-pattern-search 现有调用约定。
+- tabular model wrappers 继续保留。它们继承 core adapters，但仍负责旧 `model_name`、factory、
+  `model.pkl/model_meta.json/normalizer.pkl` artifact 契约。
+- `DailyDataLoader`、`normalize_daily`、strategy features、reviewer scoring/penalties 均继续保留在
+  stock-pattern-search，因为这些属于应用数据或策略语义，不是公共 core 重复实现。
+
+验证：
+
+- 旧 `src.review`、`src.reviewers._recycle`、`type_n_legacy`、旧 pipeline wrapper 路径无内部引用。
+- reviewer targeted tests：`18 passed`
+- stock-pattern-search 完整测试：`80 passed, 10 warnings`
+- research-data-core：`11 passed`
+- research-ml-core：`8 passed`
+- Type-N CLI help：通过
+- `_migration/scripts/check_layout.sh`：通过
+- `_migration/scripts/check_old_paths.sh`：通过，命中为迁移文档、配置和 legacy shared-data 路径的
+  信息性输出
+- `git diff --check`：通过

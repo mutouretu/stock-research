@@ -12,7 +12,7 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
-from src.review.penalties import apply_post_penalties
+from src.reviewers.type_n.phase1_breakout.penalties import apply_post_penalties
 
 KEY_COLUMNS = ["sample_id", "ts_code", "asof_date"]
 
