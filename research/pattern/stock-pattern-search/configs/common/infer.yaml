@@ -1,0 +1,6 @@
+project_root: .
+raw_daily_dir: ../shared_data/raw/daily/parquet_daily_cache
+model_dir: outputs/models/common/baseline_lr_v4
+output_path: outputs/predictions/common/scan_predictions_lr_v4.csv
+window_size: 120
+min_history: 1

@@ -1,0 +1,357 @@
+from __future__ import annotations
+
+from dataclasses import asdict
+from pathlib import Path
+from typing import Any, Dict, Iterable, List, Optional
+
+import numpy as np
+import pandas as pd
+
+from src.data.loader import DailyDataLoader, LabelLoader
+from src.data.normalize import DailyUnitConfig
+from src.data.schema import SampleMeta, build_sample_id
+from src.data.validator import validate_daily_quality, validate_labels_df
+from src.features.feature_builder_tabular import build_tabular_features
+from src.features.indicators import add_basic_indicators
+
+
+class DatasetBuilder:
+    """Build training dataset artifacts from labels and daily K-line files."""
+
+    def __init__(
+        self,
+        labels_path: str = "data/labels/labels.csv",
+        data_dir: str = "data/raw/daily",
+        output_dir: str = "data/processed",
+        window_size: int = 120,
+        min_history: int = 80,
+        train_ratio: float = 0.7,
+        valid_ratio: float = 0.15,
+        sequence_cols: Optional[Iterable[str]] = None,
+        save_sequence: bool = True,
+        unit_config: Optional[DailyUnitConfig] = None,
+        duplicate_policy: str = "raise",
+        max_skip_ratio: Optional[float] = None,
+        split_method: str = "time",
+        split_seed: int = 42,
+    ):
+        self.labels_path = labels_path
+        self.data_dir = data_dir
+        self.output_dir = Path(output_dir)
+        self.window_size = window_size
+        self.min_history = min_history
+        self.train_ratio = train_ratio
+        self.valid_ratio = valid_ratio
+        self.sequence_cols = list(sequence_cols) if sequence_cols is not None else [
+            "open",
+            "high",
+            "low",
+            "close",
+            "vol",
+        ]
+        self.save_sequence = save_sequence
+        self.max_skip_ratio = max_skip_ratio
+        self.split_method = split_method
+        self.split_seed = split_seed
+
+        self.label_loader = LabelLoader(labels_path)
+        self.daily_loader = DailyDataLoader(
+            data_dir,
+            unit_config=unit_config,
+            duplicate_policy=duplicate_policy,
+        )
+        self._daily_cache: Dict[str, pd.DataFrame] = {}
+
+    def build(self) -> Dict[str, Any]:
+        """Run end-to-end dataset build and save standard output artifacts."""
+        labels_df = self.label_loader.load()
+        labels_df = self._normalize_label_schema(labels_df)
+        labels_df = validate_labels_df(
+            labels_df,
+            require_sample_id=False,
+            allowed_labels=(0, 1),
+            raise_on_error=True,
+        )
+
+        labels_df = (
+            labels_df.dropna(subset=["asof_date", "ts_code"])
+            .sort_values("asof_date")
+            .reset_index(drop=True)
+        )
+
+        split_map = self._build_split(labels_df)
+
+        meta_records: List[Dict[str, Any]] = []
+        tabular_records: List[Dict[str, float]] = []
+        y_values: List[int] = []
+        seq_values: List[np.ndarray] = []
+        total_labels = len(labels_df)
+        skipped_samples = 0
+        skip_messages: List[str] = []
+
+        for row in labels_df.itertuples(index=False):
+            ts_code = str(getattr(row, "ts_code"))
+            asof_date = pd.to_datetime(getattr(row, "asof_date"), errors="coerce")
+            sample_id_raw = getattr(row, "sample_id", None)
+            sample_id = sample_id_raw if isinstance(sample_id_raw, str) and sample_id_raw else ""
+            if not sample_id:
+                sample_id = build_sample_id(ts_code, asof_date.strftime("%Y-%m-%d"))
+
+            try:
+                daily_df = self._load_prepared_daily(ts_code)
+
+                window_df = self._build_window_from_prepared_daily(daily_df, asof_date)
+                if window_df is None:
+                    skipped_samples += 1
+                    if len(skip_messages) < 10:
+                        skip_messages.append(f"{sample_id}: insufficient history/window")
+                    continue
+
+                tabular_feat = build_tabular_features(window_df)
+                # Sequence features are intentionally MVP here.
+                # If save_sequence=True and sequence construction fails, this sample is skipped entirely
+                # to keep sample alignment consistent across meta/tabular/y/sequence.
+                seq_feat = self._build_sequence_features(window_df) if self.save_sequence else None
+
+                label = int(getattr(row, "label"))
+                if self.split_method == "time":
+                    split = split_map.get(asof_date.normalize(), "train")
+                else:
+                    split = split_map.get(sample_id, "train")
+                meta = SampleMeta(
+                    sample_id=sample_id,
+                    ts_code=ts_code,
+                    asof_date=asof_date.strftime("%Y-%m-%d"),
+                    window_start=window_df["trade_date"].iloc[0].strftime("%Y-%m-%d"),
+                    window_end=window_df["trade_date"].iloc[-1].strftime("%Y-%m-%d"),
+                    label=label,
+                    label_source=str(getattr(row, "label_source", "labels.csv")),
+                    confidence=float(getattr(row, "confidence", 1.0)),
+                    split=split,
+                )
+
+                meta_records.append(asdict(meta))
+                tabular_records.append({"sample_id": sample_id, **tabular_feat})
+                y_values.append(label)
+                if self.save_sequence and seq_feat is not None:
+                    seq_values.append(seq_feat)
+            except Exception as exc:  # noqa: BLE001
+                skipped_samples += 1
+                if len(skip_messages) < 10:
+                    skip_messages.append(f"{sample_id}: {exc}")
+                print(f"[skip] {sample_id}: {exc}")
+
+        if not meta_records:
+            raise RuntimeError("No valid samples built from labels.")
+
+        meta_df = pd.DataFrame(meta_records)
+        tabular_df = pd.DataFrame(tabular_records)
+        y_array = np.asarray(y_values, dtype=np.int64)
+
+        self._validate_alignment(meta_df, tabular_df, y_array, seq_values)
+
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+
+        meta_path = self.output_dir / "sample_meta.parquet"
+        tabular_path = self.output_dir / "X_tabular.parquet"
+        y_path = self.output_dir / "y.npy"
+        sequence_path = self.output_dir / "X_sequence.npy"
+
+        meta_df.to_parquet(meta_path, index=False)
+        tabular_df.to_parquet(tabular_path, index=False)
+        np.save(y_path, y_array)
+
+        result: Dict[str, Any] = {
+            "sample_meta": str(meta_path),
+            "X_tabular": str(tabular_path),
+            "y": str(y_path),
+            "num_samples": len(meta_df),
+        }
+
+        if self.save_sequence and seq_values:
+            seq_array = np.stack(seq_values, axis=0)
+            np.save(sequence_path, seq_array)
+            result["X_sequence"] = str(sequence_path)
+
+        if skipped_samples > 0:
+            skip_ratio = skipped_samples / max(total_labels, 1)
+            result["num_skipped"] = skipped_samples
+            result["skip_ratio"] = float(skip_ratio)
+            result["skip_examples"] = skip_messages
+            print(
+                "[summary] skipped samples: "
+                f"{skipped_samples}/{total_labels} ({skip_ratio:.2%})"
+            )
+            if self.max_skip_ratio is not None and skip_ratio > self.max_skip_ratio:
+                raise RuntimeError(
+                    "skip ratio exceeds limit: "
+                    f"{skip_ratio:.2%} > {self.max_skip_ratio:.2%}"
+                )
+
+        return result
+
+    def _normalize_label_schema(self, labels_df: pd.DataFrame) -> pd.DataFrame:
+        """Normalize possible label column aliases to standard schema."""
+        rename_map: Dict[str, str] = {}
+        lower_map = {c.lower(): c for c in labels_df.columns}
+        mapping = {
+            "ts_code": ["ts_code", "code", "ticker"],
+            "asof_date": ["asof_date", "trade_date", "date"],
+            "label": ["label", "y", "target"],
+        }
+
+        for expected, candidates in mapping.items():
+            for name in candidates:
+                if name in lower_map:
+                    rename_map[lower_map[name]] = expected
+                    break
+
+        out = labels_df.rename(columns=rename_map).copy()
+        missing = [c for c in ["ts_code", "asof_date", "label"] if c not in out.columns]
+        if missing:
+            raise KeyError(f"labels missing required columns: {missing}")
+        return out
+
+    def _build_time_split(self, asof_series: pd.Series) -> Dict[pd.Timestamp, str]:
+        """Split unique dates in chronological order into train/valid/test."""
+        dates = sorted(pd.Series(asof_series).dt.normalize().dropna().unique().tolist())
+        n = len(dates)
+
+        if n == 0:
+            return {}
+        if n < 3:
+            return {d: "train" for d in dates}
+
+        n_train = min(n - 2, max(1, int(n * self.train_ratio)))
+        n_valid = min(n - n_train - 1, max(1, int(n * self.valid_ratio)))
+
+        train_dates = set(dates[:n_train])
+        valid_dates = set(dates[n_train : n_train + n_valid])
+        test_dates = set(dates[n_train + n_valid :])
+
+        split_map: Dict[pd.Timestamp, str] = {}
+        for d in dates:
+            if d in train_dates:
+                split_map[d] = "train"
+            elif d in valid_dates:
+                split_map[d] = "valid"
+            elif d in test_dates:
+                split_map[d] = "test"
+
+        return split_map
+
+    def _build_split(self, labels_df: pd.DataFrame) -> Dict[Any, str]:
+        method = str(self.split_method or "time").lower()
+        if method in {"time", "time_by_asof_date"}:
+            return self._build_time_split(labels_df["asof_date"])
+        if method in {"stratified_random", "stratified"}:
+            return self._build_stratified_random_split(labels_df)
+        raise ValueError(f"Unsupported split_method: {self.split_method}")
+
+    def _build_stratified_random_split(self, labels_df: pd.DataFrame) -> Dict[str, str]:
+        """Split samples into train/valid/test with per-class ratios."""
+        rng = np.random.default_rng(self.split_seed)
+        df = labels_df.copy()
+        if "sample_id" not in df.columns:
+            df["sample_id"] = [
+                build_sample_id(str(ts), pd.to_datetime(dt).strftime("%Y-%m-%d"))
+                for ts, dt in zip(df["ts_code"], df["asof_date"])
+            ]
+
+        split_map: Dict[str, str] = {}
+        labels = pd.to_numeric(df["label"], errors="coerce").astype("Int64")
+
+        for cls in sorted(labels.dropna().unique().tolist()):
+            idx = np.where(labels.to_numpy() == cls)[0]
+            if len(idx) == 0:
+                continue
+            idx = rng.permutation(idx)
+            n = len(idx)
+
+            if n < 3:
+                n_train = max(1, n - 1)
+                n_valid = n - n_train
+            else:
+                n_train = min(n - 2, max(1, int(round(n * self.train_ratio))))
+                n_valid = min(n - n_train - 1, max(1, int(round(n * self.valid_ratio))))
+
+            n_test = n - n_train - n_valid
+            if n_test <= 0:
+                if n_valid > 1:
+                    n_valid -= 1
+                elif n_train > 1:
+                    n_train -= 1
+                n_test = n - n_train - n_valid
+
+            train_idx = idx[:n_train]
+            valid_idx = idx[n_train : n_train + n_valid]
+            test_idx = idx[n_train + n_valid :]
+
+            for i in train_idx:
+                split_map[str(df.iloc[i]["sample_id"])] = "train"
+            for i in valid_idx:
+                split_map[str(df.iloc[i]["sample_id"])] = "valid"
+            for i in test_idx:
+                split_map[str(df.iloc[i]["sample_id"])] = "test"
+
+        return split_map
+
+    def _add_basic_indicators(self, df: pd.DataFrame) -> pd.DataFrame:
+        """Backward-compatible wrapper; use shared indicator implementation."""
+        return add_basic_indicators(df)
+
+    def _load_prepared_daily(self, ts_code: str) -> pd.DataFrame:
+        """Load and normalize one symbol once, then reuse it for repeated labels."""
+        if ts_code not in self._daily_cache:
+            daily_df = self.daily_loader.load_one(ts_code)
+            daily_df = validate_daily_quality(daily_df, raise_on_error=True)
+            daily_df = add_basic_indicators(daily_df)
+            daily_df = daily_df.sort_values("trade_date").reset_index(drop=True)
+            self._daily_cache[ts_code] = daily_df
+        return self._daily_cache[ts_code]
+
+    def _build_window_from_prepared_daily(
+        self,
+        daily_df: pd.DataFrame,
+        asof_date: pd.Timestamp,
+    ) -> Optional[pd.DataFrame]:
+        """Slice a fixed-length historical window from already sorted daily data."""
+        if daily_df.empty:
+            return None
+        asof_ts = pd.to_datetime(asof_date, errors="coerce")
+        if pd.isna(asof_ts):
+            raise ValueError(f"Invalid asof_date: {asof_date}")
+
+        dates = daily_df["trade_date"].to_numpy(dtype="datetime64[ns]")
+        end_pos = int(np.searchsorted(dates, np.datetime64(asof_ts), side="right"))
+        if end_pos < self.min_history or end_pos < self.window_size:
+            return None
+
+        start_pos = end_pos - self.window_size
+        return daily_df.iloc[start_pos:end_pos].reset_index(drop=True)
+
+    def _build_sequence_features(self, window_df: pd.DataFrame) -> np.ndarray:
+        """Build MVP sequence matrix from selected numeric columns."""
+        cols = [c for c in self.sequence_cols if c in window_df.columns]
+        if not cols:
+            raise ValueError("No sequence feature columns found in window data")
+
+        seq_df = window_df[cols].copy().apply(pd.to_numeric, errors="coerce")
+        seq_df = seq_df.ffill().bfill().fillna(0.0)
+        return seq_df.to_numpy(dtype=np.float32)
+
+    def _validate_alignment(
+        self,
+        meta_df: pd.DataFrame,
+        tabular_df: pd.DataFrame,
+        y_array: np.ndarray,
+        seq_values: List[np.ndarray],
+    ) -> None:
+        if not (len(meta_df) == len(tabular_df) == len(y_array)):
+            raise RuntimeError("Sample size mismatch among meta/tabular/y")
+
+        if not meta_df["sample_id"].equals(tabular_df["sample_id"]):
+            raise RuntimeError("sample_id mismatch between sample_meta and X_tabular")
+
+        if self.save_sequence and len(seq_values) != len(meta_df):
+            raise RuntimeError("Sample size mismatch between sequence features and meta")

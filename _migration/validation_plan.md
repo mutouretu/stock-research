@@ -68,6 +68,11 @@ Phase 5a 结论（2026-07-10）：`market_pattern_labeler` 已从 GitHub `main@3
 和 AAPL 单股票 miner smoke 均通过。可以进入 Phase 5b 迁移 `stock-pattern-search`；默认
 `../shared_data` 路径的统一收口仍留给独立任务。
 
+Phase 5b 结论（2026-07-10）：`stock-pattern-search` 已从 GitHub `main@806078b` 的干净克隆导入
+`research/pattern/stock-pattern-search/`；父目录旧仓库中的未提交修改未被复制或覆盖。项目编译、
+56 项测试、Type-N CLI help 和 `research_ml_core` 可导入检查均通过。因模型产物按要求未迁移，
+本阶段没有伪造完整 Type-N 推理 smoke；已确认规范共享数据目录存在。
+
 输出：`_migration/logs/005_move_pattern_projects.md`。
 
 ## Phase 6：迁移 alpha_agent_system
@@ -82,6 +87,13 @@ Phase 5a 结论（2026-07-10）：`market_pattern_labeler` 已从 GitHub `main@3
 
 输出：`_migration/logs/007_create_new_project_skeletons.md`。
 
+Phase 7b 部分结论（2026-07-10）：已提前创建最小 `platform/ml/research-ml-core/`，包含
+strategy-neutral 的 features、labels、time split、model adapters、training、evaluation 和
+backtest primitives，独立安装且 5 项测试通过。`research-data-core` 与
+`cycle-equity-research` 仍未创建。
+
 ## Phase 8：抽取通用 ML 框架
 
-待目录迁移稳定并建立清晰测试边界后，再从 `stock-pattern-search` 逐步抽取通用 ML 能力。该工作不得与前述物理迁移捆绑。
+已开始以复制和独立测试方式抽取最小通用 ML 能力。当前没有替换 `stock-pattern-search` 的既有
+import；后续应在独立阶段逐个切换消费者并做等价性回归，Type-N、reviewer、策略配置和输出逻辑
+继续留在研究应用层。

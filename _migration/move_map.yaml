@@ -14,8 +14,8 @@ moves:
   - from: ../stock-pattern-search
     to: research/pattern/stock-pattern-search
     action: move
-    status: pending
-    notes: "Move from the parent directory. Update filesystem paths only and preserve business logic."
+    status: migrated
+    notes: "Imported from https://github.com/mutouretu/stock-pattern-search at main commit 806078b using a clean clone because the parent working tree had an unrelated local modification. Preserved strategy, reviewer, configuration, package/import, and CLI behavior; only added a README note for the canonical storage/shared_data path. Compile, 56 tests, CLI help, and local research_ml_core import passed."
 
   - from: ../market_pattern_labeler
     to: research/pattern/market_pattern_labeler
@@ -45,8 +45,8 @@ new_projects:
   - path: platform/ml/research-ml-core
     package: research_ml_core
     action: create
-    status: pending
-    notes: "Future reusable features, labels, splitters, training, evaluation, and backtesting framework."
+    status: partially_extracted
+    notes: "Created a minimal independent package for strategy-neutral feature transforms, forward labels, time splits, model adapters, training, evaluation, and backtest metrics. Five core tests pass. No stock-pattern-search consumer imports were switched in this phase, so existing business behavior remains unchanged."
 
   - path: research/cycle/cycle-equity-research
     package: cycle_equity_research

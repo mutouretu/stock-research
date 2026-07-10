@@ -1,0 +1,5 @@
+project_root: .
+lgbm_config: configs/new_high/infer_lgbm.yaml
+xgb_config: configs/new_high/infer_xgb.yaml
+output_path: outputs/predictions/new_high/scan_predictions_merged.csv
+top_n: 0

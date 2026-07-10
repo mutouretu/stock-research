@@ -1,0 +1,28 @@
+project_root: .
+raw_daily_dir: ../shared_data/raw/daily/parquet_daily_cache
+model_dir: outputs/models/new_high/lgbm_near_3y_v0_w150
+output_path: outputs/predictions/new_high/scan_predictions_lgbm.csv
+window_size: 150
+min_history: 1
+asof_date: 2026-07-01
+require_exact_asof_date: true
+reviewer:
+  name: new_high_near_3y
+  enabled: true
+  rolling_window: 750
+  min_periods: 250
+  min_high_ratio: 0.90
+  max_high_ratio: 1.30
+  require_amount: true
+  avg_amount_window: 20
+  min_avg_amount: 100000000
+  enable_score_adjustment: true
+  breakout_ratio: 1.00
+  ideal_min_ratio: 1.02
+  ideal_max_ratio: 1.08
+  far_ratio: 1.20
+  pre_breakout_min_factor: 0.65
+  pre_breakout_max_factor: 0.95
+  ideal_factor: 1.25
+  far_factor: 0.70
+  very_far_factor: 0.45

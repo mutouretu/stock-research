@@ -1,0 +1,6 @@
+project_root: .
+raw_daily_dir: ../shared_data/raw/daily/parquet_daily_cache
+model_dir: outputs/models/common/baseline_xgb_no_runupscore7_w150
+output_path: outputs/predictions/common/scan_predictions_xgb.csv
+window_size: 150
+min_history: 1

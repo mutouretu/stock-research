@@ -23,8 +23,8 @@ stock-research/
 └── _migration/
 ```
 
-当前已完成仓库骨架、`market-data-hub` 导入和 `shared_data` 本地迁移；Phase 5a 已将
-`market_pattern_labeler` 导入 `research/pattern/market_pattern_labeler/`。其余旧项目仍保留在父目录中。
+当前已完成仓库骨架、`market-data-hub` 导入和 `shared_data` 本地迁移；两个 pattern 项目已
+导入 `research/pattern/`，并已创建最小 `platform/ml/research-ml-core/`。其余旧项目仍保留在父目录中。
 
 ## 迁移资料
 

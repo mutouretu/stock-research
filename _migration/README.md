@@ -61,7 +61,8 @@ Phase 1b 已完成新仓库根目录定位修正。Phase 2 将 `market-data-hub`
 仓库导入到根目录的 `platform/data/market-data-hub/`，保持 package、CLI 和业务逻辑不变。
 
 Phase 3 已将本地 `shared_data` 移入 `storage/shared_data/` 并建立旧路径兼容软链接；
-Phase 5a 已导入 `market_pattern_labeler`。`stock-pattern-search`、自动化项目、
-`build-daily-cache` 和三个新项目骨架仍未处理。
+Phase 5a/5b 已导入两个 pattern 项目，Phase 7b 已创建最小 `research-ml-core` 并保持既有
+pattern 业务 import 不变。自动化项目、`build-daily-cache`、`research-data-core` 和
+`cycle-equity-research` 仍未处理。
 
 后续阶段和验证命令见 [`validation_plan.md`](validation_plan.md)。

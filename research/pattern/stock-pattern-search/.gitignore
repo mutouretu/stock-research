@@ -1,0 +1,51 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+
+# Virtual env
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+
+# Logs
+*.log
+
+# Build / cache
+.pytest_cache/
+.mypy_cache/
+.ipynb_checkpoints/
+
+# Data artifacts
+data/
+outputs/
+experiments/
+/data/processed/
+/data/raw/
+/outputs/
+
+# Optional
+*.parquet
+*.npy
+*.tar.gz
+
+# Keep local environment private
+.venv/
+
+# Keep one labels template tracked
+!data/
+data/*
+!data/labels/
+data/labels/*
+!data/labels/labels.example.csv
+
+# Local ad-hoc run configs
+configs/local_runs/
