@@ -18,11 +18,14 @@ from src.pipelines.w_bottom.train_long_base_breakout_baseline import (  # noqa: 
     build_daily_features,
     load_daily_for_symbol,
 )
+from src.common.paths import get_shared_us_daily_dir  # noqa: E402
+
+DEFAULT_US_DAILY_DIR = get_shared_us_daily_dir()
 
 
 def run_latest_ensemble_scan(
     *,
-    daily_dir: str | Path = "../shared_data/us/raw/daily/parquet_by_symbol",
+    daily_dir: str | Path = DEFAULT_US_DAILY_DIR,
     model_root: str | Path = "outputs/models/w_bottom/long_base_breakout_baseline/models",
     output_dir: str | Path = "outputs/predictions/w_bottom/latest_ensemble",
     asof_date: str | None = None,
@@ -191,7 +194,7 @@ def _frame_to_markdown(frame: pd.DataFrame) -> str:
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Run latest universe LGBM/XGBoost ensemble scan.")
-    parser.add_argument("--daily-dir", default="../shared_data/us/raw/daily/parquet_by_symbol")
+    parser.add_argument("--daily-dir", default=str(DEFAULT_US_DAILY_DIR))
     parser.add_argument("--model-root", default="outputs/models/w_bottom/long_base_breakout_baseline/models")
     parser.add_argument("--output-dir", default="outputs/predictions/w_bottom/latest_ensemble")
     parser.add_argument("--asof-date", default=None)
