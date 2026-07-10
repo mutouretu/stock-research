@@ -81,6 +81,10 @@ refactor/stock-pattern-search-core-adoption
 
 完成门槛：列、dtype、排序、异常类型和错误消息的兼容要求明确；完整测试通过。
 
+R2 边界决定：`normalize_daily` 的交易单位、OHLCV 和派生字段语义属于应用数据契约，暂不迁入
+research-data-core。R2a 仅先切换通用 required-column presence check，并通过 compatibility wrapper
+保留应用错误消息与 `raise_on_error` 行为。
+
 ### Phase R3：切换通用 features
 
 按 returns → lag → rolling → normalization 的顺序迁移。策略特征继续留在应用层；不为了复用而把
