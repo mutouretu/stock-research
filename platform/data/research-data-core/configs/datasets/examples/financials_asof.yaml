@@ -1,0 +1,13 @@
+dataset_id: example.financials_asof
+storage: parquet
+path: storage/shared_data/fundamentals/financials.parquet
+entity_col: security_id
+time_col: report_period
+available_time_col: published_at
+columns:
+  revenue: reported_revenue
+  net_income: reported_net_income
+required_columns:
+  - security_id
+  - report_period
+  - published_at

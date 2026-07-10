@@ -1,0 +1,18 @@
+dataset_id: example.daily_price
+storage: parquet_by_entity
+path: storage/shared_data/raw/daily/parquet_daily_cache
+entity_col: instrument_code
+time_col: observation_date
+available_time_col: null
+columns:
+  open: open_value
+  high: high_value
+  low: low_value
+  close: close_value
+  volume: volume_value
+required_columns:
+  - observation_date
+  - open_value
+  - high_value
+  - low_value
+  - close_value

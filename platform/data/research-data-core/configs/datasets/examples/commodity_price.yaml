@@ -1,0 +1,12 @@
+dataset_id: example.commodity_price
+storage: csv
+path: storage/shared_data/commodities/example_price.csv
+entity_col: contract_id
+time_col: price_date
+available_time_col: null
+columns:
+  close: settlement_value
+required_columns:
+  - contract_id
+  - price_date
+  - settlement_value

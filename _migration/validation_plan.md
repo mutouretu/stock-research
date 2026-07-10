@@ -87,10 +87,17 @@ Phase 5b 结论（2026-07-10）：`stock-pattern-search` 已从 GitHub `main@806
 
 输出：`_migration/logs/007_create_new_project_skeletons.md`。
 
+Phase 7a 结论（2026-07-10）：已按 stock-pattern-search 的工程组织方式创建
+`platform/data/research-data-core/`。`research_data_core` 0.1.0 提供仓库和 shared-data 路径解析、
+YAML dataset config/catalog、CSV/parquet/parquet-by-entity 有界读取、字段映射、schema 检查、
+entity/time 标准化和通用 as-of 对齐，并提供 inspect/validate scripts。编译、独立安装、8 项测试、
+package import/version 和三个脚本 help 均通过；未接入或修改任何业务项目。可以进入独立的
+`cycle-equity-research` 创建阶段。
+
 Phase 7b 部分结论（2026-07-10）：已提前创建最小 `platform/ml/research-ml-core/`，包含
 strategy-neutral 的 features、labels、time split、model adapters、training、evaluation 和
 backtest primitives，独立安装且 5 项测试通过。`research-data-core` 与
-`cycle-equity-research` 仍未创建。
+`cycle-equity-research` 原为其余待建项目；前者现已由 Phase 7a 创建，后者仍未创建。
 
 ## Phase 8：抽取通用 ML 框架
 
