@@ -36,8 +36,7 @@ src/
 │   │   └── phase2_pullback/
 │   ├── new_high/
 │   ├── type_v/
-│   ├── w_bottom/
-│   └── _recycle/            # 历史兼容/回收代码
+│   └── w_bottom/
 ├── data/
 ├── features/
 ├── inference/
@@ -88,6 +87,19 @@ python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
+
+在统一 `stock-research` 仓库中开发时，安装本项目及其本地公共 ML core：
+
+```bash
+pip install -r requirements-monorepo.txt
+```
+
+当前通用 binary metrics 已切换到 `research-ml-core`；daily/labels validator 的必需字段存在性检查
+已通过兼容 wrapper 使用 `research-data-core`；`add_basic_indicators` 的 returns 和 rolling mean
+已通过列名兼容层使用 `research-ml-core`。历史窗口和共享数据默认路径已使用
+`research-data-core`；logistic/LightGBM/XGBoost wrappers 和 Trainer 的 fit/score 已使用
+`research-ml-core`。交易单位、OHLCV、单股票 loader、artifact orchestration 和策略特征仍保留
+在本项目。
 
 ## Type-N 主链路
 

@@ -14,6 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.pipelines.run_scan import main as run_scan_main
+from src.common.paths import get_shared_daily_dir
 
 
 def main() -> None:
@@ -59,8 +60,8 @@ def _resolve_raw_daily_dir(raw_daily_dir: str | None) -> Path:
         return Path(raw_daily_dir).expanduser().resolve()
 
     candidates = [
-        PROJECT_ROOT.parent / "shared_data" / "raw" / "daily" / "parquet_daily_cache",
-        PROJECT_ROOT.parent / "shared_data" / "raw" / "daily" / "parquet_daily_cache_5-12",
+        get_shared_daily_dir(),
+        get_shared_daily_dir("parquet_daily_cache_5-12"),
         PROJECT_ROOT / "data" / "raw" / "daily",
     ]
     for candidate in candidates:

@@ -17,10 +17,12 @@ class Trainer:
         return self
 
     def predict_score(self, X: Any) -> np.ndarray:
-        if hasattr(self.model, "predict_proba"):
+        try:
             values = np.asarray(self.model.predict_proba(X))
-            return (values[:, 1] if values.ndim == 2 and values.shape[1] > 1 else values.squeeze()).reshape(-1)
-        return np.asarray(self.model.predict(X), dtype=float).reshape(-1)
+            score = values[:, 1] if values.ndim == 2 and values.shape[1] > 1 else values.squeeze()
+        except (AttributeError, NotImplementedError):
+            score = np.asarray(self.model.predict(X)).squeeze()
+        return np.asarray(score, dtype=float).reshape(-1)
 
     def evaluate(self, X: Any, y: Any) -> dict[str, float]:
         if self.evaluator is None:

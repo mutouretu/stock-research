@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.review.overhang import (
+from src.reviewers.common.overhang import (
     build_volume_weighted_price_histogram,
     compute_overhang_factor,
     compute_overhang_ratio,

@@ -11,6 +11,11 @@ import yaml
 
 @dataclass(frozen=True)
 class DatasetConfig:
+    """Dataset contract.
+
+    ``columns`` maps canonical names to physical source names. ``required_columns`` names physical
+    source columns and is validated before canonical renaming.
+    """
     dataset_id: str
     storage: str
     path: str

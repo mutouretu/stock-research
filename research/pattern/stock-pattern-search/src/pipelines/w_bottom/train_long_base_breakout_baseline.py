@@ -28,6 +28,10 @@ ROOT = Path(__file__).resolve().parents[2]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
 
+from src.common.paths import get_shared_us_daily_dir  # noqa: E402
+
+DEFAULT_US_DAILY_DIR = get_shared_us_daily_dir()
+
 
 META_COLUMNS = [
     "sample_id",
@@ -372,7 +376,7 @@ def build_classifier_pipeline(model_name: str, *, y_train: np.ndarray, random_se
 def run_pipeline(
     *,
     labels_path: str | Path = "../market_pattern_labeler/outputs/labels_long_base_breakout.csv",
-    daily_dir: str | Path = "../shared_data/us/raw/daily/parquet_by_symbol",
+    daily_dir: str | Path = DEFAULT_US_DAILY_DIR,
     output_dir: str | Path = "outputs/models/w_bottom/long_base_breakout_baseline",
     min_history: int = 252,
     max_window: int = 504,
@@ -854,7 +858,7 @@ def _frame_to_markdown(frame: pd.DataFrame) -> str:
 def main() -> None:
     parser = argparse.ArgumentParser(description="Train long-base breakout tabular baseline.")
     parser.add_argument("--labels-path", default="../market_pattern_labeler/outputs/labels_long_base_breakout.csv")
-    parser.add_argument("--daily-dir", default="../shared_data/us/raw/daily/parquet_by_symbol")
+    parser.add_argument("--daily-dir", default=str(DEFAULT_US_DAILY_DIR))
     parser.add_argument("--output-dir", default="outputs/models/w_bottom/long_base_breakout_baseline")
     parser.add_argument("--min-history", type=int, default=252)
     parser.add_argument("--max-window", type=int, default=504)

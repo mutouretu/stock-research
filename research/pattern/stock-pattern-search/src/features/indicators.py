@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import pandas as pd
+from research_ml_core.features import add_return_features, add_rolling_features
 
 
 def add_basic_indicators(df: pd.DataFrame) -> pd.DataFrame:
@@ -13,9 +14,20 @@ def add_basic_indicators(df: pd.DataFrame) -> pd.DataFrame:
     out = out.dropna(subset=["trade_date"]).sort_values("trade_date").reset_index(drop=True)
 
     if "close" in out.columns:
-        close = pd.to_numeric(out["close"], errors="coerce")
-        out["ret_1d"] = close.pct_change()
-        out["ma_5"] = close.rolling(5, min_periods=1).mean()
-        out["ma_20"] = close.rolling(20, min_periods=1).mean()
+        featured = add_return_features(
+            out,
+            column="close",
+            periods=(1,),
+            fill_method="pad",
+        )
+        featured = add_rolling_features(
+            featured,
+            column="close",
+            windows=(5, 20),
+            min_periods=1,
+        )
+        out["ret_1d"] = featured["close_return_1"]
+        out["ma_5"] = featured["close_rolling_mean_5"]
+        out["ma_20"] = featured["close_rolling_mean_20"]
 
     return out

@@ -14,6 +14,7 @@ if str(PROJECT_ROOT) not in sys.path:
     sys.path.insert(0, str(PROJECT_ROOT))
 
 from src.pipelines.type_n.phase_tracking import _load_prepared_daily  # noqa: E402
+from src.common.paths import get_shared_daily_dir  # noqa: E402
 from src.pipelines.type_n.tasks import (  # noqa: E402
     build_phase1_pool_from_cache_task,
     generate_two_phase_report_task,
@@ -22,7 +23,7 @@ from src.pipelines.type_n.tasks import (  # noqa: E402
 )
 
 
-DEFAULT_RAW_DAILY_DIR = PROJECT_ROOT.parent / "shared_data" / "raw" / "daily" / "parquet_daily_cache"
+DEFAULT_RAW_DAILY_DIR = get_shared_daily_dir()
 DEFAULT_PHASE2_LGBM = PROJECT_ROOT / "outputs" / "models" / "type_n" / "phase2_pullback" / "lgbm_fastdrop_15k_w150"
 DEFAULT_PHASE2_XGB = PROJECT_ROOT / "outputs" / "models" / "type_n" / "phase2_pullback" / "xgb_fastdrop_15k_w150"
 

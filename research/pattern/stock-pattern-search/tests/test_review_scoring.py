@@ -1,6 +1,6 @@
 import pandas as pd
 
-from src.review.scoring import sigmoid_boost_factor, sigmoid_decay_factor, sigmoid_rise_factor
+from src.reviewers.common.scoring import sigmoid_boost_factor, sigmoid_decay_factor, sigmoid_rise_factor
 
 
 def test_sigmoid_decay_factor_decreases_after_threshold() -> None:

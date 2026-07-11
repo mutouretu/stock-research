@@ -21,6 +21,7 @@ class DatasetLoader:
         max_files: int | None = None,
         max_rows: int | None = None,
         normalize_entity_time: bool = False,
+        allow_full_scan: bool = False,
     ) -> pd.DataFrame:
         path = resolve_repo_path(self.config.path, self.root)
         if self.config.storage == "parquet":
@@ -28,7 +29,11 @@ class DatasetLoader:
         elif self.config.storage == "csv":
             frame = read_csv(path)
         elif self.config.storage == "parquet_by_entity":
-            frame = read_parquet_by_entity_dir(path, max_files=max_files)
+            frame = read_parquet_by_entity_dir(
+                path,
+                max_files=max_files,
+                allow_full_scan=allow_full_scan,
+            )
         else:
             raise ValueError(f"Unsupported dataset storage: {self.config.storage}")
 
@@ -40,8 +45,15 @@ class DatasetLoader:
         if normalize_entity_time:
             entity = source_to_canonical.get(self.config.entity_col, self.config.entity_col)
             time = source_to_canonical.get(self.config.time_col, self.config.time_col)
-            require_columns(frame, (entity, time))
-            frame = normalize_columns(frame, {entity: "entity_id", time: "time"})
+            normalized = {entity: "entity_id", time: "time"}
+            if self.config.available_time_col is not None:
+                available = source_to_canonical.get(
+                    self.config.available_time_col,
+                    self.config.available_time_col,
+                )
+                normalized[available] = "available_time"
+            require_columns(frame, normalized)
+            frame = normalize_columns(frame, normalized)
 
         if max_rows is not None:
             if max_rows < 0:

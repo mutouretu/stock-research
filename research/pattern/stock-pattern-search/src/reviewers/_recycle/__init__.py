@@ -1,2 +1,0 @@
-"""Inactive reviewer compatibility code."""
-

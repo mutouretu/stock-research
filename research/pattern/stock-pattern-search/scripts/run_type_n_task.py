@@ -20,9 +20,10 @@ from src.pipelines.type_n.tasks import (  # noqa: E402
     run_phase1_scan_task,
     run_phase2_filter_task,
 )
+from src.common.paths import get_shared_daily_dir  # noqa: E402
 
 
-DEFAULT_RAW_DAILY_DIR = PROJECT_ROOT.parent / "shared_data" / "raw" / "daily" / "parquet_daily_cache"
+DEFAULT_RAW_DAILY_DIR = get_shared_daily_dir()
 DEFAULT_PHASE1_LGBM = PROJECT_ROOT / "outputs" / "models" / "type_n" / "phase1_breakout" / "lgbm_v5_no_runupscore7_w150"
 DEFAULT_PHASE1_XGB = PROJECT_ROOT / "outputs" / "models" / "type_n" / "phase1_breakout" / "xgb_v5_no_runupscore7_w150"
 DEFAULT_PHASE2_LGBM = PROJECT_ROOT / "outputs" / "models" / "type_n" / "phase2_pullback" / "lgbm_fastdrop_15k_w150"
