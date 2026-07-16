@@ -58,6 +58,7 @@ Build both physical panels, their lineage manifest, and the panel quality report
 
 ```bash
 .venv/bin/python scripts/build_cf_panels.py
+.venv/bin/python scripts/audit_cf_panels.py
 ```
 
 Outputs:
@@ -69,6 +70,8 @@ storage/shared_data/research/cycle/CF/
 └── panel_lineage.json
 
 reports/panel_quality/
+├── cf_panel_audit.md
+├── cf_panel_audit.json
 ├── cf_panel_quality.md
 └── cf_panel_quality.json
 ```

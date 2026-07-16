@@ -1,0 +1,1053 @@
+{
+  "failure_count": 0,
+  "checks": [
+    {
+      "name": "daily_panel_determinism",
+      "status": "PASS",
+      "sample_count": 1,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "first_hash": "bae870c133ccbad71f938bb2fcf3c2b370cb7f48c620ef0483252c464fa5126a",
+          "second_hash": "bae870c133ccbad71f938bb2fcf3c2b370cb7f48c620ef0483252c464fa5126a",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "quarterly_panel_determinism",
+      "status": "PASS",
+      "sample_count": 1,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "first_hash": "44a7f0f7c100dbfdddf935ced90843d13a61e8c7e047aaefae745f7eb922a8f9",
+          "second_hash": "44a7f0f7c100dbfdddf935ced90843d13a61e8c7e047aaefae745f7eb922a8f9",
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "daily_cf_price_fixed_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2013-01-02T00:00:00",
+          "expected": 29.315174102783203,
+          "actual": 29.315174102783203,
+          "passed": true
+        },
+        {
+          "panel_time": "2014-07-03T00:00:00",
+          "expected": 35.380977630615234,
+          "actual": 35.380977630615234,
+          "passed": true
+        },
+        {
+          "panel_time": "2016-01-04T00:00:00",
+          "expected": 30.18230438232422,
+          "actual": 30.18230438232422,
+          "passed": true
+        },
+        {
+          "panel_time": "2017-07-05T00:00:00",
+          "expected": 22.842906951904297,
+          "actual": 22.842906951904297,
+          "passed": true
+        },
+        {
+          "panel_time": "2019-01-04T00:00:00",
+          "expected": 36.58686447143555,
+          "actual": 36.58686447143555,
+          "passed": true
+        },
+        {
+          "panel_time": "2020-07-07T00:00:00",
+          "expected": 25.477760314941406,
+          "actual": 25.477760314941406,
+          "passed": true
+        },
+        {
+          "panel_time": "2022-01-04T00:00:00",
+          "expected": 64.68473815917969,
+          "actual": 64.68473815917969,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-07-10T00:00:00",
+          "expected": 65.45225524902344,
+          "actual": 65.45225524902344,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-01-08T00:00:00",
+          "expected": 84.16732788085938,
+          "actual": 84.16732788085938,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-07-15T00:00:00",
+          "expected": 117.81999969482422,
+          "actual": 117.81999969482422,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "daily_henry_hub_asof_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2013-01-02T00:00:00",
+          "source_available_time": "2013-01-01T00:00:00",
+          "expected": 3.43,
+          "actual": 3.43,
+          "passed": true
+        },
+        {
+          "panel_time": "2014-07-03T00:00:00",
+          "source_available_time": "2014-07-03T00:00:00",
+          "expected": 4.47,
+          "actual": 4.47,
+          "passed": true
+        },
+        {
+          "panel_time": "2016-01-04T00:00:00",
+          "source_available_time": "2016-01-04T00:00:00",
+          "expected": 2.28,
+          "actual": 2.28,
+          "passed": true
+        },
+        {
+          "panel_time": "2017-07-05T00:00:00",
+          "source_available_time": "2017-07-05T00:00:00",
+          "expected": 2.98,
+          "actual": 2.98,
+          "passed": true
+        },
+        {
+          "panel_time": "2019-01-04T00:00:00",
+          "source_available_time": "2019-01-04T00:00:00",
+          "expected": 2.72,
+          "actual": 2.72,
+          "passed": true
+        },
+        {
+          "panel_time": "2020-07-07T00:00:00",
+          "source_available_time": "2020-07-07T00:00:00",
+          "expected": 1.71,
+          "actual": 1.71,
+          "passed": true
+        },
+        {
+          "panel_time": "2022-01-04T00:00:00",
+          "source_available_time": "2022-01-04T00:00:00",
+          "expected": 3.74,
+          "actual": 3.74,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-07-10T00:00:00",
+          "source_available_time": "2023-07-10T00:00:00",
+          "expected": 2.49,
+          "actual": 2.49,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-01-08T00:00:00",
+          "source_available_time": "2025-01-08T00:00:00",
+          "expected": 3.8,
+          "actual": 3.8,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-07-15T00:00:00",
+          "source_available_time": "2026-07-14T00:00:00",
+          "expected": 2.83,
+          "actual": 2.83,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "daily_world_bank_urea_asof_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2013-01-02T00:00:00",
+          "source_available_time": "2012-12-14T00:00:00",
+          "expected": 383.5,
+          "actual": 383.5,
+          "passed": true
+        },
+        {
+          "panel_time": "2014-07-03T00:00:00",
+          "source_available_time": "2014-06-13T00:00:00",
+          "expected": 265.0,
+          "actual": 265.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2016-01-04T00:00:00",
+          "source_available_time": "2015-12-14T00:00:00",
+          "expected": 263.625,
+          "actual": 263.625,
+          "passed": true
+        },
+        {
+          "panel_time": "2017-07-05T00:00:00",
+          "source_available_time": "2017-06-14T00:00:00",
+          "expected": 178.75,
+          "actual": 178.75,
+          "passed": true
+        },
+        {
+          "panel_time": "2019-01-04T00:00:00",
+          "source_available_time": "2018-12-14T00:00:00",
+          "expected": 305.6,
+          "actual": 305.6,
+          "passed": true
+        },
+        {
+          "panel_time": "2020-07-07T00:00:00",
+          "source_available_time": "2020-06-12T00:00:00",
+          "expected": 201.9,
+          "actual": 201.9,
+          "passed": true
+        },
+        {
+          "panel_time": "2022-01-04T00:00:00",
+          "source_available_time": "2021-12-14T00:00:00",
+          "expected": 900.5,
+          "actual": 900.5,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-07-10T00:00:00",
+          "source_available_time": "2023-06-14T00:00:00",
+          "expected": 329.25,
+          "actual": 329.25,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-01-08T00:00:00",
+          "source_available_time": "2024-12-13T00:00:00",
+          "expected": 352.3,
+          "actual": 352.3,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-07-15T00:00:00",
+          "source_available_time": "2026-01-14T00:00:00",
+          "expected": 392.5,
+          "actual": 392.5,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "daily_corn_asof_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2013-01-02T00:00:00",
+          "source_available_time": "2013-01-02T00:00:00",
+          "expected": 690.75,
+          "actual": 690.75,
+          "passed": true
+        },
+        {
+          "panel_time": "2014-07-03T00:00:00",
+          "source_available_time": "2014-07-03T00:00:00",
+          "expected": 417.0,
+          "actual": 417.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2016-01-04T00:00:00",
+          "source_available_time": "2016-01-04T00:00:00",
+          "expected": 351.5,
+          "actual": 351.5,
+          "passed": true
+        },
+        {
+          "panel_time": "2017-07-03T00:00:00",
+          "source_available_time": "2017-07-03T00:00:00",
+          "expected": 378.0,
+          "actual": 378.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2019-01-07T00:00:00",
+          "source_available_time": "2019-01-07T00:00:00",
+          "expected": 382.25,
+          "actual": 382.25,
+          "passed": true
+        },
+        {
+          "panel_time": "2020-07-08T00:00:00",
+          "source_available_time": "2020-07-08T00:00:00",
+          "expected": 348.25,
+          "actual": 348.25,
+          "passed": true
+        },
+        {
+          "panel_time": "2022-01-05T00:00:00",
+          "source_available_time": "2022-01-05T00:00:00",
+          "expected": 602.25,
+          "actual": 602.25,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-07-10T00:00:00",
+          "source_available_time": "2023-07-10T00:00:00",
+          "expected": 570.75,
+          "actual": 570.75,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-01-08T00:00:00",
+          "source_available_time": "2025-01-08T00:00:00",
+          "expected": 454.0,
+          "actual": 454.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-07-15T00:00:00",
+          "source_available_time": "2026-07-15T00:00:00",
+          "expected": 447.5,
+          "actual": 447.5,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "daily_ams_urea_asof_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2022-09-22T00:00:00",
+          "source_available_time": "2022-09-22T00:00:00",
+          "expected": 858.33,
+          "actual": 858.33,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-02-24T00:00:00",
+          "source_available_time": "2023-02-23T00:00:00",
+          "expected": 655.0,
+          "actual": 655.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-07-28T00:00:00",
+          "source_available_time": "2023-07-27T00:00:00",
+          "expected": 497.0,
+          "actual": 497.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-12-28T00:00:00",
+          "source_available_time": "2023-12-28T00:00:00",
+          "expected": 517.0,
+          "actual": 517.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2024-05-31T00:00:00",
+          "source_available_time": "2024-05-31T00:00:00",
+          "expected": 539.6,
+          "actual": 539.6,
+          "passed": true
+        },
+        {
+          "panel_time": "2024-10-31T00:00:00",
+          "source_available_time": "2024-10-18T00:00:00",
+          "expected": 537.6,
+          "actual": 537.6,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-04-07T00:00:00",
+          "source_available_time": "2025-04-04T00:00:00",
+          "expected": 562.8,
+          "actual": 562.8,
+          "passed": true
+        },
+        {
+          "panel_time": "2025-09-09T00:00:00",
+          "source_available_time": "2025-09-05T00:00:00",
+          "expected": 608.75,
+          "actual": 608.75,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-02-10T00:00:00",
+          "source_available_time": "2026-02-06T00:00:00",
+          "expected": 579.0,
+          "actual": 579.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-07-15T00:00:00",
+          "source_available_time": "2026-07-10T00:00:00",
+          "expected": 752.5,
+          "actual": 752.5,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "quarterly_cf_urea_selling_price_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "panel_time": "2015-06-30T00:00:00",
+          "expected": 352.0,
+          "actual": 352.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2017-03-31T00:00:00",
+          "expected": 248.0,
+          "actual": 248.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2018-03-31T00:00:00",
+          "expected": 269.0,
+          "actual": 269.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2019-06-30T00:00:00",
+          "expected": 289.0,
+          "actual": 289.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2020-06-30T00:00:00",
+          "expected": 250.0,
+          "actual": 250.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2021-09-30T00:00:00",
+          "expected": 449.0,
+          "actual": 449.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2022-09-30T00:00:00",
+          "expected": 546.0,
+          "actual": 546.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2023-12-31T00:00:00",
+          "expected": 378.0,
+          "actual": 378.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2024-12-31T00:00:00",
+          "expected": 347.0,
+          "actual": 347.0,
+          "passed": true
+        },
+        {
+          "panel_time": "2026-03-31T00:00:00",
+          "expected": 457.0,
+          "actual": 457.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "quarterly_henry_hub_mean_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "period_end": "2015-06-30T00:00:00",
+          "cutoff": "2015-08-06T00:00:00",
+          "source_rows": 63,
+          "expected": 2.7465079365079372,
+          "actual": 2.7465079365079372,
+          "passed": true
+        },
+        {
+          "period_end": "2017-03-31T00:00:00",
+          "cutoff": "2017-05-04T00:00:00",
+          "source_rows": 65,
+          "expected": 3.015230769230769,
+          "actual": 3.015230769230769,
+          "passed": true
+        },
+        {
+          "period_end": "2018-03-31T00:00:00",
+          "cutoff": "2018-05-03T00:00:00",
+          "source_rows": 60,
+          "expected": 3.0799999999999996,
+          "actual": 3.0799999999999996,
+          "passed": true
+        },
+        {
+          "period_end": "2019-06-30T00:00:00",
+          "cutoff": "2019-08-01T00:00:00",
+          "source_rows": 63,
+          "expected": 2.565396825396825,
+          "actual": 2.565396825396825,
+          "passed": true
+        },
+        {
+          "period_end": "2020-06-30T00:00:00",
+          "cutoff": "2020-08-06T00:00:00",
+          "source_rows": 63,
+          "expected": 1.704603174603175,
+          "actual": 1.704603174603175,
+          "passed": true
+        },
+        {
+          "period_end": "2021-09-30T00:00:00",
+          "cutoff": "2021-11-05T00:00:00",
+          "source_rows": 64,
+          "expected": 4.354218749999999,
+          "actual": 4.354218749999999,
+          "passed": true
+        },
+        {
+          "period_end": "2022-09-30T00:00:00",
+          "cutoff": "2022-11-03T00:00:00",
+          "source_rows": 64,
+          "expected": 8.02671875,
+          "actual": 8.02671875,
+          "passed": true
+        },
+        {
+          "period_end": "2023-12-31T00:00:00",
+          "cutoff": "2024-02-22T00:00:00",
+          "source_rows": 62,
+          "expected": 2.7408064516129027,
+          "actual": 2.7408064516129027,
+          "passed": true
+        },
+        {
+          "period_end": "2024-12-31T00:00:00",
+          "cutoff": "2025-02-20T00:00:00",
+          "source_rows": 63,
+          "expected": 2.4419047619047616,
+          "actual": 2.4419047619047616,
+          "passed": true
+        },
+        {
+          "period_end": "2026-03-31T00:00:00",
+          "cutoff": "2026-05-07T00:00:00",
+          "source_rows": 60,
+          "expected": 4.707,
+          "actual": 4.707,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "quarterly_world_bank_urea_mean_samples",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "period_end": "2015-06-30T00:00:00",
+          "cutoff": "2015-08-06T00:00:00",
+          "source_rows": 3,
+          "expected": 271.25,
+          "actual": 271.25,
+          "passed": true
+        },
+        {
+          "period_end": "2016-12-31T00:00:00",
+          "cutoff": "2017-02-23T00:00:00",
+          "source_rows": 3,
+          "expected": 203.41666666666666,
+          "actual": 203.41666666666666,
+          "passed": true
+        },
+        {
+          "period_end": "2018-03-31T00:00:00",
+          "cutoff": "2018-05-03T00:00:00",
+          "source_rows": 3,
+          "expected": 228.20833333333334,
+          "actual": 228.20833333333334,
+          "passed": true
+        },
+        {
+          "period_end": "2019-03-31T00:00:00",
+          "cutoff": "2019-05-02T00:00:00",
+          "source_rows": 3,
+          "expected": 252.71,
+          "actual": 252.71,
+          "passed": true
+        },
+        {
+          "period_end": "2020-06-30T00:00:00",
+          "cutoff": "2020-08-06T00:00:00",
+          "source_rows": 3,
+          "expected": 212.96666666666667,
+          "actual": 212.96666666666667,
+          "passed": true
+        },
+        {
+          "period_end": "2021-06-30T00:00:00",
+          "cutoff": "2021-08-09T00:00:00",
+          "source_rows": 3,
+          "expected": 350.99333333333334,
+          "actual": 350.99333333333334,
+          "passed": true
+        },
+        {
+          "period_end": "2022-09-30T00:00:00",
+          "cutoff": "2022-11-03T00:00:00",
+          "source_rows": 3,
+          "expected": 623.4166666666666,
+          "actual": 623.4166666666666,
+          "passed": true
+        },
+        {
+          "period_end": "2023-09-30T00:00:00",
+          "cutoff": "2023-11-02T00:00:00",
+          "source_rows": 3,
+          "expected": 366.75333333333333,
+          "actual": 366.75333333333333,
+          "passed": true
+        },
+        {
+          "period_end": "2024-12-31T00:00:00",
+          "cutoff": "2025-02-20T00:00:00",
+          "source_rows": 3,
+          "expected": 359.68333333333334,
+          "actual": 359.68333333333334,
+          "passed": true
+        },
+        {
+          "period_end": "2025-12-31T00:00:00",
+          "cutoff": "2026-02-25T00:00:00",
+          "source_rows": 3,
+          "expected": 398.7166666666667,
+          "actual": 398.7166666666667,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "annual_revenue",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "year": 2016,
+          "quarterly_sum": 3685000000.0,
+          "annual_value": 3685000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2017,
+          "quarterly_sum": 4130000000.0,
+          "annual_value": 4130000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2018,
+          "quarterly_sum": 4429000000.0,
+          "annual_value": 4429000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2019,
+          "quarterly_sum": 4590000000.0,
+          "annual_value": 4590000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2020,
+          "quarterly_sum": 4124000000.0,
+          "annual_value": 4124000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2021,
+          "quarterly_sum": 6538000000.0,
+          "annual_value": 6538000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2022,
+          "quarterly_sum": 11186000000.0,
+          "annual_value": 11186000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2023,
+          "quarterly_sum": 6631000000.0,
+          "annual_value": 6631000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2024,
+          "quarterly_sum": 5936000000.0,
+          "annual_value": 5936000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2025,
+          "quarterly_sum": 7084000000.0,
+          "annual_value": 7084000000.0,
+          "difference": 0.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "annual_gross_profit",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "year": 2016,
+          "quarterly_sum": 840000000.0,
+          "annual_value": 840000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2017,
+          "quarterly_sum": 430000000.0,
+          "annual_value": 430000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2018,
+          "quarterly_sum": 917000000.0,
+          "annual_value": 917000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2019,
+          "quarterly_sum": 1174000000.0,
+          "annual_value": 1174000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2020,
+          "quarterly_sum": 801000000.0,
+          "annual_value": 801000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2021,
+          "quarterly_sum": 2387000000.0,
+          "annual_value": 2387000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2022,
+          "quarterly_sum": 5861000000.0,
+          "annual_value": 5861000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2023,
+          "quarterly_sum": 2545000000.0,
+          "annual_value": 2545000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2024,
+          "quarterly_sum": 2056000000.0,
+          "annual_value": 2056000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2025,
+          "quarterly_sum": 2724000000.0,
+          "annual_value": 2724000000.0,
+          "difference": 0.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "annual_operating_income",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "year": 2016,
+          "quarterly_sum": 134000000.0,
+          "annual_value": 134000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2017,
+          "quarterly_sum": 229000000.0,
+          "annual_value": 229000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2018,
+          "quarterly_sum": 766000000.0,
+          "annual_value": 766000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2019,
+          "quarterly_sum": 1003000000.0,
+          "annual_value": 1003000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2020,
+          "quarterly_sum": 623000000.0,
+          "annual_value": 623000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2021,
+          "quarterly_sum": 1729000000.0,
+          "annual_value": 1729000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2022,
+          "quarterly_sum": 5397000000.0,
+          "annual_value": 5397000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2023,
+          "quarterly_sum": 2230000000.0,
+          "annual_value": 2230000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2024,
+          "quarterly_sum": 1746000000.0,
+          "annual_value": 1746000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2025,
+          "quarterly_sum": 2300000000.0,
+          "annual_value": 2300000000.0,
+          "difference": 0.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "annual_operating_cash_flow",
+      "status": "PASS",
+      "sample_count": 9,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "year": 2017,
+          "quarterly_sum": 1631000000.0,
+          "annual_value": 1631000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2018,
+          "quarterly_sum": 1497000000.0,
+          "annual_value": 1497000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2019,
+          "quarterly_sum": 1505000000.0,
+          "annual_value": 1505000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2020,
+          "quarterly_sum": 1231000000.0,
+          "annual_value": 1231000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2021,
+          "quarterly_sum": 2873000000.0,
+          "annual_value": 2873000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2022,
+          "quarterly_sum": 3855000000.0,
+          "annual_value": 3855000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2023,
+          "quarterly_sum": 2757000000.0,
+          "annual_value": 2757000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2024,
+          "quarterly_sum": 2271000000.0,
+          "annual_value": 2271000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2025,
+          "quarterly_sum": 2752000000.0,
+          "annual_value": 2752000000.0,
+          "difference": 0.0,
+          "passed": true
+        }
+      ]
+    },
+    {
+      "name": "annual_capex",
+      "status": "PASS",
+      "sample_count": 10,
+      "failure_count": 0,
+      "failures": [],
+      "evidence": [
+        {
+          "year": 2016,
+          "quarterly_sum": 2211000000.0,
+          "annual_value": 2211000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2017,
+          "quarterly_sum": 473000000.0,
+          "annual_value": 473000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2018,
+          "quarterly_sum": 422000000.0,
+          "annual_value": 422000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2019,
+          "quarterly_sum": 404000000.0,
+          "annual_value": 404000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2020,
+          "quarterly_sum": 309000000.0,
+          "annual_value": 309000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2021,
+          "quarterly_sum": 514000000.0,
+          "annual_value": 514000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2022,
+          "quarterly_sum": 453000000.0,
+          "annual_value": 453000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2023,
+          "quarterly_sum": 499000000.0,
+          "annual_value": 499000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2024,
+          "quarterly_sum": 518000000.0,
+          "annual_value": 518000000.0,
+          "difference": 0.0,
+          "passed": true
+        },
+        {
+          "year": 2025,
+          "quarterly_sum": 950000000.0,
+          "annual_value": 950000000.0,
+          "difference": 0.0,
+          "passed": true
+        }
+      ]
+    }
+  ]
+}
