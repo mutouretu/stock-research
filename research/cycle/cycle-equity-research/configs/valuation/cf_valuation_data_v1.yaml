@@ -1,0 +1,44 @@
+version: 1.0.0
+valuation_id: cf_valuation_data_v1
+subject: CF
+analysis_end_date: 2026-07-15
+
+inputs:
+  daily_panel: storage/shared_data/research/cycle/CF/daily_panel.parquet
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+
+outputs:
+  monthly_panel: storage/shared_data/research/cycle/CF/valuation/monthly_valuation_v1.parquet
+  current_snapshot: storage/shared_data/research/cycle/CF/valuation/current_valuation_data_v1.json
+  manifest: storage/shared_data/research/cycle/CF/valuation/valuation_data_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/valuation/cf_valuation_data_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/valuation/cf_valuation_data_v1.json
+
+market_value:
+  price_column: cf_close
+  price_contract: unadjusted_close_times_point_in_time_shares
+  shares_column: cf_shares_outstanding
+
+enterprise_value:
+  primary_definition: consolidated_standard
+  financial_debt_column: cf_total_debt
+  short_term_borrowings_column: cf_short_term_borrowings
+  cash_column: cf_cash
+  noncontrolling_interest_column: cf_noncontrolling_interest
+  preferred_equity_column: cf_preferred_equity
+  lease_columns:
+    - cf_operating_lease_liability_current
+    - cf_operating_lease_liability_noncurrent
+  short_term_borrowings_missing_policy: assume_zero_and_flag
+  lease_treatment: sensitivity_only_because_reported_ebitda_is_not_lease_adjusted
+
+earnings:
+  reported_ttm_ebitda_column: cf_ebitda_proxy_ttm
+  definition: operating_income_plus_depreciation_and_amortization
+  free_cash_flow_definition: operating_cash_flow_minus_capex
+
+quality:
+  maximum_fundamental_period_age_days: 240
+  minimum_months_with_reported_multiple: 24
+  require_positive_enterprise_value: true
+  require_positive_reported_ttm_ebitda: true

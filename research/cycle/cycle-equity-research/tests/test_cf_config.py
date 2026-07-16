@@ -87,3 +87,26 @@ def test_operating_bridge_experiment_locks_prediction_timing_and_comparator() ->
         "uan",
         "ammonium_nitrate",
     }
+
+
+def test_valuation_config_matches_consolidated_ebitda_scope() -> None:
+    valuation = yaml.safe_load(
+        (PROJECT_ROOT / "configs/valuation/cf_valuation_data_v1.yaml").read_text()
+    )
+    assert valuation["enterprise_value"]["primary_definition"] == "consolidated_standard"
+    assert valuation["enterprise_value"]["noncontrolling_interest_column"] == (
+        "cf_noncontrolling_interest"
+    )
+    assert valuation["market_value"]["price_contract"].startswith("unadjusted_close")
+
+    quarterly = yaml.safe_load(
+        (PROJECT_ROOT / "configs/panels/cf_quarterly.yaml").read_text()
+    )
+    outputs = {metric["output_col"] for metric in quarterly["financials"]["metrics"]}
+    assert {
+        "cf_total_debt",
+        "cf_noncontrolling_interest",
+        "cf_preferred_equity",
+        "cf_operating_lease_liability_current",
+        "cf_operating_lease_liability_noncurrent",
+    } <= outputs

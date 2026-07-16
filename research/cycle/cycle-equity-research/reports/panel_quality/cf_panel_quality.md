@@ -6,7 +6,7 @@
 | Panel | 状态 | 行数 | 列数 | 起始日期 | 最新日期 | PIT 违规 |
 |---|---:|---:|---:|---:|---:|---:|
 | `cycle.cf.daily` | WARNING | 3403 | 62 | 2013-01-02 | 2026-07-15 | 0 |
-| `cycle.cf.quarterly` | WARNING | 42 | 84 | 2015-06-30 | 2026-03-31 | 0 |
+| `cycle.cf.quarterly` | WARNING | 42 | 96 | 2015-06-30 | 2026-03-31 | 0 |
 
 ## cycle.cf.daily
 

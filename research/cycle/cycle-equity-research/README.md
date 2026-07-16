@@ -180,6 +180,22 @@ overlays and never change the economic state.
 The command writes the monthly history, current JSON snapshot, manifest, and complete Markdown/JSON
 report under the existing `cycle_analysis` output locations.
 
+## Milestone 5.1 valuation data layer
+
+After rebuilding the quarterly panel, build the point-in-time monthly valuation data with:
+
+```bash
+.venv/bin/python scripts/build_cf_panels.py
+.venv/bin/python scripts/build_cf_valuation_data.py
+```
+
+Market capitalization uses the unadjusted close and the latest filed shares outstanding. The
+primary enterprise-value definition adds total financial debt and noncontrolling interest, then
+subtracts cash; this matches the scope of consolidated EBITDA. Operating leases are reported as a
+sensitivity only because the reported EBITDA proxy is not lease-adjusted. Outputs and the full
+quality report live under `storage/shared_data/research/cycle/CF/valuation/` and
+`reports/valuation/`.
+
 ## Publication source
 
 The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under

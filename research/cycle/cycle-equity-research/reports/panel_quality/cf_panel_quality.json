@@ -31,7 +31,7 @@
       "panel_id": "cycle.cf.quarterly",
       "status": "WARNING",
       "rows": 42,
-      "columns": 84,
+      "columns": 96,
       "first_date": "2015-06-30",
       "last_date": "2026-03-31",
       "duplicate_keys": 0,

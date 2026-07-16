@@ -31,6 +31,24 @@ financials:
     - output_col: cf_long_term_debt
       concepts: [LongTermDebtNoncurrent, LongTermDebt]
       kind: instant
+    - output_col: cf_total_debt
+      concepts: [LongTermDebt, LongTermDebtNoncurrent]
+      kind: instant
+    - output_col: cf_short_term_borrowings
+      concepts: [ShortTermBorrowings]
+      kind: instant
+    - output_col: cf_operating_lease_liability_current
+      concepts: [OperatingLeaseLiabilityCurrent]
+      kind: instant
+    - output_col: cf_operating_lease_liability_noncurrent
+      concepts: [OperatingLeaseLiabilityNoncurrent]
+      kind: instant
+    - output_col: cf_noncontrolling_interest
+      concepts: [MinorityInterest]
+      kind: instant
+    - output_col: cf_preferred_equity
+      concepts: [PreferredStockValue]
+      kind: instant
     - output_col: cf_operating_income
       concepts: [OperatingIncomeLoss]
       kind: flow
