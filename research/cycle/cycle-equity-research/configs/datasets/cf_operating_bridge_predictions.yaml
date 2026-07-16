@@ -1,0 +1,25 @@
+dataset_id: cycle.cf.operating_bridge_predictions
+storage: parquet
+path: storage/shared_data/research/cycle/CF/experiments/cf_operating_bridge_v1/predictions.parquet
+entity_col: product
+time_col: period_end
+available_time_col: prediction_time
+columns: {}
+required_columns:
+  - experiment_id
+  - baseline_id
+  - period_end
+  - prediction_time
+  - target_available_time
+  - train_rows
+  - train_start_period
+  - train_end_period
+  - train_last_available_time
+  - task_group
+  - target
+  - product
+  - actual
+  - prediction
+  - naive_prediction
+  - unit
+  - parameters

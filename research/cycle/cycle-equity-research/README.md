@@ -113,3 +113,20 @@ Build the versioned daily and quarterly nitrogen-profit proxies with:
 The model keeps market prices, CF realized prices and accounting gross margin separate. Gas
 intensity, nutrient content, unit conversion, fixed basket weights, source links and known failure
 scenarios are declared in `configs/features/cf_nitrogen_economics_v1.yaml`.
+
+## Quarterly operating-bridge experiment
+
+Run the locked expanding-window baseline with:
+
+```bash
+.venv/bin/python scripts/run_cf_operating_bridge_experiment.py
+```
+
+The experiment makes each estimate 15 days after quarter end, before CF results are available, and
+uses only previously disclosed company quarters for fitting. It evaluates realized prices, realized
+gas cost, product margins, product volumes, and total gross profit against a last-disclosed-value
+comparator. Predictions use a stable long-form schema so later LR, tree, or time-series methods can
+be compared on exactly the same periods and targets without dropping difficult rows.
+
+Outputs are stored below `storage/shared_data/research/cycle/CF/experiments/`; the human and JSON
+reports are written to `reports/experiments/`.

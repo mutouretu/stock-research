@@ -27,6 +27,7 @@ def test_dataset_contracts_parse_with_research_data_core() -> None:
         "cycle.cf.core_quarterly",
         "cycle.cf.daily_nitrogen_economics",
         "cycle.cf.financials",
+        "cycle.cf.operating_bridge_predictions",
         "cycle.cf.price",
         "cycle.cf.product_operations",
         "cycle.cf.quarterly_nitrogen_economics",
@@ -59,3 +60,30 @@ def test_curated_panel_config_separates_core_and_tactical_outputs() -> None:
     }
     assert len(config["monthly_model_features"]) <= 7
     assert len(config["quarterly_model_features"]) <= 5
+
+
+def test_operating_bridge_experiment_locks_prediction_timing_and_comparator() -> None:
+    config = yaml.safe_load(
+        (PROJECT_ROOT / "configs/experiments/cf_operating_bridge_v1.yaml").read_text()
+    )
+    assert config["experiment_id"] == "cf_operating_bridge_v1"
+    assert config["evaluation"] == {
+        "prediction_lag_days_after_period_end": 15,
+        "minimum_training_quarters": 12,
+        "window": "expanding",
+        "naive_comparator": "last_disclosed_value",
+        "metrics": [
+            "mae",
+            "rmse",
+            "bias",
+            "wape",
+            "direction_accuracy",
+            "improvement_vs_naive",
+        ],
+    }
+    assert set(config["products"]) == {
+        "ammonia",
+        "granular_urea",
+        "uan",
+        "ammonium_nitrate",
+    }

@@ -1,0 +1,53 @@
+experiment_id: cf_operating_bridge_v1
+version: 1.0.0
+subject: CF
+description: Expanding-window quarterly operating bridge estimated before CF earnings release.
+
+inputs:
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+  quarterly_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+
+outputs:
+  predictions: storage/shared_data/research/cycle/CF/experiments/cf_operating_bridge_v1/predictions.parquet
+  metrics: storage/shared_data/research/cycle/CF/experiments/cf_operating_bridge_v1/metrics.parquet
+  manifest: storage/shared_data/research/cycle/CF/experiments/cf_operating_bridge_v1/manifest.json
+  report_markdown: research/cycle/cycle-equity-research/reports/experiments/cf_operating_bridge_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/experiments/cf_operating_bridge_v1.json
+
+evaluation:
+  prediction_lag_days_after_period_end: 15
+  minimum_training_quarters: 12
+  window: expanding
+  naive_comparator: last_disclosed_value
+  metrics: [mae, rmse, bias, wape, direction_accuracy, improvement_vs_naive]
+
+market_features:
+  global_urea:
+    value_column: world_bank_urea_quarter_mean
+    available_time_column: world_bank_urea_quarter_mean__available_time
+    conversion_to_usd_per_short_ton: 0.90718474
+  henry_hub:
+    value_column: henry_hub_quarter_mean
+    available_time_column: henry_hub_quarter_mean__available_time
+    current_quarter_weight: 0.50
+    previous_quarter_weight: 0.50
+
+products:
+  ammonia:
+    gas_intensity_mmbtu_per_short_ton: 28.0
+  granular_urea:
+    gas_intensity_mmbtu_per_short_ton: 19.0
+  uan:
+    gas_intensity_mmbtu_per_short_ton: 13.0
+  ammonium_nitrate:
+    gas_intensity_mmbtu_per_short_ton: 14.0
+
+volume_products: [ammonia, granular_urea, uan, ammonium_nitrate, other]
+
+methods:
+  realized_price: expanding_univariate_ols
+  realized_gas_cost: expanding_univariate_ols_on_equal_weight_distributed_lag
+  other_cost_basis: expanding_mean
+  sales_volume: expanding_same_calendar_quarter_mean
+  other_product_margin: expanding_same_calendar_quarter_mean
+  gross_profit: sum_product_volume_times_unit_margin
