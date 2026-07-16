@@ -1,0 +1,64 @@
+version: 1.0.0
+subject: CF
+
+datasets:
+  cycle.cf.price:
+    tier: core
+    quality_score: 95
+    usage: model
+    reason: Long daily history, stable schema and immediate market availability.
+  commodity.henry_hub:
+    tier: core
+    quality_score: 95
+    usage: model
+    reason: Long daily public series with explicit estimated availability lag.
+  commodity.urea:
+    tier: core
+    quality_score: 80
+    usage: model_with_staleness_limit
+    reason: Long global benchmark history, but monthly and currently stale.
+  crop.corn:
+    tier: core
+    quality_score: 85
+    usage: model
+    reason: Long daily demand proxy; continuous-futures roll remains a limitation.
+  cycle.cf.financials:
+    tier: core
+    quality_score: 85
+    usage: model_quarterly
+    reason: Official point-in-time filings, with taxonomy and restatement complexity.
+  cycle.cf.product_operations:
+    tier: core
+    quality_score: 85
+    usage: model_quarterly
+    reason: Official operating disclosures covering more than 40 quarters.
+  cycle.cf.daily_nitrogen_economics:
+    tier: core
+    quality_score: 80
+    usage: model_derived
+    reason: Versioned long-history spread derived only from core market inputs.
+  cycle.cf.quarterly_nitrogen_economics:
+    tier: core
+    quality_score: 80
+    usage: model_derived_quarterly
+    reason: Versioned proxy calibrated against official CF operating disclosures.
+  commodity.fertilizer_ams_3195:
+    tier: tactical
+    quality_score: 60
+    usage: context_only
+    reason: Useful North American spot context but only available since 2022 with product gaps.
+  crop.planted_acres:
+    tier: contextual
+    quality_score: 60
+    usage: scenario_only
+    reason: Low frequency and historical load time is not always the original public release time.
+  crop.corn_costs_returns:
+    tier: contextual
+    quality_score: 65
+    usage: scenario_only
+    reason: Annual estimates and revisions are unsuitable as repeated daily model samples.
+  crop.soybean_costs_returns:
+    tier: contextual
+    quality_score: 65
+    usage: scenario_only
+    reason: Annual estimates and revisions are unsuitable as repeated daily model samples.

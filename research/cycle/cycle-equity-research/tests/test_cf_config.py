@@ -23,19 +23,39 @@ def test_dataset_contracts_parse_with_research_data_core() -> None:
         "commodity.urea",
         "crop.corn",
         "crop.planted_acres",
+        "cycle.cf.core_monthly",
+        "cycle.cf.core_quarterly",
         "cycle.cf.daily_nitrogen_economics",
         "cycle.cf.financials",
         "cycle.cf.price",
         "cycle.cf.product_operations",
         "cycle.cf.quarterly_nitrogen_economics",
+        "cycle.cf.tactical_context",
     ]
 
 
 def test_cf_panel_configs_declare_reusable_dataset_inputs() -> None:
     panel_dir = PROJECT_ROOT / "configs/panels"
-    configs = [yaml.safe_load(path.read_text()) for path in sorted(panel_dir.glob("cf_*.yaml"))]
+    configs = [
+        config
+        for path in sorted(panel_dir.glob("cf_*.yaml"))
+        if (config := yaml.safe_load(path.read_text())).get("panel_id")
+    ]
     assert {config["panel_id"] for config in configs} == {
         "cycle.cf.daily",
         "cycle.cf.quarterly",
     }
     assert all(config.get("output") for config in configs)
+
+
+def test_curated_panel_config_separates_core_and_tactical_outputs() -> None:
+    config = yaml.safe_load((PROJECT_ROOT / "configs/panels/cf_curated.yaml").read_text())
+    assert config["panel_group_id"] == "cycle.cf.curated"
+    assert set(config["outputs"]) == {
+        "core_monthly",
+        "core_quarterly",
+        "tactical_context",
+        "lineage",
+    }
+    assert len(config["monthly_model_features"]) <= 7
+    assert len(config["quarterly_model_features"]) <= 5

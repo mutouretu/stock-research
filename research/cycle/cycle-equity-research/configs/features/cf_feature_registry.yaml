@@ -1,0 +1,111 @@
+version: 1.0.0
+subject: CF
+
+features:
+  - name: global_urea_gas_spread_month_mean
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: monthly
+    source: cycle.cf.daily_nitrogen_economics
+    reason: Long-history nitrogen margin proxy with explicit gas cost.
+  - name: henry_hub_month_mean
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: monthly
+    source: commodity.henry_hub
+    reason: Primary feedstock price and global cost-curve driver.
+  - name: corn_month_mean
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: monthly
+    source: crop.corn
+    reason: Stable agricultural demand and farmer-economics proxy.
+  - name: cf_momentum_6m
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: monthly
+    source: cycle.cf.price
+    reason: Compact market confirmation feature.
+  - name: latest_cf_realized_basket_gas_spread
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: quarterly_asof_monthly
+    source: cycle.cf.quarterly_nitrogen_economics
+    reason: Latest filed company-realized nitrogen economics.
+  - name: latest_cf_gross_margin_change
+    panel: core_monthly
+    tier: core
+    model_use: true
+    frequency: quarterly_asof_monthly
+    source: cycle.cf.financials
+    reason: Latest filed profitability direction rather than redundant level fields.
+
+  - name: global_urea_gas_spread_quarter_mean
+    panel: core_quarterly
+    tier: core
+    model_use: true
+    frequency: quarterly
+    source: cycle.cf.quarterly_nitrogen_economics
+    reason: External long-cycle margin environment.
+  - name: cf_realized_basket_gas_spread
+    panel: core_quarterly
+    tier: core
+    model_use: true
+    frequency: quarterly
+    source: cycle.cf.quarterly_nitrogen_economics
+    reason: Company-realized price less allocated gas cost.
+  - name: cf_total_sales_volume
+    panel: core_quarterly
+    tier: core
+    model_use: true
+    frequency: quarterly
+    source: cycle.cf.product_operations
+    reason: Compact demand and operating-volume measure.
+  - name: cf_realized_natural_gas_cost
+    panel: core_quarterly
+    tier: core
+    model_use: true
+    frequency: quarterly
+    source: cycle.cf.product_operations
+    reason: Filed company cost, retained separately from market gas.
+  - name: cf_gross_margin_change
+    panel: core_quarterly
+    tier: core
+    model_use: true
+    frequency: quarterly
+    source: cycle.cf.financials
+    reason: Profitability direction with one degree of freedom.
+
+  - name: ams_urea_theoretical_cash_spread_base
+    panel: tactical_context
+    tier: tactical
+    model_use: false
+    frequency: report_asof_daily
+    source: commodity.fertilizer_ams_3195
+    reason: Short North American history; use for current basis confirmation only.
+  - name: cf_nitrogen_basket
+    panel: tactical_context
+    tier: tactical
+    model_use: false
+    frequency: report_asof_daily
+    source: commodity.fertilizer_ams_3195
+    reason: Fixed-weight short-history price basket.
+  - name: corn_planted_acres
+    panel: tactical_context
+    tier: contextual
+    model_use: false
+    frequency: release_asof_daily
+    source: crop.planted_acres
+    reason: Seasonal scenario input, not an independent daily observation.
+  - name: product_cost_basis_residuals
+    panel: tactical_context
+    tier: contextual
+    model_use: false
+    frequency: quarterly_asof_daily
+    source: cycle.cf.quarterly_nitrogen_economics
+    reason: Diagnostic overlay for turnarounds, freight, inventory and mix.

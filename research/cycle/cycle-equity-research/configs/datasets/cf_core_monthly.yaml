@@ -1,0 +1,18 @@
+dataset_id: cycle.cf.core_monthly
+storage: parquet
+path: storage/shared_data/research/cycle/CF/core_monthly_panel.parquet
+entity_col: instrument
+time_col: month_end
+available_time_col: panel_available_time
+columns: {}
+required_columns:
+  - instrument
+  - month_end
+  - panel_available_time
+  - global_urea_gas_spread_month_mean
+  - henry_hub_month_mean
+  - corn_month_mean
+  - cf_momentum_6m
+  - latest_cf_realized_basket_gas_spread
+  - latest_cf_gross_margin_change
+  - available_model_feature_count

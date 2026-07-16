@@ -1,0 +1,46 @@
+version: 1.0.0
+subject: CF
+panel_group_id: cycle.cf.curated
+
+inputs:
+  daily_panel: storage/shared_data/research/cycle/CF/daily_panel.parquet
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+  daily_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/daily_profit_proxies.parquet
+  quarterly_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+
+outputs:
+  core_monthly: storage/shared_data/research/cycle/CF/core_monthly_panel.parquet
+  core_quarterly: storage/shared_data/research/cycle/CF/core_quarterly_panel.parquet
+  tactical_context: storage/shared_data/research/cycle/CF/tactical_context_panel.parquet
+  lineage: storage/shared_data/research/cycle/CF/curated_panel_lineage.json
+
+freshness_days:
+  henry_hub: 10
+  world_bank_urea: 75
+  corn_futures: 10
+  ams_fertilizer: 30
+
+monthly_model_features:
+  - global_urea_gas_spread_month_mean
+  - henry_hub_month_mean
+  - corn_month_mean
+  - cf_momentum_6m
+  - latest_cf_realized_basket_gas_spread
+  - latest_cf_gross_margin_change
+
+quarterly_model_features:
+  - global_urea_gas_spread_quarter_mean
+  - cf_realized_basket_gas_spread
+  - cf_total_sales_volume
+  - cf_realized_natural_gas_cost
+  - cf_gross_margin_change
+
+quality:
+  monthly_min_rows: 150
+  quarterly_min_rows: 40
+  monthly_min_complete_rows: 100
+  quarterly_min_complete_rows: 30
+  monthly_max_features: 7
+  quarterly_max_features: 5
+  maximum_pairwise_correlation: 0.95
+  maximum_missing_rate: 0.25

@@ -1,0 +1,16 @@
+dataset_id: cycle.cf.tactical_context
+storage: parquet
+path: storage/shared_data/research/cycle/CF/tactical_context_panel.parquet
+entity_col: instrument
+time_col: trade_date
+available_time_col: panel_available_time
+columns: {}
+required_columns:
+  - instrument
+  - trade_date
+  - panel_available_time
+  - ams_urea_theoretical_cash_spread_base
+  - cf_nitrogen_basket
+  - corn_planted_acres
+  - spring_application_season
+  - fall_application_season

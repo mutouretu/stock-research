@@ -1,0 +1,17 @@
+dataset_id: cycle.cf.core_quarterly
+storage: parquet
+path: storage/shared_data/research/cycle/CF/core_quarterly_panel.parquet
+entity_col: instrument
+time_col: period_end
+available_time_col: panel_available_time
+columns: {}
+required_columns:
+  - instrument
+  - period_end
+  - panel_available_time
+  - global_urea_gas_spread_quarter_mean
+  - cf_realized_basket_gas_spread
+  - cf_total_sales_volume
+  - cf_realized_natural_gas_cost
+  - cf_gross_margin_change
+  - available_model_feature_count

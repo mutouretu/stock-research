@@ -1,0 +1,96 @@
+{
+  "status": "WARNING",
+  "errors": [],
+  "warnings": [
+    "core_monthly feature missing rates exceed limit: {'latest_cf_realized_basket_gas_spread': 0.26380368098159507}",
+    "core_quarterly economically distinct features exceed correlation limit; do not use together without selection or regularization: [{'left': 'global_urea_gas_spread_quarter_mean', 'right': 'cf_realized_basket_gas_spread', 'absolute_correlation': 0.9656625232817586}]"
+  ],
+  "panels": {
+    "core_monthly": {
+      "rows": 163,
+      "columns": 27,
+      "feature_count": 6,
+      "missing_features": [],
+      "missing_rates": {
+        "global_urea_gas_spread_month_mean": 0.03067484662576687,
+        "henry_hub_month_mean": 0.0,
+        "corn_month_mean": 0.0,
+        "cf_momentum_6m": 0.03680981595092025,
+        "latest_cf_realized_basket_gas_spread": 0.26380368098159507,
+        "latest_cf_gross_margin_change": 0.24539877300613497
+      },
+      "excessive_missing_rates": {
+        "latest_cf_realized_basket_gas_spread": 0.26380368098159507
+      },
+      "complete_rows": 115,
+      "complete_rows_per_feature": 19.166666666666668,
+      "recommended_use": "探索性估计，需正则化和稳健性检验",
+      "duplicate_keys": 0,
+      "minimum_rows": 150,
+      "minimum_complete_rows": 100,
+      "maximum_features": 7,
+      "high_correlations": []
+    },
+    "core_quarterly": {
+      "rows": 42,
+      "columns": 17,
+      "feature_count": 5,
+      "missing_features": [],
+      "missing_rates": {
+        "global_urea_gas_spread_quarter_mean": 0.0,
+        "cf_realized_basket_gas_spread": 0.047619047619047616,
+        "cf_total_sales_volume": 0.0,
+        "cf_realized_natural_gas_cost": 0.047619047619047616,
+        "cf_gross_margin_change": 0.023809523809523808
+      },
+      "excessive_missing_rates": {},
+      "complete_rows": 40,
+      "complete_rows_per_feature": 8.0,
+      "recommended_use": "描述分析/关系校准，不宜独立训练复杂模型",
+      "duplicate_keys": 0,
+      "minimum_rows": 40,
+      "minimum_complete_rows": 30,
+      "maximum_features": 5,
+      "high_correlations": [
+        {
+          "left": "global_urea_gas_spread_quarter_mean",
+          "right": "cf_realized_basket_gas_spread",
+          "absolute_correlation": 0.9656625232817586
+        }
+      ]
+    },
+    "tactical_context": {
+      "rows": 3403,
+      "columns": 26,
+      "duplicate_keys": 0
+    }
+  },
+  "selection": {
+    "monthly_model_features": [
+      "global_urea_gas_spread_month_mean",
+      "henry_hub_month_mean",
+      "corn_month_mean",
+      "cf_momentum_6m",
+      "latest_cf_realized_basket_gas_spread",
+      "latest_cf_gross_margin_change"
+    ],
+    "quarterly_model_features": [
+      "global_urea_gas_spread_quarter_mean",
+      "cf_realized_basket_gas_spread",
+      "cf_total_sales_volume",
+      "cf_realized_natural_gas_cost",
+      "cf_gross_margin_change"
+    ],
+    "tactical_registry_features": [
+      "ams_urea_theoretical_cash_spread_base",
+      "cf_nitrogen_basket",
+      "corn_planted_acres",
+      "product_cost_basis_residuals"
+    ]
+  },
+  "determinism": {
+    "core_monthly": true,
+    "core_quarterly": true,
+    "tactical_context": true
+  }
+}
