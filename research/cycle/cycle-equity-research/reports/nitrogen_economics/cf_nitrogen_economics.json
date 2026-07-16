@@ -1,0 +1,131 @@
+{
+  "model_id": "cf_nitrogen_economics",
+  "version": "1.0.0",
+  "status": "PASS",
+  "errors": [],
+  "daily_rows": 3403,
+  "quarterly_rows": 42,
+  "scenario_ordering_violations": 0,
+  "product_validation": {
+    "ammonia": {
+      "observations": 40,
+      "level_correlation": 0.9547110795545385,
+      "change_correlation": 0.8999155054165177,
+      "direction_accuracy": 0.8205128205128205,
+      "ols_intercept": -141.8009280277689,
+      "ols_slope": 0.8212907451291851,
+      "ols_r_squared": 0.9114732454241922,
+      "residual_mean": 201.678,
+      "mae": 201.678
+    },
+    "granular_urea": {
+      "observations": 40,
+      "level_correlation": 0.9831595442403391,
+      "change_correlation": 0.9248236039019762,
+      "direction_accuracy": 0.8974358974358975,
+      "ols_intercept": -105.87056902656003,
+      "ols_slope": 0.8787258132655437,
+      "ols_r_squared": 0.9666026894308716,
+      "residual_mean": 140.86275,
+      "mae": 140.86275
+    },
+    "uan": {
+      "observations": 40,
+      "level_correlation": 0.9907905678348695,
+      "change_correlation": 0.979784755854377,
+      "direction_accuracy": 0.8974358974358975,
+      "ols_intercept": -99.43932681708888,
+      "ols_slope": 0.9191562812541483,
+      "ols_r_squared": 0.9816659493105439,
+      "residual_mean": 116.24425,
+      "mae": 116.24425
+    },
+    "ammonium_nitrate": {
+      "observations": 40,
+      "level_correlation": 0.6164974628832746,
+      "change_correlation": 0.48287925614974886,
+      "direction_accuracy": 0.717948717948718,
+      "ols_intercept": -40.358220559622396,
+      "ols_slope": 0.3751496407115999,
+      "ols_r_squared": 0.3800691217415144,
+      "residual_mean": 189.7765,
+      "mae": 189.7765
+    }
+  },
+  "market_validation": {
+    "ams_urea_spread_vs_cf_urea_gross_margin": {
+      "observations": 15,
+      "level_correlation": 0.8115105419773139,
+      "change_correlation": 0.7351000857802177,
+      "direction_accuracy": 0.6428571428571429,
+      "ols_intercept": -51.94968697847374,
+      "ols_slope": 0.444119832454111,
+      "ols_r_squared": 0.6585493597403136,
+      "residual_mean": 353.11583450097095,
+      "mae": 353.11583450097095
+    },
+    "global_urea_spread_vs_cf_urea_realized_price": {
+      "observations": 42,
+      "level_correlation": 0.9676296669380302,
+      "change_correlation": 0.7576767536405928,
+      "direction_accuracy": 0.7804878048780488,
+      "ols_intercept": 106.03344893332063,
+      "ols_slope": 0.9942520750252613,
+      "ols_r_squared": 0.9363071723386024,
+      "residual_mean": -104.6034947715759,
+      "mae": 104.6034947715759
+    }
+  },
+  "company_validation": {
+    "basket_spread_vs_gross_margin": {
+      "observations": 40,
+      "level_correlation": 0.8823216761964752,
+      "change_correlation": 0.67693822810244,
+      "direction_accuracy": 0.7948717948717948,
+      "ols_intercept": 0.005061370779776437,
+      "ols_slope": 0.0011055722274149347,
+      "ols_r_squared": 0.7784915402861577,
+      "residual_mean": 260.53672292481224,
+      "mae": 260.53672292481224
+    },
+    "basket_spread_vs_ebitda_proxy": {
+      "observations": 40,
+      "level_correlation": 0.9374939092204075,
+      "change_correlation": 0.8120165646414357,
+      "direction_accuracy": 0.8461538461538461,
+      "ols_intercept": -309366824.88132685,
+      "ols_slope": 3644677.6636955137,
+      "ols_r_squared": 0.8788948298253612,
+      "residual_mean": -641274739.1698492,
+      "mae": 641274739.1698492
+    }
+  },
+  "calibration": {
+    "cf_2023_gas_consumption_mmbtu": 341000000,
+    "cf_2023_product_sales_tons": 19100000,
+    "implied_portfolio_intensity_mmbtu_per_ton": 17.8534031414,
+    "configured_fixed_weight_intensity_mmbtu_per_ton": 17.954447
+  },
+  "validation_thresholds": {
+    "minimum_product_level_correlation": 0.5,
+    "minimum_product_direction_accuracy": 0.55,
+    "minimum_company_level_correlation": 0.7,
+    "minimum_company_direction_accuracy": 0.6
+  },
+  "sources": [
+    "https://www.sec.gov/Archives/edgar/data/1324404/000110465924055837/tm2413105d1_ex99-1.htm",
+    "https://www.sec.gov/Archives/edgar/data/1324404/000132440425000006/cf-20241231.htm"
+  ],
+  "limitations": [
+    "Gas intensities are scenario assumptions calibrated to company-wide disclosed consumption, not plant engineering measurements.",
+    "Identified variable cost is zero because no consistent product-level series is disclosed; resulting spreads are not accounting gross margins.",
+    "AMS prices are Illinois distributor asks while CF prices are company realized prices across geographies and contract types.",
+    "Inventory timing, hedging, freight, purchased product, turnarounds and product mix remain in the residual."
+  ],
+  "determinism": {
+    "daily_hash": "078aee171ac713a0967c88480edc491bd145eb331db74f0f12e5c591a4f14cfb",
+    "quarterly_hash": "576d4269bd4e00a021b7d4197163a27c5c48d1504a725d318b4e84df2f8d6aff",
+    "daily_repeat_match": true,
+    "quarterly_repeat_match": true
+  }
+}

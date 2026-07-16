@@ -23,9 +23,11 @@ def test_dataset_contracts_parse_with_research_data_core() -> None:
         "commodity.urea",
         "crop.corn",
         "crop.planted_acres",
+        "cycle.cf.daily_nitrogen_economics",
         "cycle.cf.financials",
         "cycle.cf.price",
         "cycle.cf.product_operations",
+        "cycle.cf.quarterly_nitrogen_economics",
     ]
 
 

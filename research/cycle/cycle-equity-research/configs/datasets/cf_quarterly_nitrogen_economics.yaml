@@ -1,0 +1,17 @@
+dataset_id: cycle.cf.quarterly_nitrogen_economics
+storage: parquet
+path: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+entity_col: instrument
+time_col: period_end
+available_time_col: panel_available_time
+columns: {}
+required_columns:
+  - instrument
+  - period_end
+  - panel_available_time
+  - model_version
+  - cf_realized_natural_gas_cost
+  - cf_granular_urea_realized_gas_spread_base
+  - cf_granular_urea_actual_gross_margin_per_ton
+  - cf_granular_urea_other_cost_basis_residual
+  - cf_realized_basket_gas_spread_base

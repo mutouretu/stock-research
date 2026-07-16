@@ -300,6 +300,9 @@ storage/shared_data/research/cycle/CF/quarterly_panel.parquet
 
 ## 6. Milestone 3：氮肥利润代理
 
+当前实现状态：已完成 v1.0.0。日频与季度代理分别输出到
+`storage/shared_data/research/cycle/CF/nitrogen_economics/`，模型参数、验证结果和失效场景均版本化保存。
+
 ### 6.1 目标
 
 构造具备明确经济含义、单位一致、可与 CF 实际季度经营数据校准的氮肥利润代理。

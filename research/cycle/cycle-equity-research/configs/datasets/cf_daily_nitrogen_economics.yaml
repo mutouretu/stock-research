@@ -1,0 +1,16 @@
+dataset_id: cycle.cf.daily_nitrogen_economics
+storage: parquet
+path: storage/shared_data/research/cycle/CF/nitrogen_economics/daily_profit_proxies.parquet
+entity_col: instrument
+time_col: trade_date
+available_time_col: panel_available_time
+columns: {}
+required_columns:
+  - instrument
+  - trade_date
+  - panel_available_time
+  - model_version
+  - global_fertilizer_index
+  - cf_nitrogen_basket
+  - global_urea_theoretical_cash_spread_base
+  - ams_urea_theoretical_cash_spread_base

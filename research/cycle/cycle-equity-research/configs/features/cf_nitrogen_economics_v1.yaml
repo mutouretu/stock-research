@@ -1,0 +1,96 @@
+model_id: cf_nitrogen_economics
+version: 1.0.0
+standard_product_ton: short_ton
+currency: USD
+
+unit_conversions:
+  metric_ton_to_short_ton: 1.10231131
+  usd_per_metric_ton_to_usd_per_short_ton: 0.90718474
+
+scenario_factors:
+  low: 0.85
+  base: 1.00
+  high: 1.15
+
+products:
+  ammonia:
+    nitrogen_fraction: 0.82
+    gas_intensity_base_mmbtu_per_short_ton: 28.0
+    identified_variable_cost_usd_per_short_ton: 0.0
+  granular_urea:
+    nitrogen_fraction: 0.46
+    gas_intensity_base_mmbtu_per_short_ton: 19.0
+    identified_variable_cost_usd_per_short_ton: 0.0
+  uan:
+    nitrogen_fraction: 0.32
+    gas_intensity_base_mmbtu_per_short_ton: 13.0
+    identified_variable_cost_usd_per_short_ton: 0.0
+  ammonium_nitrate:
+    nitrogen_fraction: 0.34
+    gas_intensity_base_mmbtu_per_short_ton: 14.0
+    identified_variable_cost_usd_per_short_ton: 0.0
+
+daily_market_products:
+  global_urea:
+    source_column: world_bank_urea
+    product: granular_urea
+    source_unit: USD_per_metric_ton
+  ams_ammonia:
+    source_column: ams_ammonia
+    product: ammonia
+    source_unit: USD_per_short_ton
+  ams_urea:
+    source_column: ams_urea_46
+    product: granular_urea
+    source_unit: USD_per_short_ton
+  ams_uan32:
+    source_column: ams_uan_32
+    product: uan
+    source_unit: USD_per_short_ton
+
+quarterly_cf_products:
+  ammonia: ammonia
+  granular_urea: granular_urea
+  uan: uan
+  ammonium_nitrate: ammonium_nitrate
+
+global_fertilizer_index:
+  source_column: world_bank_urea
+  base_price: 236.1345833333
+  base_period: 2015-01-01/2019-12-31
+
+cf_nitrogen_basket:
+  price_base_period: 2024-01-01/2024-12-31
+  volume_weight_base_period: 2019-01-01/2021-12-31
+  components:
+    ams_ammonia:
+      weight: 0.2395082942
+      base_price: 743.2142307692
+    ams_urea:
+      weight: 0.3147401581
+      base_price: 536.5692307692
+    ams_uan32:
+      weight: 0.4457515477
+      base_price: 329.3684210526
+
+calibration:
+  cf_2023_gas_consumption_mmbtu: 341000000
+  cf_2023_product_sales_tons: 19100000
+  implied_portfolio_intensity_mmbtu_per_ton: 17.8534031414
+  configured_fixed_weight_intensity_mmbtu_per_ton: 17.954447
+
+validation_thresholds:
+  minimum_product_level_correlation: 0.50
+  minimum_product_direction_accuracy: 0.55
+  minimum_company_level_correlation: 0.70
+  minimum_company_direction_accuracy: 0.60
+
+sources:
+  - https://www.sec.gov/Archives/edgar/data/1324404/000110465924055837/tm2413105d1_ex99-1.htm
+  - https://www.sec.gov/Archives/edgar/data/1324404/000132440425000006/cf-20241231.htm
+
+limitations:
+  - Gas intensities are scenario assumptions calibrated to company-wide disclosed consumption, not plant engineering measurements.
+  - Identified variable cost is zero because no consistent product-level series is disclosed; resulting spreads are not accounting gross margins.
+  - AMS prices are Illinois distributor asks while CF prices are company realized prices across geographies and contract types.
+  - Inventory timing, hedging, freight, purchased product, turnarounds and product mix remain in the residual.

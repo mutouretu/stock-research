@@ -80,3 +80,15 @@ Low-frequency values are joined using their `available_time`, not their observat
 quarterly panel becomes available at the later of the earnings exhibit and formal periodic filing,
 which is conservative for backtests. Current World Bank urea freshness limitations remain visible
 as warnings and do not create future-data leakage.
+
+## Milestone 3 nitrogen economics
+
+Build the versioned daily and quarterly nitrogen-profit proxies with:
+
+```bash
+.venv/bin/python scripts/build_cf_nitrogen_proxies.py
+```
+
+The model keeps market prices, CF realized prices and accounting gross margin separate. Gas
+intensity, nutrient content, unit conversion, fixed basket weights, source links and known failure
+scenarios are declared in `configs/features/cf_nitrogen_economics_v1.yaml`.
