@@ -149,6 +149,19 @@ half-sample stability checks. Complete grid and best-lag datasets are written un
 `storage/shared_data/research/cycle/CF/cycle_analysis/`; reports are under
 `reports/cycle_analysis/`.
 
+## Milestone 4.2 stability analysis
+
+Run fixed-lag rolling, season, gas-regime, and spread-stress checks with:
+
+```bash
+.venv/bin/python scripts/run_cf_lead_lag_stability.py
+```
+
+M4.2 reads the locked M4.1 best lags and never reselects a lag inside a window or slice. It emits
+rolling correlations, descriptive regime slices, and explicit `ACCEPT_*`, `CONDITIONAL`, `REJECT`,
+or `DIAGNOSTIC` decisions under `storage/shared_data/research/cycle/CF/cycle_analysis/`. Complete
+Markdown/JSON evidence is written to `reports/cycle_analysis/`.
+
 ## Publication source
 
 The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under

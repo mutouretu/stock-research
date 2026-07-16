@@ -13,6 +13,7 @@ PUBLICATION_ROOT = Path(__file__).resolve().parents[1]
 BUILD_DIR = PUBLICATION_ROOT / "build"
 MAIN_TEX = PUBLICATION_ROOT / "cf_cycle_analysis.tex"
 FIGURE_SCRIPT = PUBLICATION_ROOT / "scripts/generate_lead_lag_figure.py"
+STABILITY_FIGURE_SCRIPT = PUBLICATION_ROOT / "scripts/generate_stability_figure.py"
 
 
 def main() -> int:
@@ -20,6 +21,7 @@ def main() -> int:
     if not xelatex:
         raise RuntimeError("xelatex is required to build the publication")
     subprocess.run([sys.executable, str(FIGURE_SCRIPT)], check=True)
+    subprocess.run([sys.executable, str(STABILITY_FIGURE_SCRIPT)], check=True)
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
     command = [
         xelatex,

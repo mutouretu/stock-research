@@ -130,7 +130,7 @@ def _render(rows: list[dict], report: dict) -> str:
         color, marker, legend = STATUS_STYLE[status]
         lines.extend(
             [
-                "\\addplot+[",
+                "\\addplot[",
                 "  only marks,",
                 f"  color={color}, mark={marker}, mark size=2.4pt,",
                 "  error bars/.cd, x dir=both, x explicit,",

@@ -1,0 +1,70 @@
+version: 1.0.0
+analysis_id: cf_lead_lag_stability_v1
+subject: CF
+analysis_end_date: 2026-06-30
+
+inputs:
+  lead_lag_config: research/cycle/cycle-equity-research/configs/experiments/cf_lead_lag_v1.yaml
+  lead_lag_report: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_v1.json
+  core_monthly: storage/shared_data/research/cycle/CF/core_monthly_panel.parquet
+  core_quarterly: storage/shared_data/research/cycle/CF/core_quarterly_panel.parquet
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+  quarterly_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+
+outputs:
+  rolling_windows: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_rolling_stability_v1.parquet
+  slices: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_slice_stability_v1.parquet
+  decisions: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_stability_decisions_v1.parquet
+  manifest: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_stability_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_stability_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_stability_v1.json
+
+# 每个关系固定使用 M4.1 已选出的领先期；M4.2 不在窗口或分组内重新搜索滞后。
+rolling:
+  window_observations:
+    monthly: 60
+    quarterly: 20
+    event_only: 20
+  minimum_windows: 8
+
+slices:
+  minimum_observations:
+    monthly: 18
+    quarterly: 8
+    event_only: 8
+  gas_regime_quantile: 0.50
+  stress_regime_quantile: 0.75
+  monthly_seasons:
+    spring_application: [3, 4, 5, 6]
+    fall_application: [9, 10, 11]
+    off_season: [1, 2, 7, 8, 12]
+  quarterly_seasons:
+    spring_half: [1, 2]
+    fall_and_other_half: [3, 4]
+
+decision_thresholds:
+  minimum_expected_sign_window_share: 0.75
+  minimum_median_absolute_correlation: 0.20
+  minimum_regime_expected_sign_share: 0.75
+  minimum_regime_absolute_correlation: 0.10
+
+candidate_roles:
+  operating_bridge:
+    - quarterly_urea_to_ammonia_price_change
+    - quarterly_urea_to_granular_urea_price_change
+    - quarterly_urea_to_uan_price_change
+    - quarterly_urea_to_ammonium_nitrate_price_change
+    - quarterly_henry_hub_to_cf_gas_cost_change
+  cycle_core_validation:
+    - quarterly_global_spread_to_cf_realized_spread_change
+    - quarterly_global_spread_to_gross_margin_change
+    - quarterly_global_spread_to_ebitda_change
+  demand_candidate:
+    - quarterly_corn_to_cf_volume_yoy_change
+  market_confirmation:
+    - monthly_global_spread_change_to_cf_return
+    - monthly_corn_change_to_cf_return
+    - monthly_disclosed_realized_spread_change_to_cf_return
+    - monthly_disclosed_margin_change_to_cf_return
+  diagnostic_identity:
+    - monthly_henry_hub_change_to_global_spread_change

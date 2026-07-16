@@ -8,6 +8,7 @@ machine-readable evidence remains under `reports/`.
 cf_cycle_analysis.tex                  manuscript source
 figures/                               generated, versioned TeX figure fragments
 scripts/generate_lead_lag_figure.py    JSON report to PGFPlots figure
+scripts/generate_stability_figure.py   M4.2 rolling-range figure
 scripts/build_publication.py           regenerate figures and compile twice with XeLaTeX
 build/                                 ignored compiler output
 ```

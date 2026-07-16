@@ -35,49 +35,16 @@ def run_lead_lag_analysis(
         if frame_name not in frames:
             raise ValueError(f"Missing configured frame: {frame_name}")
         frequency = relationship["frequency"]
-        date_column = relationship.get(
-            "date_column", "month_end" if frequency == "monthly" else "period_end"
-        )
-        frame = frames[frame_name].copy()
-        _require_columns(frame, relationship, date_column)
-        frame[date_column] = pd.to_datetime(frame[date_column])
-        frame = frame[frame[date_column] <= analysis_end].sort_values(date_column)
-        if frame[date_column].duplicated().any():
-            raise ValueError(
-                f"{relationship['id']} has duplicate dates in {date_column}"
-            )
-        frame = frame.reset_index(drop=True)
-        pit_violations = _point_in_time_violations(
-            frame, relationship, date_column
-        )
-        if pit_violations:
-            raise ValueError(
-                f"{relationship['id']} has {pit_violations} signal availability violations"
-            )
-
-        signal = _transform(
-            frame[relationship["signal"]], relationship["signal_transform"]
-        )
-        target = _transform(
-            frame[relationship["target"]], relationship["target_transform"]
-        )
-        event_mask = _event_mask(frame, relationship.get("event_only_column"))
         minimum = int(inference["minimum_observations"][frequency])
         hac_max_lag = int(inference["hac_max_lag"][frequency])
 
         for lead in relationship["lead_periods"]:
             lead = int(lead)
-            aligned = pd.DataFrame(
-                {
-                    "signal_date": frame[date_column],
-                    "target_date": frame[date_column].shift(-lead),
-                    "signal_value": signal,
-                    "target_value": target.shift(-lead),
-                    "event": event_mask,
-                }
-            )
-            aligned = aligned[aligned["event"]].dropna(
-                subset=["signal_value", "target_value", "signal_date", "target_date"]
+            aligned = align_relationship_sample(
+                frames[frame_name],
+                relationship,
+                lead_periods=lead,
+                analysis_end_date=analysis_end,
             )
             statistics = _relationship_statistics(
                 aligned["signal_value"].to_numpy(dtype=float),
@@ -117,7 +84,7 @@ def run_lead_lag_analysis(
                         aligned["target_date"].max() if not aligned.empty else pd.NaT
                     ),
                     "event_only": bool(relationship.get("event_only_column")),
-                    "point_in_time_violations": pit_violations,
+                    "point_in_time_violations": 0,
                     "expected_sign": expected_sign,
                     "expected_sign_matches": _expected_sign_matches(
                         correlation, expected_sign
@@ -144,6 +111,67 @@ def run_lead_lag_analysis(
     best = _select_best_lags(grid)
     best["evidence_status"] = best.apply(_evidence_status, axis=1)
     return LeadLagResult(lag_grid=grid, best_lags=best)
+
+
+def align_relationship_sample(
+    frame: pd.DataFrame,
+    relationship: dict,
+    *,
+    lead_periods: int,
+    analysis_end_date,
+    context_columns: list[str] | None = None,
+) -> pd.DataFrame:
+    """Align one fixed-lag sample and preserve optional signal-date context."""
+    frequency = relationship["frequency"]
+    date_column = relationship.get(
+        "date_column", "month_end" if frequency == "monthly" else "period_end"
+    )
+    context_columns = list(context_columns or [])
+    _require_columns(frame, relationship, date_column)
+    missing_context = set(context_columns) - set(frame.columns)
+    if missing_context:
+        raise ValueError(
+            f"{relationship['id']} missing context columns: {sorted(missing_context)}"
+        )
+    prepared = frame.copy()
+    prepared[date_column] = pd.to_datetime(prepared[date_column])
+    prepared = prepared[
+        prepared[date_column] <= pd.Timestamp(analysis_end_date)
+    ].sort_values(date_column)
+    if prepared[date_column].duplicated().any():
+        raise ValueError(
+            f"{relationship['id']} has duplicate dates in {date_column}"
+        )
+    prepared = prepared.reset_index(drop=True)
+    violations = _point_in_time_violations(prepared, relationship, date_column)
+    if violations:
+        raise ValueError(
+            f"{relationship['id']} has {violations} signal availability violations"
+        )
+    signal = _transform(
+        prepared[relationship["signal"]], relationship["signal_transform"]
+    )
+    target = _transform(
+        prepared[relationship["target"]], relationship["target_transform"]
+    )
+    lead = int(lead_periods)
+    aligned = pd.DataFrame(
+        {
+            "signal_date": prepared[date_column],
+            "target_date": prepared[date_column].shift(-lead),
+            "signal_value": signal,
+            "target_value": target.shift(-lead),
+            "event": _event_mask(
+                prepared, relationship.get("event_only_column")
+            ),
+        }
+    )
+    for column in context_columns:
+        aligned[column] = prepared[column]
+    aligned = aligned[aligned["event"]].dropna(
+        subset=["signal_value", "target_value", "signal_date", "target_date"]
+    )
+    return aligned.reset_index(drop=True)
 
 
 def _require_columns(

@@ -33,7 +33,7 @@
 \addplot[black!25,dashed,forget plot] coordinates {(-0.80,5.5) (1.08,5.5)};
 \node[anchor=west,font=\scriptsize\bfseries,text=black!70] at (axis cs:-0.78,14.55) {经济期经营传导};
 \node[anchor=west,font=\scriptsize\bfseries,text=black!70] at (axis cs:-0.78,5.35) {可用期与市场反应};
-\addplot+[
+\addplot[
   only marks,
   color=cfStrong, mark=*, mark size=2.4pt,
   error bars/.cd, x dir=both, x explicit,
@@ -51,7 +51,7 @@
     (0.325344,5) +- (0.208880,0)
 };
 \addlegendentry{STRONG}
-\addplot+[
+\addplot[
   only marks,
   color=cfContradictory, mark=diamond*, mark size=2.4pt,
   error bars/.cd, x dir=both, x explicit,
@@ -61,7 +61,7 @@
     (-0.374834,6) +- (0.335234,0)
 };
 \addlegendentry{CONTRADICTORY}
-\addplot+[
+\addplot[
   only marks,
   color=cfUnstable, mark=*, mark size=2.4pt,
   error bars/.cd, x dir=both, x explicit,
@@ -73,7 +73,7 @@
     (-0.117814,2) +- (0.137475,0)
 };
 \addlegendentry{UNSTABLE}
-\addplot+[
+\addplot[
   only marks,
   color=cfDiagnostic, mark=square*, mark size=2.4pt,
   error bars/.cd, x dir=both, x explicit,

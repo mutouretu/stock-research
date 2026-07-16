@@ -13,6 +13,7 @@ import yaml
 
 from research_data_core.paths import find_stock_research_root, resolve_repo_path
 
+from cycle_equity_research.analysis.frames import prepare_lead_lag_frames
 from cycle_equity_research.analysis.lead_lag import run_lead_lag_analysis
 from cycle_equity_research.analysis.report import (
     build_lead_lag_report,
@@ -32,7 +33,7 @@ def main() -> int:
         name: pd.read_parquet(resolve_repo_path(path, workspace))
         for name, path in config["inputs"].items()
     }
-    frames = _prepare_frames(inputs)
+    frames = prepare_lead_lag_frames(inputs)
     result = run_lead_lag_analysis(frames, config)
     repeated = run_lead_lag_analysis(frames, config)
     deterministic = (
@@ -87,39 +88,6 @@ def main() -> int:
         f"deterministic={deterministic} status={report['status']}"
     )
     return 0 if report["status"] == "PASS" else 1
-
-
-def _prepare_frames(inputs: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
-    keys = ["instrument", "period_end", "panel_available_time"]
-    market_columns = [
-        *keys,
-        "world_bank_urea_quarter_mean",
-        "henry_hub_quarter_mean",
-        "corn_quarter_mean",
-    ]
-    product_price_columns = [
-        *keys,
-        "cf_ammonia_realized_price",
-        "cf_granular_urea_realized_price",
-        "cf_uan_realized_price",
-        "cf_ammonium_nitrate_realized_price",
-    ]
-    quarterly = inputs["core_quarterly"].merge(
-        inputs["quarterly_panel"][market_columns],
-        on=keys,
-        how="left",
-        validate="one_to_one",
-    )
-    quarterly = quarterly.merge(
-        inputs["quarterly_nitrogen"][product_price_columns],
-        on=keys,
-        how="left",
-        validate="one_to_one",
-    )
-    return {
-        "monthly": inputs["core_monthly"].copy(),
-        "quarterly": quarterly,
-    }
 
 
 def _write_parquet(frame: pd.DataFrame, path: Path) -> None:
