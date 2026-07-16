@@ -1,0 +1,110 @@
+panel_id: cycle.cf.quarterly
+instrument: CF
+frequency: fiscal_quarter
+output: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+
+base:
+  dataset_id: cycle.cf.product_operations
+  filters: {ticker: CF}
+
+financials:
+  dataset_id: cycle.cf.financials
+  metrics:
+    - output_col: cf_revenue
+      concepts: [Revenues, SalesRevenueNet]
+      kind: flow
+    - output_col: cf_gross_profit
+      concepts: [GrossProfit]
+      kind: flow
+    - output_col: cf_net_income
+      concepts: [NetIncomeLossAvailableToCommonStockholdersBasic, NetIncomeLoss]
+      kind: flow
+    - output_col: cf_inventory
+      concepts: [InventoryNet]
+      kind: instant
+    - output_col: cf_cash
+      concepts:
+        - Cash
+        - CashAndCashEquivalentsAtCarryingValue
+        - CashCashEquivalentsRestrictedCashAndRestrictedCashEquivalents
+      kind: instant
+    - output_col: cf_long_term_debt
+      concepts: [LongTermDebtNoncurrent, LongTermDebt]
+      kind: instant
+    - output_col: cf_operating_income
+      concepts: [OperatingIncomeLoss]
+      kind: flow
+    - output_col: cf_depreciation_amortization
+      concepts: [DepreciationDepletionAndAmortization]
+      kind: flow
+    - output_col: cf_operating_cash_flow
+      concepts: [NetCashProvidedByUsedInOperatingActivities]
+      kind: flow
+    - output_col: cf_capex
+      concepts: [PaymentsToAcquirePropertyPlantAndEquipment]
+      kind: flow
+    - output_col: cf_shares_outstanding
+      concepts: [EntityCommonStockSharesOutstanding]
+      kind: latest_instant
+
+asof_inputs:
+  - dataset_id: cycle.cf.price
+    filters: {symbol: CF}
+    time_col: trade_date
+    value_col: close
+    output_col: cf_price_at_available_time
+
+market_inputs:
+  - dataset_id: commodity.henry_hub
+    filters: {series_id: DHHNGSP}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: price
+    output_col: henry_hub_quarter_mean
+    aggregation: mean
+
+  - dataset_id: commodity.urea
+    filters: {series_id: WORLD_BANK_UREA_MONTHLY}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: price
+    output_col: world_bank_urea_quarter_mean
+    aggregation: mean
+
+  - dataset_id: crop.corn
+    filters: {symbol: "ZC=F"}
+    time_col: trade_date
+    value_col: price
+    output_col: corn_quarter_mean
+    aggregation: mean
+
+  - dataset_id: crop.corn
+    filters: {symbol: "ZS=F"}
+    time_col: trade_date
+    value_col: price
+    output_col: soybean_quarter_mean
+    aggregation: mean
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: anhydrous_ammonia}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_ammonia_quarter_mean
+    aggregation: mean
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: urea_46}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_urea_46_quarter_mean
+    aggregation: mean
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: uan_32}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_uan_32_quarter_mean
+    aggregation: mean

@@ -1,0 +1,59 @@
+research_subject: CF
+milestone: 1
+
+sources:
+  cf_price:
+    enabled: true
+    symbol: CF
+    start_date: "2013-01-01"
+    end_date: null
+    output: storage/shared_data/us/raw/daily/parquet_by_symbol/CF.parquet
+
+  henry_hub:
+    enabled: true
+    url: https://fred.stlouisfed.org/graph/fredgraph.csv?id=DHHNGSP
+    output: storage/shared_data/commodities/henry_hub.parquet
+
+  world_bank_urea:
+    enabled: true
+    url: https://thedocs.worldbank.org/en/doc/18675f1d1639c7a34d463f59263ba0a2-0050012025/related/CMO-Historical-Data-Monthly.xlsx
+    output: storage/shared_data/commodities/urea.parquet
+
+  sec_companyfacts:
+    enabled: true
+    ticker: CF
+    cik: "0001324404"
+    url: https://data.sec.gov/api/xbrl/companyfacts/CIK0001324404.json
+    user_agent_env: SEC_USER_AGENT
+    output: storage/shared_data/fundamentals/us/CF/companyfacts.parquet
+
+  cf_product_operations:
+    enabled: true
+    user_agent_env: SEC_USER_AGENT
+    start_year: 2013
+    raw_dir: storage/shared_data/fundamentals/us/CF/earnings/raw
+    output: storage/shared_data/fundamentals/us/CF/product_operations.parquet
+
+  crop_futures:
+    enabled: true
+    symbols: ["ZC=F", "ZS=F"]
+    start_date: "2013-01-01"
+    end_date: null
+    output: storage/shared_data/agriculture/crop_futures.parquet
+
+  ers_corn:
+    enabled: true
+    url: https://www.ers.usda.gov/media/4962/corn.csv
+    output: storage/shared_data/agriculture/ers_corn_costs_returns.parquet
+
+  ers_soybeans:
+    enabled: true
+    url: https://www.ers.usda.gov/media/4976/soybeans.csv
+    output: storage/shared_data/agriculture/ers_soybean_costs_returns.parquet
+
+  nass_planted_acres:
+    enabled: true
+    url: https://quickstats.nass.usda.gov/api/api_GET/
+    api_key_env: NASS_API_KEY
+    start_year: 2013
+    output: storage/shared_data/agriculture/nass_planted_acres.parquet

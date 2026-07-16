@@ -1,0 +1,209 @@
+{
+  "subject": "CF",
+  "milestone": 1,
+  "as_of": "2026-07-16",
+  "error_count": 0,
+  "warning_count": 1,
+  "pending_p0_sources": [],
+  "datasets": [
+    {
+      "dataset_id": "cycle.cf.price",
+      "path": "storage/shared_data/us/raw/daily/parquet_by_symbol/CF.parquet",
+      "status": "PASS",
+      "rows": 3403,
+      "first_observation": "2013-01-02",
+      "last_observation": "2026-07-15",
+      "missing_rate": {
+        "symbol": 0.0,
+        "trade_date": 0.0,
+        "close": 0.0,
+        "adj_close": 0.0,
+        "volume": 0.0,
+        "source": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "commodity.henry_hub",
+      "path": "storage/shared_data/commodities/henry_hub.parquet",
+      "status": "PASS",
+      "rows": 7410,
+      "first_observation": "1997-01-07",
+      "last_observation": "2026-07-13",
+      "missing_rate": {
+        "series_id": 0.0,
+        "observation_date": 0.0,
+        "available_time": 0.0,
+        "value": 0.0,
+        "unit": 0.0,
+        "source": 0.0,
+        "retrieved_at": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "commodity.urea",
+      "path": "storage/shared_data/commodities/urea.parquet",
+      "status": "WARNING",
+      "rows": 792,
+      "first_observation": "1960-01-01",
+      "last_observation": "2025-12-01",
+      "missing_rate": {
+        "series_id": 0.0,
+        "observation_date": 0.0,
+        "available_time": 0.0,
+        "value": 0.0,
+        "unit": 0.0,
+        "source": 0.0,
+        "retrieved_at": 0.0
+      },
+      "issues": [
+        {
+          "severity": "WARNING",
+          "check": "staleness",
+          "message": "最新数据距审计日 227 天，阈值为 75 天"
+        }
+      ]
+    },
+    {
+      "dataset_id": "commodity.fertilizer_ams_3195",
+      "path": "storage/shared_data/commodities/ams_3195/fertilizer_prices.parquet",
+      "status": "PASS",
+      "rows": 321,
+      "first_observation": "2022-09-22",
+      "last_observation": "2026-07-10",
+      "missing_rate": {
+        "product": 0.0,
+        "report_date": 0.0,
+        "available_time": 0.0,
+        "price_low": 0.0,
+        "price_high": 0.0,
+        "price_average": 0.0,
+        "unit": 0.0,
+        "source_document": 0.0,
+        "sha256": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "cycle.cf.sec_companyfacts",
+      "path": "storage/shared_data/fundamentals/us/CF/companyfacts.parquet",
+      "status": "PASS",
+      "rows": 27212,
+      "first_observation": "2006-12-31",
+      "last_observation": "2026-05-04",
+      "missing_rate": {
+        "ticker": 0.0,
+        "concept": 0.0,
+        "unit": 0.0,
+        "value": 0.0,
+        "period_end": 0.0,
+        "filing_date": 0.0,
+        "form": 0.0,
+        "accession": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "cycle.cf.product_operations",
+      "path": "storage/shared_data/fundamentals/us/CF/product_operations.parquet",
+      "status": "PASS",
+      "rows": 834,
+      "first_observation": "2015-06-30",
+      "last_observation": "2026-03-31",
+      "missing_rate": {
+        "ticker": 0.0,
+        "period_end": 0.0,
+        "fiscal_year": 0.0,
+        "fiscal_quarter": 0.0,
+        "scope": 0.0,
+        "product": 0.0,
+        "metric": 0.0,
+        "value": 0.0,
+        "unit": 0.0,
+        "filing_date": 0.0,
+        "accession": 0.0,
+        "source_url": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "crop.corn_soybean_futures",
+      "path": "storage/shared_data/agriculture/crop_futures.parquet",
+      "status": "PASS",
+      "rows": 6820,
+      "first_observation": "2013-01-02",
+      "last_observation": "2026-07-16",
+      "missing_rate": {
+        "symbol": 0.0,
+        "commodity": 0.0,
+        "trade_date": 0.0,
+        "close": 0.002346041055718475,
+        "adj_close": 0.002346041055718475,
+        "volume": 0.002346041055718475,
+        "unit": 0.0,
+        "source": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "crop.corn_costs_returns",
+      "path": "storage/shared_data/agriculture/ers_corn_costs_returns.parquet",
+      "status": "PASS",
+      "rows": 5665,
+      "first_observation": "1996-12-31",
+      "last_observation": "2025-12-31",
+      "missing_rate": {
+        "commodity": 0.0,
+        "category": 0.0,
+        "item": 0.0,
+        "unit": 0.0,
+        "region": 0.0,
+        "year": 0.0,
+        "value": 0.0,
+        "available_time": 0.0,
+        "source": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "crop.soybean_costs_returns",
+      "path": "storage/shared_data/agriculture/ers_soybean_costs_returns.parquet",
+      "status": "PASS",
+      "rows": 6026,
+      "first_observation": "1997-12-31",
+      "last_observation": "2025-12-31",
+      "missing_rate": {
+        "commodity": 0.0,
+        "category": 0.0,
+        "item": 0.0,
+        "unit": 0.0,
+        "region": 0.0,
+        "year": 0.0,
+        "value": 0.0,
+        "available_time": 0.0,
+        "source": 0.0
+      },
+      "issues": []
+    },
+    {
+      "dataset_id": "crop.planted_acres",
+      "path": "storage/shared_data/agriculture/nass_planted_acres.parquet",
+      "status": "PASS",
+      "rows": 106,
+      "first_observation": "2013-01-01",
+      "last_observation": "2026-01-01",
+      "missing_rate": {
+        "commodity": 0.0,
+        "statistic": 0.0,
+        "reference_period": 0.0,
+        "year": 0.0,
+        "value": 0.0,
+        "unit": 0.0,
+        "available_time": 0.0,
+        "source": 0.0
+      },
+      "issues": []
+    }
+  ]
+}

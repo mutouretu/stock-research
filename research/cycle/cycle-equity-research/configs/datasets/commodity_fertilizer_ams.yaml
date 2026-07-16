@@ -1,0 +1,19 @@
+dataset_id: commodity.fertilizer_ams_3195
+storage: parquet
+path: storage/shared_data/commodities/ams_3195/fertilizer_prices.parquet
+entity_col: product
+time_col: report_date
+available_time_col: available_time
+columns:
+  price: price_average
+  price_low: price_low
+  price_high: price_high
+required_columns:
+  - product
+  - report_date
+  - available_time
+  - price_low
+  - price_high
+  - price_average
+  - unit
+  - source_document

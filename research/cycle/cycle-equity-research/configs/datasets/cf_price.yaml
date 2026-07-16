@@ -1,6 +1,6 @@
 dataset_id: cycle.cf.price
-storage: parquet_by_entity
-path: storage/shared_data/us/raw/daily/parquet_by_symbol
+storage: parquet
+path: storage/shared_data/us/raw/daily/parquet_by_symbol/CF.parquet
 entity_col: symbol
 time_col: trade_date
 available_time_col: null

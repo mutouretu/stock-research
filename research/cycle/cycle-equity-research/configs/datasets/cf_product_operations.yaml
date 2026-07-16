@@ -1,0 +1,21 @@
+dataset_id: cycle.cf.product_operations
+storage: parquet
+path: storage/shared_data/fundamentals/us/CF/product_operations.parquet
+entity_col: product
+time_col: period_end
+available_time_col: filing_date
+columns:
+  value: value
+  metric: metric
+  unit: unit
+required_columns:
+  - ticker
+  - period_end
+  - product
+  - scope
+  - metric
+  - value
+  - unit
+  - filing_date
+  - accession
+  - source_url

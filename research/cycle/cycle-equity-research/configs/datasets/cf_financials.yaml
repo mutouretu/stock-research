@@ -1,15 +1,19 @@
 dataset_id: cycle.cf.financials
 storage: parquet
-path: storage/shared_data/fundamentals/us/CF/financials.parquet
+path: storage/shared_data/fundamentals/us/CF/companyfacts.parquet
 entity_col: ticker
 time_col: period_end
 available_time_col: filing_date
 columns:
-  revenue: revenue
-  ebitda: ebitda
-  gross_margin: gross_margin
+  concept: concept
+  value: value
+  unit: unit
+  form: form
 required_columns:
+  - ticker
   - period_end
   - filing_date
-  - revenue
-  - ebitda
+  - concept
+  - value
+  - unit
+  - form

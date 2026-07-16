@@ -1,0 +1,101 @@
+panel_id: cycle.cf.daily
+instrument: CF
+frequency: trading_day
+output: storage/shared_data/research/cycle/CF/daily_panel.parquet
+momentum_windows: [20, 60, 120]
+volatility_windows: [20, 60]
+quarterly_features:
+  - cf_revenue
+  - cf_gross_profit
+  - cf_gross_margin
+  - cf_inventory
+  - cf_cash
+  - cf_long_term_debt
+  - cf_ebitda_proxy_ttm
+  - cf_ev_to_ebitda_proxy
+  - cf_all_products_realized_natural_gas_cost
+  - cf_ammonia_average_selling_price
+  - cf_granular_urea_average_selling_price
+  - cf_uan_average_selling_price
+
+base:
+  dataset_id: cycle.cf.price
+  filters: {symbol: CF}
+  time_col: trade_date
+  columns: [open, high, low, close, adj_close, volume]
+  rename:
+    open: cf_open
+    high: cf_high
+    low: cf_low
+    close: cf_close
+    adj_close: cf_adj_close
+    volume: cf_volume
+
+inputs:
+  - dataset_id: commodity.henry_hub
+    filters: {series_id: DHHNGSP}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: price
+    output_col: henry_hub_spot
+
+  - dataset_id: commodity.urea
+    filters: {series_id: WORLD_BANK_UREA_MONTHLY}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: price
+    output_col: world_bank_urea
+
+  - dataset_id: crop.corn
+    filters: {symbol: "ZC=F"}
+    time_col: trade_date
+    value_col: price
+    output_col: corn_futures
+
+  - dataset_id: crop.corn
+    filters: {symbol: "ZS=F"}
+    time_col: trade_date
+    value_col: price
+    output_col: soybean_futures
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: anhydrous_ammonia}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_ammonia
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: urea_46}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_urea_46
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: uan_28}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_uan_28
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    filters: {product: uan_32}
+    time_col: report_date
+    available_time_col: available_time
+    value_col: price
+    output_col: ams_uan_32
+
+  - dataset_id: crop.planted_acres
+    filters: {commodity: corn}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: planted_acres
+    output_col: corn_planted_acres
+
+  - dataset_id: crop.planted_acres
+    filters: {commodity: soybeans}
+    time_col: observation_date
+    available_time_col: available_time
+    value_col: planted_acres
+    output_col: soybean_planted_acres

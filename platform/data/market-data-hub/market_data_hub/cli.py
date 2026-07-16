@@ -6,6 +6,7 @@ import argparse
 import logging
 
 from market_data_hub.exceptions import MarketDataHubError
+from market_data_hub.pipelines.recipes.cf_m1 import download_cf_m1_data
 from market_data_hub.jobs.daily_update import run_us_daily_update
 from market_data_hub.jobs.full_refresh import run_us_full_refresh
 from market_data_hub.logging import configure_logging
@@ -80,6 +81,15 @@ def build_parser() -> argparse.ArgumentParser:
     cn_daily.add_argument("--failed-dates-output")
     cn_daily.add_argument("--overwrite", action="store_true")
 
+    cf_m1 = subparsers.add_parser("download-cf-m1-data")
+    cf_m1.add_argument("--config", default="configs/recipes/cf_m1.yaml")
+    cf_m1.add_argument(
+        "--source",
+        action="append",
+        dest="sources",
+        help="Download one configured source; repeat for multiple sources. Default: all.",
+    )
+
     return parser
 
 
@@ -151,6 +161,10 @@ def main(argv: list[str] | None = None) -> None:
                 overwrite=args.overwrite,
             )
             print(summary.summary_text())
+        elif args.command == "download-cf-m1-data":
+            results = download_cf_m1_data(args.config, sources=args.sources)
+            for result in results:
+                print(result.summary_text())
         else:
             parser.error(f"Unknown command: {args.command}")
     except MarketDataHubError as exc:

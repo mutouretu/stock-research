@@ -1,11 +1,14 @@
 dataset_id: commodity.henry_hub
 storage: parquet
 path: storage/shared_data/commodities/henry_hub.parquet
-entity_col: commodity
-time_col: date
-available_time_col: null
+entity_col: series_id
+time_col: observation_date
+available_time_col: available_time
 columns:
-  price: price
+  price: value
 required_columns:
-  - date
-  - price
+  - series_id
+  - observation_date
+  - available_time
+  - value
+  - unit

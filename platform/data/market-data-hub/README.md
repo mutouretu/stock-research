@@ -73,6 +73,88 @@ API keys are not stored in code. The default US source is `yahoo_chart`, which d
 API key. Future paid adapters should read credentials from environment variables or external secret
 managers.
 
+## CF cycle-research Milestone 1
+
+The first public-source ingestion slice for CF Industries is configured in
+`configs/recipes/cf_m1.yaml`. The recipe orchestrates reusable modules under commodity,
+agriculture, fundamentals, and company-operations domains; it is not itself a data domain.
+It currently supports:
+
+- CF daily prices from Yahoo Chart;
+- Henry Hub daily spot prices through the FRED-hosted EIA series;
+- World Bank Pink Sheet monthly urea prices;
+- CF Industries SEC Company Facts.
+- corn and soybean continuous futures from Yahoo Chart;
+- USDA ERS corn and soybean cost-and-return files;
+- USDA NASS national planted acreage when `NASS_API_KEY` is configured.
+
+Run all configured sources:
+
+```bash
+export SEC_USER_AGENT="Your Name your.email@example.com"
+export NASS_API_KEY="your-free-quick-stats-key"
+python -m market_data_hub.cli download-cf-m1-data --config configs/recipes/cf_m1.yaml
+```
+
+The CF Milestone 1 pipeline also archives SEC 8-K earnings-release HTML exhibits and
+normalizes quarterly product selling prices, sales volumes, production volumes, and
+realized production natural-gas cost. SEC access requires `SEC_USER_AGENT` in the
+environment; raw exhibits and their SHA-256 manifest are retained for auditability.
+
+Run selected sources by repeating `--source`:
+
+```bash
+python -m market_data_hub.cli download-cf-m1-data \
+  --config configs/recipes/cf_m1.yaml \
+  --source cf_price \
+  --source henry_hub \
+  --source world_bank_urea
+```
+
+The SEC requires a descriptive user agent with contact information. The value is read from
+`SEC_USER_AGENT` and must not be committed to the repository.
+
+USDA NASS Quick Stats requires a free API key. Store it in `NASS_API_KEY`; do not put it directly
+in `configs/recipes/cf_m1.yaml`. Historical AMS fertilizer prices are downloaded from the public
+PDF archive and do not require a MyMarketNews API key.
+
+### AMS 3195 public PDF archive
+
+The Illinois Production Cost Report PDFs can be archived without a MyMarketNews account or API
+key. The downloader checks the stable latest-report URL and discovers historical documents through
+the public file repository:
+
+```bash
+python scripts/download_ams_3195_pdfs.py
+```
+
+Useful options:
+
+```bash
+python scripts/download_ams_3195_pdfs.py --latest-only
+python scripts/download_ams_3195_pdfs.py --max-pages 5
+python scripts/download_ams_3195_pdfs.py --output /custom/archive/path
+```
+
+Files are stored under `storage/shared_data/commodities/ams_3195/raw/`. `manifest.json` records
+the final source URL, report date, SHA-256 digest, size, and retrieval time. Repeated runs skip
+documents already present. Archive discovery failures are reported as warnings while preserving
+the stable latest-report download.
+
+Parse the archived PDFs into normalized ammonia, urea, UAN 28%, and UAN 32% prices:
+
+```bash
+python scripts/parse_ams_3195_fertilizer.py
+```
+
+The normalized dataset is written to
+`storage/shared_data/commodities/ams_3195/fertilizer_prices.parquet`. It retains the reported low,
+high, and average distributor prices, report and availability dates, source document, extraction
+layout, and document digest.
+
+Normalized outputs are written under the repository-level `storage/shared_data/` directory. A
+failed or empty download does not overwrite an existing Parquet dataset.
+
 ## Commands
 
 ```bash

@@ -1,0 +1,113 @@
+subject: CF
+milestone: 1
+
+datasets:
+  - dataset_id: cycle.cf.price
+    path: storage/shared_data/us/raw/daily/parquet_by_symbol/CF.parquet
+    date_col: trade_date
+    required_columns: [symbol, trade_date, close, adj_close, volume, source]
+    key_columns: [symbol, trade_date]
+    min_rows: 2500
+    target_start: "2013-01-01"
+    max_staleness_days: 10
+
+  - dataset_id: commodity.henry_hub
+    path: storage/shared_data/commodities/henry_hub.parquet
+    date_col: observation_date
+    available_time_col: available_time
+    required_columns: [series_id, observation_date, available_time, value, unit, source, retrieved_at]
+    key_columns: [series_id, observation_date]
+    expected_units: [USD_per_MMBtu]
+    min_rows: 2500
+    target_start: "2013-01-01"
+    max_staleness_days: 10
+
+  - dataset_id: commodity.urea
+    path: storage/shared_data/commodities/urea.parquet
+    date_col: observation_date
+    available_time_col: available_time
+    required_columns: [series_id, observation_date, available_time, value, unit, source, retrieved_at]
+    key_columns: [series_id, observation_date]
+    expected_units: [USD_per_metric_ton]
+    min_rows: 150
+    target_start: "2013-01-01"
+    max_staleness_days: 75
+
+  - dataset_id: commodity.fertilizer_ams_3195
+    path: storage/shared_data/commodities/ams_3195/fertilizer_prices.parquet
+    date_col: report_date
+    available_time_col: available_time
+    required_columns: [product, report_date, available_time, price_low, price_high, price_average, unit, source_document, sha256]
+    key_columns: [product, report_date]
+    expected_units: [USD_per_short_ton]
+    min_rows: 300
+    target_start: "2022-09-22"
+    max_staleness_days: 30
+
+  - dataset_id: cycle.cf.sec_companyfacts
+    path: storage/shared_data/fundamentals/us/CF/companyfacts.parquet
+    date_col: period_end
+    available_time_col: filing_date
+    required_columns: [ticker, concept, unit, value, period_end, filing_date, form, accession]
+    key_columns: [accession, taxonomy, concept, unit, period_start, period_end]
+    min_rows: 500
+    target_start: "2013-01-01"
+    max_staleness_days: 150
+    allow_non_positive: true
+
+  - dataset_id: cycle.cf.product_operations
+    path: storage/shared_data/fundamentals/us/CF/product_operations.parquet
+    date_col: period_end
+    available_time_col: filing_date
+    required_columns: [ticker, period_end, fiscal_year, fiscal_quarter, scope, product, metric, value, unit, filing_date, accession, source_url]
+    key_columns: [period_end, scope, product, metric]
+    expected_units: [USD_per_short_ton, thousand_short_tons, USD_per_MMBtu]
+    min_rows: 100
+    target_start: "2015-06-30"
+    max_staleness_days: 150
+    allow_non_positive: true
+
+  - dataset_id: crop.corn_soybean_futures
+    path: storage/shared_data/agriculture/crop_futures.parquet
+    date_col: trade_date
+    required_columns: [symbol, commodity, trade_date, close, adj_close, volume, unit, source]
+    key_columns: [symbol, trade_date]
+    expected_units: [US_cents_per_bushel]
+    min_rows: 5000
+    target_start: "2013-01-01"
+    max_staleness_days: 10
+
+  - dataset_id: crop.corn_costs_returns
+    path: storage/shared_data/agriculture/ers_corn_costs_returns.parquet
+    date_col: observation_date
+    available_time_col: available_time
+    required_columns: [commodity, category, item, unit, region, year, value, available_time, source]
+    key_columns: [commodity, category, item, unit, region, year]
+    min_rows: 500
+    target_start: "2013-01-01"
+    max_staleness_days: 600
+    allow_non_positive: true
+
+  - dataset_id: crop.soybean_costs_returns
+    path: storage/shared_data/agriculture/ers_soybean_costs_returns.parquet
+    date_col: observation_date
+    available_time_col: available_time
+    required_columns: [commodity, category, item, unit, region, year, value, available_time, source]
+    key_columns: [commodity, category, item, unit, region, year]
+    min_rows: 500
+    target_start: "2013-01-01"
+    max_staleness_days: 600
+    allow_non_positive: true
+
+  - dataset_id: crop.planted_acres
+    path: storage/shared_data/agriculture/nass_planted_acres.parquet
+    date_col: observation_date
+    available_time_col: available_time
+    required_columns: [commodity, statistic, reference_period, year, value, unit, available_time, source]
+    key_columns: [commodity, year, reference_period]
+    expected_units: [ACRES]
+    min_rows: 50
+    target_start: "2013-01-01"
+    max_staleness_days: 400
+
+pending_p0_sources: []

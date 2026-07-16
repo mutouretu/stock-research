@@ -1,0 +1,16 @@
+dataset_id: crop.planted_acres
+storage: parquet
+path: storage/shared_data/agriculture/nass_planted_acres.parquet
+entity_col: commodity
+time_col: observation_date
+available_time_col: available_time
+columns:
+  planted_acres: value
+  release_type: reference_period
+required_columns:
+  - commodity
+  - observation_date
+  - available_time
+  - reference_period
+  - value
+  - unit

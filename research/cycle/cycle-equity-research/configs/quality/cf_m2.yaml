@@ -1,0 +1,53 @@
+subject: CF
+milestone: 2
+
+panels:
+  - panel_id: cycle.cf.daily
+    time_col: trade_date
+    available_time_col: panel_available_time
+    key_columns: [instrument, trade_date]
+    min_rows: 2500
+    max_required_missing_pct: 0.01
+    required_columns:
+      - instrument
+      - trade_date
+      - cf_adj_close
+      - henry_hub_spot
+      - world_bank_urea
+      - corn_futures
+      - soybean_futures
+    latest_required_columns:
+      - henry_hub_spot
+      - world_bank_urea
+      - corn_futures
+      - soybean_futures
+      - ams_urea_46
+    max_source_age_days:
+      henry_hub_spot__available_time: 10
+      world_bank_urea__available_time: 90
+      corn_futures__available_time: 10
+      soybean_futures__available_time: 10
+      ams_urea_46__available_time: 30
+
+  - panel_id: cycle.cf.quarterly
+    time_col: period_end
+    available_time_col: panel_available_time
+    key_columns: [instrument, period_end]
+    min_rows: 40
+    max_required_missing_pct: 0.15
+    required_columns:
+      - instrument
+      - period_end
+      - panel_available_time
+      - cf_ammonia_average_selling_price
+      - cf_granular_urea_average_selling_price
+      - cf_uan_average_selling_price
+      - cf_revenue
+      - cf_gross_profit
+      - henry_hub_quarter_mean
+      - world_bank_urea_quarter_mean
+    latest_required_columns:
+      - cf_revenue
+      - cf_gross_profit
+      - henry_hub_quarter_mean
+      - world_bank_urea_quarter_mean
