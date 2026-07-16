@@ -110,3 +110,14 @@ def test_valuation_config_matches_consolidated_ebitda_scope() -> None:
         "cf_operating_lease_liability_current",
         "cf_operating_lease_liability_noncurrent",
     } <= outputs
+
+
+def test_midcycle_scenarios_are_operating_assumptions_not_price_targets() -> None:
+    config = yaml.safe_load(
+        (PROJECT_ROOT / "configs/valuation/cf_midcycle_ebitda_v1.yaml").read_text()
+    )
+    assert list(config["scenarios"]) == ["downside", "base", "upside"]
+    serialized = str(config).lower()
+    assert "stock_price" not in serialized
+    assert "target_price" not in serialized
+    assert config["quality"]["minimum_annual_windows"] >= 24

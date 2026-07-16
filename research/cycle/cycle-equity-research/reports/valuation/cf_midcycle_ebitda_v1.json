@@ -1,0 +1,287 @@
+{
+  "valuation_id": "cf_midcycle_ebitda_v1",
+  "version": "1.0.0",
+  "status": "PASS",
+  "analysis_as_of": "2026-07-15",
+  "deterministic_repeat": true,
+  "diagnostics": {
+    "calibration_quarters": 42,
+    "annual_volume_windows": 39,
+    "conversion_windows": 39,
+    "point_in_time_violations": 0,
+    "maximum_gross_profit_identity_error_usd_million": 0.0,
+    "gross_profit_identity_pass": true,
+    "scenario_ordering_pass": true
+  },
+  "method_contract": {
+    "realized_prices": "operating-bridge OLS on global urea in USD per short ton",
+    "realized_gas": "operating-bridge OLS on current/previous Henry Hub equal-weight lag",
+    "unit_margin": "realized price - gas intensity * realized gas - other cost residual",
+    "gross_profit": "sum of product annual volume * unit margin",
+    "ebitda": "gross profit + historical EBITDA-minus-gross-profit conversion residual",
+    "scenario_meaning": "Marginal historical quantiles are combined into coherent stresses; they are not joint probabilities or fitted stock-price targets."
+  },
+  "calibration": {
+    "as_of": "2026-07-15",
+    "first_period": "2015-06-30T00:00:00",
+    "last_period": "2026-03-31T00:00:00",
+    "quarters": 42,
+    "urea_usd_per_metric_ton": {
+      "q25": 226.33333333333334,
+      "q50": 284.09,
+      "q75": 383.6266666666667
+    },
+    "henry_hub_distributed_lag_usd_per_mmbtu": {
+      "q25": 2.382936507936508,
+      "q50": 2.966953125,
+      "q75": 3.348791308873276
+    },
+    "annual_volume_thousand_short_tons": {
+      "q25": 18621.5,
+      "q50": 19119.0,
+      "q75": 19553.5
+    },
+    "ebitda_conversion_usd_million": {
+      "q25": 416.0,
+      "q50": 562.0,
+      "q75": 710.0
+    },
+    "normalized_product_mix": {
+      "ammonia": 0.19629595750786002,
+      "granular_urea": 0.23346959892746114,
+      "uan": 0.36263894207213987,
+      "ammonium_nitrate": 0.09534289333875332,
+      "other": 0.11225260815378568
+    },
+    "reported_ttm_ebitda_history_usd_million": {
+      "q25": 1546.5,
+      "q50": 1883.0,
+      "q75": 3057.0
+    }
+  },
+  "sensitivities_usd_million": {
+    "ebitda_change_per_10_usd_metric_ton_urea": 124.66411215894948,
+    "ebitda_change_per_1_usd_mmbtu_henry_hub": -356.86062065503495,
+    "gross_profit_change_per_1_percent_volume": 13.38116143958584
+  },
+  "scenarios": [
+    {
+      "scenario": "downside",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "henry_hub_usd_per_mmbtu": 3.348791308873276,
+      "cf_realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "annual_volume_thousand_short_tons": 18621.5,
+      "gross_profit_usd_million": 76.8088759874909,
+      "ebitda_conversion_usd_million": 416.0,
+      "scenario_ebitda_usd_million": 492.80887598749086,
+      "reported_ttm_ebitda_usd_million": 3613.0,
+      "scenario_vs_reported_ttm": -0.863601196792834
+    },
+    {
+      "scenario": "base",
+      "urea_usd_per_metric_ton": 284.09,
+      "henry_hub_usd_per_mmbtu": 2.966953125,
+      "cf_realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "annual_volume_thousand_short_tons": 19119.0,
+      "gross_profit_usd_million": 1338.116143958584,
+      "ebitda_conversion_usd_million": 562.0,
+      "scenario_ebitda_usd_million": 1900.116143958584,
+      "reported_ttm_ebitda_usd_million": 3613.0,
+      "scenario_vs_reported_ttm": -0.47408908276817496
+    },
+    {
+      "scenario": "upside",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "henry_hub_usd_per_mmbtu": 2.382936507936508,
+      "cf_realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "annual_volume_thousand_short_tons": 19553.5,
+      "gross_profit_usd_million": 3295.6311957160306,
+      "ebitda_conversion_usd_million": 710.0,
+      "scenario_ebitda_usd_million": 4005.6311957160306,
+      "reported_ttm_ebitda_usd_million": 3613.0,
+      "scenario_vs_reported_ttm": 0.10867179510546099
+    }
+  ],
+  "product_bridge": [
+    {
+      "scenario": "downside",
+      "product": "ammonia",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "realized_price_usd_per_short_ton": 316.5380922223482,
+      "realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "gas_intensity_mmbtu_per_short_ton": 28.0,
+      "other_cost_usd_per_short_ton": 232.93,
+      "unit_margin_usd_per_short_ton": -19.916593590676257,
+      "annual_volume_thousand_short_tons": 3655.3251727326156,
+      "gross_profit_usd_million": -72.80162590708399
+    },
+    {
+      "scenario": "downside",
+      "product": "ammonium_nitrate",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "realized_price_usd_per_short_ton": 220.64045719814172,
+      "realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "gas_intensity_mmbtu_per_short_ton": 14.0,
+      "other_cost_usd_per_short_ton": 199.58999999999997,
+      "unit_margin_usd_per_short_ton": -30.711885708370488,
+      "annual_volume_thousand_short_tons": 1775.427688307595,
+      "gross_profit_usd_million": -54.526732246779275
+    },
+    {
+      "scenario": "downside",
+      "product": "granular_urea",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "realized_price_usd_per_short_ton": 262.0505604020738,
+      "realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "gas_intensity_mmbtu_per_short_ton": 19.0,
+      "other_cost_usd_per_short_ton": 164.39499999999998,
+      "unit_margin_usd_per_short_ton": 27.40666645752151,
+      "annual_volume_thousand_short_tons": 4347.554136427718,
+      "gross_profit_usd_million": 119.15196612309242
+    },
+    {
+      "scenario": "downside",
+      "product": "other",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "realized_price_usd_per_short_ton": null,
+      "realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "gas_intensity_mmbtu_per_short_ton": null,
+      "other_cost_usd_per_short_ton": null,
+      "unit_margin_usd_per_short_ton": 26.0,
+      "annual_volume_thousand_short_tons": 2090.31194273572,
+      "gross_profit_usd_million": 54.34811051112872
+    },
+    {
+      "scenario": "downside",
+      "product": "uan",
+      "urea_usd_per_metric_ton": 226.33333333333334,
+      "realized_price_usd_per_short_ton": 179.7894343910624,
+      "realized_gas_usd_per_mmbtu": 3.697310207608017,
+      "gas_intensity_mmbtu_per_short_ton": 13.0,
+      "other_cost_usd_per_short_ton": 127.1875,
+      "unit_margin_usd_per_short_ton": 4.536901692158182,
+      "annual_volume_thousand_short_tons": 6752.881059796353,
+      "gross_profit_usd_million": 30.637157507133008
+    },
+    {
+      "scenario": "base",
+      "product": "ammonia",
+      "urea_usd_per_metric_ton": 284.09,
+      "realized_price_usd_per_short_ton": 374.58084155478446,
+      "realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "gas_intensity_mmbtu_per_short_ton": 28.0,
+      "other_cost_usd_per_short_ton": 203.47999999999996,
+      "unit_margin_usd_per_short_ton": 80.06316124046617,
+      "annual_volume_thousand_short_tons": 3752.982411592776,
+      "gross_profit_usd_million": 300.475635951986
+    },
+    {
+      "scenario": "base",
+      "product": "ammonium_nitrate",
+      "urea_usd_per_metric_ton": 284.09,
+      "realized_price_usd_per_short_ton": 251.49325596087598,
+      "realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "gas_intensity_mmbtu_per_short_ton": 14.0,
+      "other_cost_usd_per_short_ton": 177.5,
+      "unit_margin_usd_per_short_ton": 28.474415803716795,
+      "annual_volume_thousand_short_tons": 1822.8607777436246,
+      "gross_profit_usd_million": 51.90489573775855
+    },
+    {
+      "scenario": "base",
+      "product": "granular_urea",
+      "urea_usd_per_metric_ton": 284.09,
+      "realized_price_usd_per_short_ton": 306.53217746953936,
+      "realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "gas_intensity_mmbtu_per_short_ton": 19.0,
+      "other_cost_usd_per_short_ton": 137.39499999999998,
+      "unit_margin_usd_per_short_ton": 107.36160868482335,
+      "annual_volume_thousand_short_tons": 4463.70526189413,
+      "gross_profit_usd_million": 479.2305776118645
+    },
+    {
+      "scenario": "base",
+      "product": "other",
+      "urea_usd_per_metric_ton": 284.09,
+      "realized_price_usd_per_short_ton": null,
+      "realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "gas_intensity_mmbtu_per_short_ton": null,
+      "other_cost_usd_per_short_ton": null,
+      "unit_margin_usd_per_short_ton": 43.0,
+      "annual_volume_thousand_short_tons": 2146.1576152922285,
+      "gross_profit_usd_million": 92.28477745756582
+    },
+    {
+      "scenario": "base",
+      "product": "uan",
+      "urea_usd_per_metric_ton": 284.09,
+      "realized_price_usd_per_short_ton": 215.4711402620022,
+      "realized_gas_usd_per_mmbtu": 3.25134572551137,
+      "gas_intensity_mmbtu_per_short_ton": 13.0,
+      "other_cost_usd_per_short_ton": 113.46,
+      "unit_margin_usd_per_short_ton": 59.743645830354396,
+      "annual_volume_thousand_short_tons": 6933.293933477242,
+      "gross_profit_usd_million": 414.22025719940905
+    },
+    {
+      "scenario": "upside",
+      "product": "ammonia",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "realized_price_usd_per_short_ton": 474.6105372791384,
+      "realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "gas_intensity_mmbtu_per_short_ton": 28.0,
+      "other_cost_usd_per_short_ton": 167.95999999999998,
+      "unit_margin_usd_per_short_ton": 234.71157211853512,
+      "annual_volume_thousand_short_tons": 3838.273005129941,
+      "gross_profit_usd_million": 900.8870912541827
+    },
+    {
+      "scenario": "upside",
+      "product": "ammonium_nitrate",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "realized_price_usd_per_short_ton": 304.6643429265371,
+      "realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "gas_intensity_mmbtu_per_short_ton": 14.0,
+      "other_cost_usd_per_short_ton": 145.505,
+      "unit_margin_usd_per_short_ton": 123.18986034623543,
+      "annual_volume_thousand_short_tons": 1864.287264899313,
+      "gross_profit_usd_million": 229.66128780821157
+    },
+    {
+      "scenario": "upside",
+      "product": "granular_urea",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "realized_price_usd_per_short_ton": 383.19089318787445,
+      "realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "gas_intensity_mmbtu_per_short_ton": 19.0,
+      "other_cost_usd_per_short_ton": 122.835,
+      "unit_margin_usd_per_short_ton": 211.54016682889363,
+      "annual_volume_thousand_short_tons": 4565.147802628111,
+      "gross_profit_usd_million": 965.7121277665078
+    },
+    {
+      "scenario": "upside",
+      "product": "other",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "realized_price_usd_per_short_ton": null,
+      "realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "gas_intensity_mmbtu_per_short_ton": null,
+      "other_cost_usd_per_short_ton": null,
+      "unit_margin_usd_per_short_ton": 100.5,
+      "annual_volume_thousand_short_tons": 2194.9313735350484,
+      "gross_profit_usd_million": 220.59060304027236
+    },
+    {
+      "scenario": "upside",
+      "product": "uan",
+      "urea_usd_per_metric_ton": 383.6266666666667,
+      "realized_price_usd_per_short_ton": 276.9642676938794,
+      "realized_gas_usd_per_mmbtu": 2.5692487557358326,
+      "gas_intensity_mmbtu_per_short_ton": 13.0,
+      "other_cost_usd_per_short_ton": 105.53,
+      "unit_margin_usd_per_short_ton": 138.03403386931356,
+      "annual_volume_thousand_short_tons": 7090.860553807587,
+      "gross_profit_usd_million": 978.780085846856
+    }
+  ]
+}

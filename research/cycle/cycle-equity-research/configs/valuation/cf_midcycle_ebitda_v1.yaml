@@ -1,0 +1,54 @@
+version: 1.0.0
+valuation_id: cf_midcycle_ebitda_v1
+subject: CF
+analysis_as_of: 2026-07-15
+
+inputs:
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+  quarterly_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+  operating_bridge_report: research/cycle/cycle-equity-research/reports/experiments/cf_operating_bridge_v1.json
+
+outputs:
+  scenarios: storage/shared_data/research/cycle/CF/valuation/midcycle_ebitda_scenarios_v1.parquet
+  product_bridge: storage/shared_data/research/cycle/CF/valuation/midcycle_product_bridge_v1.parquet
+  manifest: storage/shared_data/research/cycle/CF/valuation/midcycle_ebitda_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/valuation/cf_midcycle_ebitda_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/valuation/cf_midcycle_ebitda_v1.json
+
+market_conversion:
+  usd_per_metric_ton_to_usd_per_short_ton: 0.90718474
+  henry_hub_current_quarter_weight: 0.50
+  henry_hub_previous_quarter_weight: 0.50
+
+products: [ammonia, granular_urea, uan, ammonium_nitrate]
+volume_products: [ammonia, granular_urea, uan, ammonium_nitrate, other]
+
+# Every assumption is a historical calibration-sample quantile. Joint scenarios
+# are stresses, not claims that all inputs have these marginal probabilities together.
+scenarios:
+  downside:
+    urea_quantile: 0.25
+    henry_hub_quantile: 0.75
+    annual_volume_quantile: 0.25
+    other_cost_quantile: 0.75
+    other_product_margin_quantile: 0.25
+    ebitda_conversion_quantile: 0.25
+  base:
+    urea_quantile: 0.50
+    henry_hub_quantile: 0.50
+    annual_volume_quantile: 0.50
+    other_cost_quantile: 0.50
+    other_product_margin_quantile: 0.50
+    ebitda_conversion_quantile: 0.50
+  upside:
+    urea_quantile: 0.75
+    henry_hub_quantile: 0.25
+    annual_volume_quantile: 0.75
+    other_cost_quantile: 0.25
+    other_product_margin_quantile: 0.75
+    ebitda_conversion_quantile: 0.75
+
+quality:
+  minimum_quarters: 36
+  minimum_annual_windows: 24
+  identity_tolerance_usd_million: 0.000001

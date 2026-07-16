@@ -196,6 +196,20 @@ sensitivity only because the reported EBITDA proxy is not lease-adjusted. Output
 quality report live under `storage/shared_data/research/cycle/CF/valuation/` and
 `reports/valuation/`.
 
+## Milestone 5.2 mid-cycle EBITDA scenarios
+
+Build the product-level downside, base, and upside EBITDA bridge with:
+
+```bash
+.venv/bin/python scripts/build_cf_midcycle_ebitda.py
+```
+
+Every scenario uses historical marginal quantiles for global urea, distributed-lag Henry Hub,
+annual sales volume, other unit costs, other-product margin, and the gross-profit-to-EBITDA
+conversion residual. Product realized prices and CF gas cost reuse the locked operating-bridge
+parameters. The output is a transparent stress range rather than a probability forecast or target
+price.
+
 ## Publication source
 
 The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under
