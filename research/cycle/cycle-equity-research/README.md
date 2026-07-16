@@ -15,6 +15,8 @@ README, and an independently installable package.
 - Build daily and quarterly research panels using reusable time-alignment primitives.
 - Curate six monthly and five quarterly core features while isolating short-history tactical data.
 - Build and validate versioned nitrogen-economics proxies.
+- Measure predeclared monthly and quarterly lead/lag relationships with explicit economic-period
+  and availability-time clocks.
 - Validate source availability, panel uniqueness, coverage, freshness, and lineage.
 
 It does not train predictive models, backtest, or connect to an existing business application.
@@ -130,3 +132,19 @@ be compared on exactly the same periods and targets without dropping difficult r
 
 Outputs are stored below `storage/shared_data/research/cycle/CF/experiments/`; the human and JSON
 reports are written to `reports/experiments/`.
+
+## Milestone 4.1 lead/lag analysis
+
+Run the low-degree-of-freedom lead/lag grid with:
+
+```bash
+.venv/bin/python scripts/run_cf_lead_lag_analysis.py
+```
+
+Positive lag `k` always means that signal `x(t)` is paired with target `y(t+k)`. Economic-period
+relationships describe operating transmission but are not called tradable. Availability-time
+relationships verify source timestamps before evaluating later CF returns. The analysis uses
+Newey--West HAC inference, Benjamini--Hochberg multiple-testing adjustment, and chronological
+half-sample stability checks. Complete grid and best-lag datasets are written under
+`storage/shared_data/research/cycle/CF/cycle_analysis/`; reports are under
+`reports/cycle_analysis/`.

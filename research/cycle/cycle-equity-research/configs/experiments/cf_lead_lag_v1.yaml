@@ -1,0 +1,208 @@
+version: 1.0.0
+analysis_id: cf_lead_lag_v1
+subject: CF
+analysis_end_date: 2026-06-30
+
+inputs:
+  core_monthly: storage/shared_data/research/cycle/CF/core_monthly_panel.parquet
+  core_quarterly: storage/shared_data/research/cycle/CF/core_quarterly_panel.parquet
+  quarterly_panel: storage/shared_data/research/cycle/CF/quarterly_panel.parquet
+  quarterly_nitrogen: storage/shared_data/research/cycle/CF/nitrogen_economics/quarterly_profit_proxies.parquet
+
+outputs:
+  lag_grid: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_grid_v1.parquet
+  best_lags: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_best_v1.parquet
+  manifest: storage/shared_data/research/cycle/CF/cycle_analysis/lead_lag_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_v1.json
+
+inference:
+  alpha: 0.05
+  stability_min_absolute_correlation: 0.10
+  minimum_observations:
+    monthly: 36
+    quarterly: 24
+  hac_max_lag:
+    monthly: 3
+    quarterly: 2
+
+# lead_periods 的统一含义：信号 x(t) 与目标 y(t + k) 配对；k > 0 表示信号领先。
+# economic_period 用于观察经营传导，不代表当时可交易；availability_time 才能解释为可用信号。
+relationships:
+  - id: quarterly_urea_to_ammonia_price_change
+    family: product_price_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: world_bank_urea_quarter_mean
+    target: cf_ammonia_realized_price
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_urea_to_granular_urea_price_change
+    family: product_price_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: world_bank_urea_quarter_mean
+    target: cf_granular_urea_realized_price
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_urea_to_uan_price_change
+    family: product_price_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: world_bank_urea_quarter_mean
+    target: cf_uan_realized_price
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_urea_to_ammonium_nitrate_price_change
+    family: product_price_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: world_bank_urea_quarter_mean
+    target: cf_ammonium_nitrate_realized_price
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_henry_hub_to_cf_gas_cost_change
+    family: gas_cost_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: henry_hub_quarter_mean
+    target: cf_realized_natural_gas_cost
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_global_spread_to_cf_realized_spread_change
+    family: profit_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: global_urea_gas_spread_quarter_mean
+    target: cf_realized_basket_gas_spread
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_global_spread_to_gross_margin_change
+    family: profit_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: global_urea_gas_spread_quarter_mean
+    target: cf_gross_margin_change
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: level, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_global_spread_to_ebitda_change
+    family: profit_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: global_urea_gas_spread_quarter_mean
+    target: cf_ebitda_proxy
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: quarterly_corn_to_cf_volume_yoy_change
+    family: demand_transmission
+    frame: quarterly
+    clock: economic_period
+    frequency: quarterly
+    signal: corn_quarter_mean
+    target: cf_total_sales_volume
+    signal_transform: {method: difference, periods: 4}
+    target_transform: {method: difference, periods: 4}
+    lead_periods: [0, 1, 2, 3, 4]
+    expected_sign: positive
+
+  - id: monthly_global_spread_change_to_cf_return
+    family: market_response
+    frame: monthly
+    clock: availability_time
+    frequency: monthly
+    signal: global_urea_gas_spread_month_mean
+    target: cf_return_1m
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: level, periods: 1}
+    signal_available_time_columns:
+      - henry_hub_source_available_time
+      - world_bank_urea_source_available_time
+    lead_periods: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    expected_sign: positive
+
+  - id: monthly_corn_change_to_cf_return
+    family: market_response
+    frame: monthly
+    clock: availability_time
+    frequency: monthly
+    signal: corn_month_mean
+    target: cf_return_1m
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: level, periods: 1}
+    signal_available_time_columns: [corn_source_available_time]
+    lead_periods: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12]
+    expected_sign: positive
+
+  - id: monthly_henry_hub_change_to_global_spread_change
+    family: commodity_transmission
+    relationship_role: diagnostic_identity
+    frame: monthly
+    clock: availability_time
+    frequency: monthly
+    signal: henry_hub_month_mean
+    target: global_urea_gas_spread_month_mean
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: difference, periods: 1}
+    signal_available_time_columns: [henry_hub_source_available_time]
+    lead_periods: [0, 1, 2, 3, 4, 5, 6]
+    expected_sign: negative
+
+  - id: monthly_disclosed_realized_spread_change_to_cf_return
+    family: filing_response
+    frame: monthly
+    clock: availability_time
+    frequency: monthly
+    signal: latest_cf_realized_basket_gas_spread
+    target: cf_return_1m
+    signal_transform: {method: difference, periods: 1}
+    target_transform: {method: level, periods: 1}
+    signal_available_time_columns: [latest_cf_available_time]
+    event_only_column: latest_cf_period_end
+    lead_periods: [1, 2, 3, 4, 5, 6]
+    expected_sign: positive
+
+  - id: monthly_disclosed_margin_change_to_cf_return
+    family: filing_response
+    frame: monthly
+    clock: availability_time
+    frequency: monthly
+    signal: latest_cf_gross_margin_change
+    target: cf_return_1m
+    signal_transform: {method: level, periods: 1}
+    target_transform: {method: level, periods: 1}
+    signal_available_time_columns: [latest_cf_available_time]
+    event_only_column: latest_cf_period_end
+    lead_periods: [1, 2, 3, 4, 5, 6]
+    expected_sign: positive
