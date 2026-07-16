@@ -162,6 +162,24 @@ rolling correlations, descriptive regime slices, and explicit `ACCEPT_*`, `CONDI
 or `DIAGNOSTIC` decisions under `storage/shared_data/research/cycle/CF/cycle_analysis/`. Complete
 Markdown/JSON evidence is written to `reports/cycle_analysis/`.
 
+## Milestone 4.3 operating-cycle states
+
+Build the point-in-time monthly state timeline with:
+
+```bash
+.venv/bin/python scripts/run_cf_cycle_state.py
+```
+
+The v1 state machine uses one non-duplicated economic signal: the global urea--Henry Hub spread.
+Its trailing level and three-month direction determine `RECOVERY`, `EXPANSION`, `PEAK_RISK`,
+`CONTRACTION`, `TROUGH`, or `MIXED`. Entry confirmation, minimum duration, and hysteresis are
+declared in `configs/experiments/cf_cycle_state_v1.yaml`. Missing core data immediately degrades the
+state to `MIXED`; latest disclosed CF margin and six-month stock momentum remain confirmation
+overlays and never change the economic state.
+
+The command writes the monthly history, current JSON snapshot, manifest, and complete Markdown/JSON
+report under the existing `cycle_analysis` output locations.
+
 ## Publication source
 
 The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under

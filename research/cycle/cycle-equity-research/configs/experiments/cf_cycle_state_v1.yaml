@@ -1,0 +1,57 @@
+version: 1.0.0
+analysis_id: cf_cycle_state_v1
+subject: CF
+analysis_end_date: 2026-06-30
+
+inputs:
+  core_monthly: storage/shared_data/research/cycle/CF/core_monthly_panel.parquet
+  stability_report: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_lead_lag_stability_v1.json
+
+outputs:
+  monthly_states: storage/shared_data/research/cycle/CF/cycle_analysis/cycle_state_monthly_v1.parquet
+  current_snapshot: storage/shared_data/research/cycle/CF/cycle_analysis/cycle_state_current_v1.json
+  manifest: storage/shared_data/research/cycle/CF/cycle_analysis/cycle_state_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_cycle_state_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/cycle_analysis/cf_cycle_state_v1.json
+
+# M4.2 showed that this one upstream spread is validated by realized spread,
+# gross-margin change and EBITDA change. Those downstream fields do not receive
+# additional weights here, otherwise the same transmission chain is counted twice.
+core_signal:
+  column: global_urea_gas_spread_month_mean
+  source_available_time_columns:
+    - henry_hub_source_available_time
+    - world_bank_urea_source_available_time
+  level_window_months: 60
+  minimum_history_months: 36
+  momentum_months: 3
+  z_clip: 2.0
+  score_weights:
+    level: 0.50
+    momentum: 0.50
+
+state_thresholds:
+  expansion: {level_min: 0.25, momentum_min: 0.25}
+  peak_risk: {level_min: 0.75, momentum_max: -0.25}
+  contraction: {level_max: -0.25, momentum_max: -0.25}
+  trough: {level_max: -0.75, momentum_min: 0.25}
+  recovery: {level_max: 0.25, momentum_min: 0.25}
+
+hysteresis:
+  confirmation_months: 2
+  minimum_state_months: 3
+  hold_thresholds:
+    EXPANSION: {level_min: 0.10, momentum_min: 0.10}
+    PEAK_RISK: {level_min: 0.50, momentum_max: 0.10}
+    CONTRACTION: {level_max: -0.10, momentum_max: -0.10}
+    TROUGH: {level_max: -0.50, momentum_min: -0.10}
+    RECOVERY: {level_max: 0.40, momentum_min: 0.10}
+
+# These fields describe confirmation only. They never alter the economic state.
+confirmation:
+  company_column: latest_cf_gross_margin_change
+  company_available_time_column: latest_cf_available_time
+  company_max_age_days: 180
+  company_direction_threshold: 0.01
+  market_column: cf_momentum_6m
+  market_direction_threshold: 0.10
