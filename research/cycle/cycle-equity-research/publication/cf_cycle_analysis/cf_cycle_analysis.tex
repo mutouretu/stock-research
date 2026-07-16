@@ -8,9 +8,12 @@
 \usepackage{fancyhdr}
 \usepackage{hyperref}
 \usepackage{longtable}
+\usepackage{pgfplots}
 \usepackage{tabularx}
 \usepackage{url}
 \usepackage{xcolor}
+
+\pgfplotsset{compat=1.18}
 
 \hypersetup{
   colorlinks=true,
@@ -1000,6 +1003,13 @@ Henry Hub 变化 $\rightarrow$ 全球气价差变化 & 同期 & 157 & $-0.416$ &
 \bottomrule
 \end{longtable}
 \normalsize
+
+\begin{figure}[htbp]
+\centering
+\input{figures/cf_lead_lag_best_coefficients.tex}
+\caption{M4.1 各关系最佳滞后的标准化系数与 HAC 95\% 区间。括号中的月份或季度表示信号领先目标的期间；股票收益对应指定月份的单月收益，不是累计收益。颜色表示完整报告中的证据标签。由于每个点是在预设滞后网格中按绝对相关系数选出的最佳结果，区间本身没有进一步校正“最佳滞后选择”的不确定性。}
+\label{fig:cf-lead-lag-best-coefficients}
+\end{figure}
 
 经营端的结果与产业逻辑大体一致：颗粒尿素实现价更接近全球尿素同期变化，氨、UAN 和硝酸铵则表现出约一个季度的传导滞后；CF 实际气价对 Henry Hub 也有约一季度滞后；利润代理向实现价差和 EBITDA 的关系主要发生在同期。
 

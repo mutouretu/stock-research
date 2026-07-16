@@ -148,3 +148,16 @@ Newey--West HAC inference, Benjamini--Hochberg multiple-testing adjustment, and 
 half-sample stability checks. Complete grid and best-lag datasets are written under
 `storage/shared_data/research/cycle/CF/cycle_analysis/`; reports are under
 `reports/cycle_analysis/`.
+
+## Publication source
+
+The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under
+`publication/cf_cycle_analysis/`. Research calculations are not duplicated there: the lead/lag
+figure is regenerated directly from `reports/cycle_analysis/cf_lead_lag_v1.json`.
+
+```bash
+cd publication/cf_cycle_analysis
+python3 scripts/build_publication.py
+```
+
+Compiler artifacts are isolated in the ignored `build/` directory.
