@@ -1,0 +1,46 @@
+version: 1.0.0
+valuation_id: cf_valuation_range_v1
+subject: CF
+analysis_as_of: 2026-07-15
+
+inputs:
+  monthly_valuation: storage/shared_data/research/cycle/CF/valuation/monthly_valuation_v1.parquet
+  midcycle_scenarios: storage/shared_data/research/cycle/CF/valuation/midcycle_ebitda_scenarios_v1.parquet
+  midcycle_report: research/cycle/cycle-equity-research/reports/valuation/cf_midcycle_ebitda_v1.json
+  cycle_state_current: storage/shared_data/research/cycle/CF/cycle_analysis/cycle_state_current_v1.json
+
+outputs:
+  valuation_matrix: storage/shared_data/research/cycle/CF/valuation/valuation_matrix_v1.parquet
+  implied_assumptions: storage/shared_data/research/cycle/CF/valuation/implied_assumptions_v1.parquet
+  current_snapshot: storage/shared_data/research/cycle/CF/valuation/current_valuation_range_v1.json
+  manifest: storage/shared_data/research/cycle/CF/valuation/valuation_range_manifest_v1.json
+  report_markdown: research/cycle/cycle-equity-research/reports/valuation/cf_valuation_range_v1.md
+  report_json: research/cycle/cycle-equity-research/reports/valuation/cf_valuation_range_v1.json
+
+multiple_cases:
+  low: 0.25
+  median: 0.50
+  high: 0.75
+
+equity_bridge:
+  enterprise_value_definition: standard_excluding_operating_leases
+  equity_value_floor: zero_for_limited_liability
+  subtract:
+    - net_financial_debt
+    - noncontrolling_interest
+    - preferred_equity
+
+implied_operations:
+  reference_scenario: base
+  variable: urea_usd_per_metric_ton
+  hold_constant:
+    - henry_hub
+    - annual_volume
+    - product_mix
+    - other_cost
+    - ebitda_conversion
+
+quality:
+  minimum_multiple_months: 60
+  identity_tolerance_usd: 1.0
+  required_scenarios: [downside, base, upside]

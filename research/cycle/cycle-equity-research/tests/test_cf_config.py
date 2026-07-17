@@ -121,3 +121,12 @@ def test_midcycle_scenarios_are_operating_assumptions_not_price_targets() -> Non
     assert "stock_price" not in serialized
     assert "target_price" not in serialized
     assert config["quality"]["minimum_annual_windows"] >= 24
+
+
+def test_valuation_range_preserves_full_scenario_multiple_matrix() -> None:
+    config = yaml.safe_load(
+        (PROJECT_ROOT / "configs/valuation/cf_valuation_range_v1.yaml").read_text()
+    )
+    assert config["multiple_cases"] == {"low": 0.25, "median": 0.5, "high": 0.75}
+    assert config["quality"]["required_scenarios"] == ["downside", "base", "upside"]
+    assert "noncontrolling_interest" in config["equity_bridge"]["subtract"]

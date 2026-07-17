@@ -210,6 +210,20 @@ conversion residual. Product realized prices and CF gas cost reuse the locked op
 parameters. The output is a transparent stress range rather than a probability forecast or target
 price.
 
+## Milestone 5.3 valuation range and implied operations
+
+Build the nine-cell EBITDA/multiple matrix and reverse-implied operating assumptions with:
+
+```bash
+.venv/bin/python scripts/build_cf_valuation_range.py
+```
+
+The equity bridge subtracts net financial debt, noncontrolling interest, and preferred equity from
+standard enterprise value. Historical reported-multiple quartiles are crossed with all three EBITDA
+scenarios rather than selecting one favorable cell. The current enterprise value is also converted
+back into implied EBITDA and global urea under fixed base assumptions. These are reference ranges
+and diagnostics, not price targets or trading signals.
+
 ## Publication source
 
 The Chinese manuscript, generated figure fragments, and one-command XeLaTeX build live under
